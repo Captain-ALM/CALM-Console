@@ -1,0 +1,12 @@
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\calmextensionlib\bin\Debug\calmextensionlib.dll
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\calmextensionlib\bin\Debug\calmextensionlib.pdb
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\calmextensionlib\bin\Debug\calmextensionlib.xml
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\calmextensionlib\bin\Debug\cnsrapi.dll
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\calmextensionlib\bin\Debug\cnsrapi.pdb
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\calmextensionlib\bin\Debug\cnsrapi.xml
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\calmextensionlib\obj\Debug\calmextensionlib.vbprojResolveAssemblyReference.cache
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\calmextensionlib\obj\Debug\captainalm.calmextensionlib.Resources.resources
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\calmextensionlib\obj\Debug\calmextensionlib.vbproj.GenerateResource.Cache
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\calmextensionlib\obj\Debug\calmextensionlib.dll
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\calmextensionlib\obj\Debug\calmextensionlib.xml
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\calmextensionlib\obj\Debug\calmextensionlib.pdb

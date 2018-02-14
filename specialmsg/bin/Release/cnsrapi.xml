@@ -1,0 +1,224 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+cnsrapi
+</name>
+</assembly>
+<members>
+<member name="T:captainalm.calmcon.api.Types.Cmd">
+	<summary>
+ Any commands set in libraries need to use this as the delegate type.
+ </summary>
+	<param name="arr">The array of parameters for the command.</param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Types.CommandStackHook">
+	<summary>
+ This is the hook delegate type required to hook to the command stack.
+ </summary>
+	<param name="stack">The passed command stack instance.</param>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Types.VaribleDictionaryHook">
+	<summary>
+ This is the hook delegate type required to hook to the Varible Dictionary.
+ </summary>
+	<param name="dictionary">The passed Varible Dictionary instance.</param>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Types.ProgramEventHook">
+	<summary>
+ This is the hook delegate used for the start and stop program hook events.
+ </summary>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Types.PreCommandExecuteHook">
+	<summary>
+ This is the hook used for the preexecute command hook event.
+ </summary>
+	<param name="commandstr">The command string being executed.</param>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Types.PostCommandExecuteHook">
+	<summary>
+ This is the hook used for the postexecute command hook event.
+ </summary>
+	<param name="commandstr">The command string being executed.</param>
+	<param name="returnval">The return string from the command.</param>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Types.FormHook">
+	<summary>
+ This hook is used to access and modify the main form.
+ </summary>
+	<param name="form">The passed main form.</param>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Types.OutputHook">
+	<summary>
+ This hook is used to access the output box on the main form.
+ </summary>
+	<param name="txtbx">The output textbox on the form.</param>
+	<remarks></remarks>
+</member><member name="M:captainalm.calmcon.api.ISyntax.name">
+	<summary>
+ Returns the Syntax Name.
+ </summary>
+	<returns>Returns the Syntax Name.</returns>
+	<remarks></remarks>
+</member><member name="M:captainalm.calmcon.api.ISyntax.decrypt(System.String,System.Collections.Generic.List{System.String})">
+	<summary>
+ Defines the required command decryptor, the returned list has the command as the first item and the arguments as the other items.
+ </summary>
+	<param name="strcmd">This is where the command string is passed.</param>
+	<param name="commands">This is where the list of commands on the console is passed.</param>
+	<returns>The returned list has the command as the first item and the arguments as the other items.</returns>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.ISyntax">
+	<summary>
+ API interface for adding other syntax language interpreters.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.HookInfo.name">
+	<summary>
+ The hook set name.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.HookInfo.hook_commandstack">
+	<summary>
+ The hook command stack delegate.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.HookInfo.hook_varibledictionary">
+	<summary>
+ The hook varible dictionary delegate.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.HookInfo.hook_programstart">
+	<summary>
+ The hook program start delegate.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.HookInfo.hook_programstop">
+	<summary>
+ The hook program stop delegate.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.HookInfo.hook_command_preexecute">
+	<summary>
+ The hook command pre-execute delegate.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.HookInfo.hook_command_postexecute">
+	<summary>
+ The hook command post-execute delegate.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.HookInfo.hook_form">
+	<summary>
+ The hook form delegate.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.HookInfo.hook_out">
+	<summary>
+ The hook out delegate.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:captainalm.calmcon.api.HookInfo.#ctor(System.String,captainalm.calmcon.api.Types.CommandStackHook,captainalm.calmcon.api.Types.VaribleDictionaryHook,captainalm.calmcon.api.Types.ProgramEventHook,captainalm.calmcon.api.Types.ProgramEventHook,captainalm.calmcon.api.Types.PreCommandExecuteHook,captainalm.calmcon.api.Types.PostCommandExecuteHook,captainalm.calmcon.api.Types.FormHook,captainalm.calmcon.api.Types.OutputHook)">
+	<summary>
+ Constructs a new set of hook info, use nothing as a parameter if you do not want to register a certain hook.
+ </summary>
+	<param name="hook_set_name">The name of the hook set.</param>
+	<param name="hcmdstk">The command stack hook delegate.</param>
+	<param name="hvardic">The varible dictionary hook delegate</param>
+	<param name="hcompreex">The Pre-Command Execute hook delegate.</param>
+	<param name="hcompstex">The Post-Command Execute hook delegate.</param>
+	<param name="hprostr">The Program Start hook delegate.</param>
+	<param name="hprostp">The Program stop hook delegate.</param>
+	<param name="hform">The form hook delegate.</param>
+	<param name="hout">The output hook delegate.</param>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.HookInfo">
+	<summary>
+ Use this structure to register hooks against a delegate, use nothing to specify no hook.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.LibrarySetup.name">
+	<summary>
+ Returns the name of the library.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.LibrarySetup.version">
+	<summary>
+ Returns the version number of the library.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.LibrarySetup.hook_info">
+	<summary>
+ Returns the hook set information of the library.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.LibrarySetup.commands">
+	<summary>
+ Returns the commands of the library.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.LibrarySetup.syntaxes">
+	<summary>
+ Retruns the syntaxes of the library.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:captainalm.calmcon.api.LibrarySetup.#ctor(System.String,System.Int32,captainalm.calmcon.api.HookInfo,captainalm.calmcon.api.Command[],captainalm.calmcon.api.ISyntax[])">
+	<summary>
+ Constructs a new LibrarySetup Structure.
+ </summary>
+	<param name="_name">The library name.</param>
+	<param name="ver">The library Version.</param>
+	<param name="_hookinfo">The library Hook Information.</param>
+	<param name="_commands">The library Commands Array.</param>
+	<param name="_syntaxes">The library Syntax Array.</param>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.LibrarySetup">
+	<summary>
+ Pass this structure from your setup() function, you need one of these functions per class, structure or module.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.Command.command">
+	<summary>
+ The held command delegate.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.Command.name">
+	<summary>
+ The name of the command.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.Command.help">
+	<summary>
+ The help string for the command.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:captainalm.calmcon.api.Command.#ctor(System.String,captainalm.calmcon.api.Types.Cmd,System.String)">
+	<summary>
+ Constructs a new command.
+ </summary>
+	<param name="_name">The name of the command.</param>
+	<param name="del">The delegate for the command using <seealso cref="T:captainalm.calmcon.api.Types.Cmd">the Cmd delegate type</seealso>.</param>
+	<param name="_help">The help string for the command.</param>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Command">
+	<summary>
+ Use this structure to register commands from a library.
+ </summary>
+	<remarks></remarks>
+</member><member name="P:captainalm.calmcon.api.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:captainalm.calmcon.api.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="T:captainalm.calmcon.api.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+</members>
+</doc>

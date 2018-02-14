@@ -1,0 +1,34 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+calmcmd
+</name>
+</assembly>
+<members>
+<member name="M:captainalm.calmcon.main.lcjbrimm">
+	<summary>
+ This subroutine for the lib load t is dedicated to Lily Charlotte Jaine Brimm
+ </summary>
+	<remarks></remarks>
+</member><member name="M:captainalm.calmcon.main.ceholmes">
+	<summary>
+ This subroutine for s show is dedicated to Charlotte Erin Holmes
+ </summary>
+	<remarks></remarks>
+</member><member name="P:captainalm.calmcon.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:captainalm.calmcon.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="T:captainalm.calmcon.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+</members>
+</doc>

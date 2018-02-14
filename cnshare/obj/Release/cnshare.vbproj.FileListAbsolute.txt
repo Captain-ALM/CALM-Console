@@ -1,0 +1,8 @@
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\cnshare\bin\Release\cnsrapi.dll
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\cnshare\bin\Release\cnsrapi.pdb
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\cnshare\bin\Release\cnsrapi.xml
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\cnshare\obj\Release\captainalm.calmcon.api.Resources.resources
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\cnshare\obj\Release\cnshare.vbproj.GenerateResource.Cache
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\cnshare\obj\Release\cnsrapi.dll
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\cnshare\obj\Release\cnsrapi.xml
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\cnshare\obj\Release\cnsrapi.pdb

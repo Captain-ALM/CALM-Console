@@ -1,0 +1,14 @@
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\calmcon\bin\Release\calmcmd.exe
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\calmcon\bin\Release\calmcmd.pdb
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\calmcon\bin\Release\calmcmd.xml
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\calmcon\bin\Release\cnsrapi.dll
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\calmcon\bin\Release\cnsrapi.pdb
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\calmcon\bin\Release\cnsrapi.xml
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\calmcon\obj\Release\calmcon.vbprojResolveAssemblyReference.cache
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\calmcon\obj\Release\captainalm.calmcon.AboutBx.resources
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\calmcon\obj\Release\captainalm.calmcon.main.resources
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\calmcon\obj\Release\captainalm.calmcon.Resources.resources
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\calmcon\obj\Release\calmcon.vbproj.GenerateResource.Cache
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\calmcon\obj\Release\calmcmd.exe
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\calmcon\obj\Release\calmcmd.xml
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\calmcon\obj\Release\calmcmd.pdb

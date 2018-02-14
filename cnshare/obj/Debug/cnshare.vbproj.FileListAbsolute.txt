@@ -1,0 +1,9 @@
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\cnshare\bin\Debug\cnsrapi.dll
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\cnshare\bin\Debug\cnsrapi.pdb
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\cnshare\bin\Debug\cnsrapi.xml
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\cnshare\obj\Debug\captainalm.calmcon.api.Resources.resources
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\cnshare\obj\Debug\cnshare.vbproj.GenerateResource.Cache
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\cnshare\obj\Debug\cnsrapi.dll
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\cnshare\obj\Debug\cnsrapi.xml
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\cnshare\obj\Debug\cnsrapi.pdb
+C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\cnshare\obj\Debug\cnshare.vbprojResolveAssemblyReference.cache
