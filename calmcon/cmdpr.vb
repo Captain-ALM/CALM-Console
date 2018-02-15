@@ -598,6 +598,13 @@ Public Class executable_command
         Else
             execdel()
         End If
+        If _isthread Then
+            If Not _thread Is Nothing Then
+                If _thread.IsAlive Then
+                    _thread.Join()
+                End If
+            End If
+        End If
         Return _retur
     End Function
 
@@ -636,6 +643,9 @@ Public Class executable_command
             _retur = _dtr.Invoke(_args)
         Catch ex As ThreadAbortException
             _retur = "Thread Aborted!"
+            If Not _isthread Then
+                Throw ex
+            End If
         Catch ex As InvalidCastException
             _retur = "Library Error - Command Delegate Invalid!" & ControlChars.CrLf & "Exception: " & ex.GetType.ToString & " : " & ex.Message
         Catch ex As Exception

@@ -10,3 +10,15 @@ C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\specialmsg\obj\Deb
 C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\specialmsg\obj\Debug\specialmsg.dll
 C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\specialmsg\obj\Debug\specialmsg.xml
 C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\specialmsg\obj\Debug\specialmsg.pdb
+C:\Users\Alfred\Documents\GitHub\CALM-Console\specialmsg\bin\Debug\specialmsg.dll
+C:\Users\Alfred\Documents\GitHub\CALM-Console\specialmsg\bin\Debug\specialmsg.pdb
+C:\Users\Alfred\Documents\GitHub\CALM-Console\specialmsg\bin\Debug\specialmsg.xml
+C:\Users\Alfred\Documents\GitHub\CALM-Console\specialmsg\bin\Debug\cnsrapi.dll
+C:\Users\Alfred\Documents\GitHub\CALM-Console\specialmsg\bin\Debug\cnsrapi.pdb
+C:\Users\Alfred\Documents\GitHub\CALM-Console\specialmsg\bin\Debug\cnsrapi.xml
+C:\Users\Alfred\Documents\GitHub\CALM-Console\specialmsg\obj\Debug\specialmsg.vbprojResolveAssemblyReference.cache
+C:\Users\Alfred\Documents\GitHub\CALM-Console\specialmsg\obj\Debug\specialmsg.Resources.resources
+C:\Users\Alfred\Documents\GitHub\CALM-Console\specialmsg\obj\Debug\specialmsg.vbproj.GenerateResource.Cache
+C:\Users\Alfred\Documents\GitHub\CALM-Console\specialmsg\obj\Debug\specialmsg.dll
+C:\Users\Alfred\Documents\GitHub\CALM-Console\specialmsg\obj\Debug\specialmsg.xml
+C:\Users\Alfred\Documents\GitHub\CALM-Console\specialmsg\obj\Debug\specialmsg.pdb

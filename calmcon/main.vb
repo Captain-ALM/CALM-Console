@@ -149,8 +149,8 @@ Public Class main
                 If Not ihook.hook_varibledictionary Is Nothing Then
                     ihook.hook_varibledictionary.Invoke(var_dict)
                 End If
-                If Not ihook.hook_out Is Nothing Then
-                    ihook.hook_out.Invoke(txtbxlog)
+                If Not ihook.hook_out_txtbx Is Nothing Then
+                    ihook.hook_out_txtbx.Invoke(txtbxlog)
                 End If
                 If Not ihook.hook_programstart Is Nothing Then
                     ihook.hook_programstart.Invoke()

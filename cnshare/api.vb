@@ -49,7 +49,54 @@ Public Module Types
     ''' </summary>
     ''' <param name="txtbx">The output textbox on the form.</param>
     ''' <remarks></remarks>
-    Public Delegate Sub OutputHook(ByRef txtbx As Windows.Forms.TextBoxBase)
+    Public Delegate Sub OutputTextBoxHook(ByRef txtbx As Windows.Forms.TextBoxBase)
+    ''' <summary>
+    ''' This hook is used to access the reference to the syntax name string.
+    ''' </summary>
+    ''' <param name="syntax_name"></param>
+    ''' <remarks></remarks>
+    Public Delegate Sub SyntaxNameHook(ByRef syntax_name As String)
+    ''' <summary>
+    ''' This hook is used to run a command,
+    ''' and can be invoked by the library once an instance is retrieved via the GetRunCommandHook.
+    ''' </summary>
+    ''' <param name="command">The command to pass.</param>
+    ''' <param name="args">The arguments to pass.</param>
+    ''' <returns>The return value of the command.</returns>
+    ''' <remarks></remarks>
+    Public Delegate Function RunCommandHook(ByVal command As String, ByVal args As String()) As String
+    ''' <summary>
+    ''' Gets the hook instance for RunCommandHook so it can be invoked by the library.
+    ''' </summary>
+    ''' <param name="hook">The hook instance.</param>
+    ''' <remarks></remarks>
+    Public Delegate Sub GetRunCommandHook(ByRef hook As RunCommandHook)
+    ''' <summary>
+    ''' This hook is used to write to the output textbox,
+    ''' and can be invoked by the library once an instance is retrieved via the GetWriteOutputHook.
+    ''' </summary>
+    ''' <param name="text">The string to write to the output textbox.</param>
+    ''' <remarks></remarks>
+    Public Delegate Sub WriteOutputHook(ByVal text As String)
+    ''' <summary>
+    ''' Gets the hook instance for WriteOutputHook so it can be invoked by the library.
+    ''' </summary>
+    ''' <param name="hook">The hook instance.</param>
+    ''' <remarks></remarks>
+    Public Delegate Sub GetWriteOutputHook(ByRef hook As WriteOutputHook)
+    ''' <summary>
+    ''' This hook is used to read from the output textbox,
+    ''' and can be invoked by the library once an instance is retrieved via the GetWriteOutputHook.
+    ''' </summary>
+    ''' <returns>The contents of the output textbox.</returns>
+    ''' <remarks></remarks>
+    Public Delegate Function ReadOutputHook() As String
+    ''' <summary>
+    ''' Gets the hook instance for ReadOutputHook so it can be invoked by the library.
+    ''' </summary>
+    ''' <param name="hook">The hook instance.</param>
+    ''' <remarks></remarks>
+    Public Delegate Sub GetReadOutputHook(ByRef hook As ReadOutputHook)
 End Module
 ''' <summary>
 ''' API interface for adding other syntax language interpreters.
@@ -78,7 +125,6 @@ Public Interface ISyntax
     REM ''' <returns>The literal converted to a command with an argument.</returns>
     REM ''' <remarks></remarks>
     REM Function literalconvert(ByVal strcmd As String, ByVal isConverted As Boolean) As String
-
 End Interface
 ''' <summary>
 ''' Use this structure to register hooks against a delegate, use nothing to specify no hook.
@@ -126,10 +172,25 @@ Public Structure HookInfo
     ''' <remarks></remarks>
     Public hook_form As FormHook
     ''' <summary>
-    ''' The hook out delegate.
+    ''' The hook out textbox delegate.
     ''' </summary>
     ''' <remarks></remarks>
-    Public hook_out As OutputHook
+    Public hook_out_txtbx As OutputTextBoxHook
+    ''' <summary>
+    ''' The hook get runcommand delegate.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public hook_runcommand As GetRunCommandHook
+    ''' <summary>
+    ''' The hook get writeoutput delegate.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public hook_writeoutput As GetWriteOutputHook
+    ''' <summary>
+    ''' The hook get readoutput delegate.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public hook_readoutput As GetReadOutputHook
     ''' <summary>
     ''' Constructs a new set of hook info, use nothing as a parameter if you do not want to register a certain hook.
     ''' </summary>
@@ -141,9 +202,12 @@ Public Structure HookInfo
     ''' <param name="hprostr">The Program Start hook delegate.</param>
     ''' <param name="hprostp">The Program stop hook delegate.</param>
     ''' <param name="hform">The form hook delegate.</param>
-    ''' <param name="hout">The output hook delegate.</param>
+    ''' <param name="hout">The output textbox hook delegate.</param>
+    ''' <param name="getrcom">The Get RunCommand Hook delegate.</param>
+    ''' <param name="getwout">The Get WriteOutput Hook delegate.</param>
+    ''' <param name="getrout">The Get ReadOutput Hook delegate.</param>
     ''' <remarks></remarks>
-    Public Sub New(ByVal hook_set_name As String, Optional ByVal hcmdstk As CommandStackHook = Nothing, Optional ByVal hvardic As VaribleDictionaryHook = Nothing, Optional ByVal hprostr As ProgramEventHook = Nothing, Optional ByVal hprostp As ProgramEventHook = Nothing, Optional ByVal hcompreex As PreCommandExecuteHook = Nothing, Optional ByVal hcompstex As PostCommandExecuteHook = Nothing, Optional ByVal hform As FormHook = Nothing, Optional ByVal hout As OutputHook = Nothing)
+    Public Sub New(ByVal hook_set_name As String, Optional ByVal hcmdstk As CommandStackHook = Nothing, Optional ByVal hvardic As VaribleDictionaryHook = Nothing, Optional ByVal hprostr As ProgramEventHook = Nothing, Optional ByVal hprostp As ProgramEventHook = Nothing, Optional ByVal hcompreex As PreCommandExecuteHook = Nothing, Optional ByVal hcompstex As PostCommandExecuteHook = Nothing, Optional ByVal hform As FormHook = Nothing, Optional ByVal hout As OutputTextBoxHook = Nothing, Optional ByVal getrcom As GetRunCommandHook = Nothing, Optional ByVal getwout As GetWriteOutputHook = Nothing, Optional ByVal getrout As GetReadOutputHook = Nothing)
         name = hook_set_name
         hook_commandstack = hcmdstk
         hook_varibledictionary = hvardic
@@ -152,7 +216,10 @@ Public Structure HookInfo
         hook_command_preexecute = hcompreex
         hook_command_postexecute = hcompstex
         hook_form = hform
-        hook_out = hout
+        hook_out_txtbx = hout
+        hook_runcommand = getrcom
+        hook_writeoutput = getwout
+        hook_readoutput = getrout
     End Sub
 End Structure
 ''' <summary>

@@ -10,3 +10,15 @@ C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\calmextensionlib\o
 C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\calmextensionlib\obj\Release\calmextensionlib.dll
 C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\calmextensionlib\obj\Release\calmextensionlib.xml
 C:\Users\Alfred\Documents\Visual Studio 2013\Projects\calmcon\calmextensionlib\obj\Release\calmextensionlib.pdb
+C:\Users\Alfred\Documents\GitHub\CALM-Console\calmextensionlib\bin\Release\calmextensionlib.dll
+C:\Users\Alfred\Documents\GitHub\CALM-Console\calmextensionlib\bin\Release\calmextensionlib.pdb
+C:\Users\Alfred\Documents\GitHub\CALM-Console\calmextensionlib\bin\Release\calmextensionlib.xml
+C:\Users\Alfred\Documents\GitHub\CALM-Console\calmextensionlib\bin\Release\cnsrapi.dll
+C:\Users\Alfred\Documents\GitHub\CALM-Console\calmextensionlib\bin\Release\cnsrapi.pdb
+C:\Users\Alfred\Documents\GitHub\CALM-Console\calmextensionlib\bin\Release\cnsrapi.xml
+C:\Users\Alfred\Documents\GitHub\CALM-Console\calmextensionlib\obj\Release\calmextensionlib.vbprojResolveAssemblyReference.cache
+C:\Users\Alfred\Documents\GitHub\CALM-Console\calmextensionlib\obj\Release\captainalm.calmextensionlib.Resources.resources
+C:\Users\Alfred\Documents\GitHub\CALM-Console\calmextensionlib\obj\Release\calmextensionlib.vbproj.GenerateResource.Cache
+C:\Users\Alfred\Documents\GitHub\CALM-Console\calmextensionlib\obj\Release\calmextensionlib.dll
+C:\Users\Alfred\Documents\GitHub\CALM-Console\calmextensionlib\obj\Release\calmextensionlib.xml
+C:\Users\Alfred\Documents\GitHub\CALM-Console\calmextensionlib\obj\Release\calmextensionlib.pdb

@@ -49,11 +49,58 @@ cnsrapi
  </summary>
 	<param name="form">The passed main form.</param>
 	<remarks></remarks>
-</member><member name="T:captainalm.calmcon.api.Types.OutputHook">
+</member><member name="T:captainalm.calmcon.api.Types.OutputTextBoxHook">
 	<summary>
  This hook is used to access the output box on the main form.
  </summary>
 	<param name="txtbx">The output textbox on the form.</param>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Types.SyntaxNameHook">
+	<summary>
+ This hook is used to access the reference to the syntax name string.
+ </summary>
+	<param name="syntax_name"></param>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Types.RunCommandHook">
+	<summary>
+ This hook is used to run a command,
+ and can be invoked by the library once an instance is retrieved via the GetRunCommandHook.
+ </summary>
+	<param name="command">The command to pass.</param>
+	<param name="args">The arguments to pass.</param>
+	<returns>The return value of the command.</returns>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Types.GetRunCommandHook">
+	<summary>
+ Gets the hook instance for RunCommandHook so it can be invoked by the library.
+ </summary>
+	<param name="hook">The hook instance.</param>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Types.WriteOutputHook">
+	<summary>
+ This hook is used to write to the output textbox,
+ and can be invoked by the library once an instance is retrieved via the GetWriteOutputHook.
+ </summary>
+	<param name="text">The string to write to the output textbox.</param>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Types.GetWriteOutputHook">
+	<summary>
+ Gets the hook instance for WriteOutputHook so it can be invoked by the library.
+ </summary>
+	<param name="hook">The hook instance.</param>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Types.ReadOutputHook">
+	<summary>
+ This hook is used to read from the output textbox,
+ and can be invoked by the library once an instance is retrieved via the GetWriteOutputHook.
+ </summary>
+	<returns>The contents of the output textbox.</returns>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Types.GetReadOutputHook">
+	<summary>
+ Gets the hook instance for ReadOutputHook so it can be invoked by the library.
+ </summary>
+	<param name="hook">The hook instance.</param>
 	<remarks></remarks>
 </member><member name="M:captainalm.calmcon.api.ISyntax.name">
 	<summary>
@@ -114,12 +161,27 @@ cnsrapi
  The hook form delegate.
  </summary>
 	<remarks></remarks>
-</member><member name="F:captainalm.calmcon.api.HookInfo.hook_out">
+</member><member name="F:captainalm.calmcon.api.HookInfo.hook_out_txtbx">
 	<summary>
- The hook out delegate.
+ The hook out textbox delegate.
  </summary>
 	<remarks></remarks>
-</member><member name="M:captainalm.calmcon.api.HookInfo.#ctor(System.String,captainalm.calmcon.api.Types.CommandStackHook,captainalm.calmcon.api.Types.VaribleDictionaryHook,captainalm.calmcon.api.Types.ProgramEventHook,captainalm.calmcon.api.Types.ProgramEventHook,captainalm.calmcon.api.Types.PreCommandExecuteHook,captainalm.calmcon.api.Types.PostCommandExecuteHook,captainalm.calmcon.api.Types.FormHook,captainalm.calmcon.api.Types.OutputHook)">
+</member><member name="F:captainalm.calmcon.api.HookInfo.hook_runcommand">
+	<summary>
+ The hook get runcommand delegate.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.HookInfo.hook_writeoutput">
+	<summary>
+ The hook get writeoutput delegate.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.HookInfo.hook_readoutput">
+	<summary>
+ The hook get readoutput delegate.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:captainalm.calmcon.api.HookInfo.#ctor(System.String,captainalm.calmcon.api.Types.CommandStackHook,captainalm.calmcon.api.Types.VaribleDictionaryHook,captainalm.calmcon.api.Types.ProgramEventHook,captainalm.calmcon.api.Types.ProgramEventHook,captainalm.calmcon.api.Types.PreCommandExecuteHook,captainalm.calmcon.api.Types.PostCommandExecuteHook,captainalm.calmcon.api.Types.FormHook,captainalm.calmcon.api.Types.OutputTextBoxHook,captainalm.calmcon.api.Types.GetRunCommandHook,captainalm.calmcon.api.Types.GetWriteOutputHook,captainalm.calmcon.api.Types.GetReadOutputHook)">
 	<summary>
  Constructs a new set of hook info, use nothing as a parameter if you do not want to register a certain hook.
  </summary>
@@ -131,7 +193,10 @@ cnsrapi
 	<param name="hprostr">The Program Start hook delegate.</param>
 	<param name="hprostp">The Program stop hook delegate.</param>
 	<param name="hform">The form hook delegate.</param>
-	<param name="hout">The output hook delegate.</param>
+	<param name="hout">The output textbox hook delegate.</param>
+	<param name="getrcom">The Get RunCommand Hook delegate.</param>
+	<param name="getwout">The Get WriteOutput Hook delegate.</param>
+	<param name="getrout">The Get ReadOutput Hook delegate.</param>
 	<remarks></remarks>
 </member><member name="T:captainalm.calmcon.api.HookInfo">
 	<summary>
