@@ -4,12 +4,12 @@ Imports System.Runtime.Serialization.Formatters.Binary
 
 Public Class main
     Public messages As New Dictionary(Of String, String)
-    Public command_stack As Stack(Of String)
     Public shown As Boolean = False
     Public tboxout As Windows.Forms.TextBoxBase = Nothing
+    Public wouthook As WriteOutputHook = Nothing
 
     Public Function setup() As LibrarySetup
-        Dim hi As New HookInfo("special_msgs:0", New CommandStackHook(AddressOf gs), Nothing, Nothing, Nothing, New PreCommandExecuteHook(AddressOf todays_message), Nothing, Nothing, New OutputTextBoxHook(AddressOf oh))
+        Dim hi As New HookInfo("special_msgs:0", Nothing, Nothing, Nothing, Nothing, New PreCommandExecuteHook(AddressOf todays_message), Nothing, Nothing, New OutputTextBoxHook(AddressOf oh_old), Nothing, New GetWriteOutputHook(AddressOf oh))
         Dim coms(4) As Command
         coms(0) = New Command("get_message", New Cmd(AddressOf get_msg), "get_message%(string)[optional : day]% : gets the current message")
         coms(1) = New Command("set_message", New Cmd(AddressOf set_msg), "set_message%(string)[message]%%(string)[optional : day]% : sets the current/given message")
@@ -88,11 +88,11 @@ Public Class main
         End If
     End Function
 
-    Public Sub gs(ByRef s As Stack(Of String))
-        command_stack = s
+    Public Sub oh(ByRef hook As WriteOutputHook)
+        wouthook = hook
     End Sub
 
-    Public Sub oh(ByRef t As Windows.Forms.TextBoxBase)
+    Public Sub oh_old(ByRef t As Windows.Forms.TextBoxBase)
         tboxout = t
     End Sub
 
@@ -100,10 +100,14 @@ Public Class main
         If Not shown Then
             Dim today As String = Date.Now.Date.ToString()
             If messages.ContainsKey(today) Then
-                tboxout.Invoke(Sub() tboxout.AppendText(messages(today) & ControlChars.CrLf))
+                If wouthook Is Nothing Then
+                    tboxout.Invoke(Sub() tboxout.AppendText(messages(today) & ControlChars.CrLf))
+                Else
+                    wouthook.Invoke(messages(today) & ControlChars.CrLf)
+                End If
             End If
-            shown = True
-        End If
+                shown = True
+            End If
     End Sub
 
     Public Function convertobjecttostring(obj As Object) As String

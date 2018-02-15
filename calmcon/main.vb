@@ -158,8 +158,14 @@ Public Class main
                 If Not ihook.hook_variabledictionary Is Nothing Then
                     ihook.hook_variabledictionary.Invoke(var_dict)
                 End If
+                If Not ihook.hook_form Is Nothing Then
+                    ihook.hook_form.Invoke(form_instance)
+                End If
                 If Not ihook.hook_out_txtbx Is Nothing Then
                     ihook.hook_out_txtbx.Invoke(txtbxlog)
+                End If
+                If Not ihook.hook_syntaxname Is Nothing Then
+                    ihook.hook_syntaxname.Invoke(syntax_mode)
                 End If
                 If Not ihook.hook_programstart Is Nothing Then
                     ihook.hook_programstart.Invoke()

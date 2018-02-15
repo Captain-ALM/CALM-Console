@@ -190,6 +190,11 @@ Public Structure HookInfo
     ''' <remarks></remarks>
     Public hook_readoutput As GetReadOutputHook
     ''' <summary>
+    ''' The hook syntax name delegate.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public hook_syntaxname As SyntaxNameHook
+    ''' <summary>
     ''' Constructs a new set of hook info, use nothing as a parameter if you do not want to register a certain hook.
     ''' </summary>
     ''' <param name="hook_set_name">The name of the hook set.</param>
@@ -204,8 +209,9 @@ Public Structure HookInfo
     ''' <param name="getrcom">The Get RunCommand Hook delegate.</param>
     ''' <param name="getwout">The Get WriteOutput Hook delegate.</param>
     ''' <param name="getrout">The Get ReadOutput Hook delegate.</param>
+    ''' <param name="synxnom">The Syntax Name Hook delegate.</param>
     ''' <remarks></remarks>
-    Public Sub New(ByVal hook_set_name As String, Optional ByVal hcmdstk As CommandStackHook = Nothing, Optional ByVal hvardic As variableDictionaryHook = Nothing, Optional ByVal hprostr As ProgramEventHook = Nothing, Optional ByVal hprostp As ProgramEventHook = Nothing, Optional ByVal hcompreex As PreCommandExecuteHook = Nothing, Optional ByVal hcompstex As PostCommandExecuteHook = Nothing, Optional ByVal hform As FormHook = Nothing, Optional ByVal hout As OutputTextBoxHook = Nothing, Optional ByVal getrcom As GetRunCommandHook = Nothing, Optional ByVal getwout As GetWriteOutputHook = Nothing, Optional ByVal getrout As GetReadOutputHook = Nothing)
+    Public Sub New(ByVal hook_set_name As String, Optional ByVal hcmdstk As CommandStackHook = Nothing, Optional ByVal hvardic As variableDictionaryHook = Nothing, Optional ByVal hprostr As ProgramEventHook = Nothing, Optional ByVal hprostp As ProgramEventHook = Nothing, Optional ByVal hcompreex As PreCommandExecuteHook = Nothing, Optional ByVal hcompstex As PostCommandExecuteHook = Nothing, Optional ByVal hform As FormHook = Nothing, Optional ByVal hout As OutputTextBoxHook = Nothing, Optional ByVal getrcom As GetRunCommandHook = Nothing, Optional ByVal getwout As GetWriteOutputHook = Nothing, Optional ByVal getrout As GetReadOutputHook = Nothing, Optional ByVal synxnom As SyntaxNameHook = Nothing)
         name = hook_set_name
         hook_commandstack = hcmdstk
         hook_variabledictionary = hvardic
@@ -218,6 +224,7 @@ Public Structure HookInfo
         hook_runcommand = getrcom
         hook_writeoutput = getwout
         hook_readoutput = getrout
+        hook_syntaxname = synxnom
     End Sub
 End Structure
 ''' <summary>
