@@ -82,6 +82,7 @@
     <Compile Include="commands.vb" />
     <Compile Include="defsyntax.vb" />
     <Compile Include="form_flags.vb" />
+    <Compile Include="hooks.vb" />
     <Compile Include="libraryinit.vb" />
     <Compile Include="main.designer.vb">
       <DependentUpon>main.vb</DependentUpon>

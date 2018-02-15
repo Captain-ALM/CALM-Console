@@ -122,7 +122,7 @@ Module commands_data
                 End If
             End If
         End If
-        Return "No varible name specified."
+        Return "No variable name specified."
     End Function
 
     Public Function var_set(args As String()) As String
@@ -138,7 +138,7 @@ Module commands_data
                 End If
             End If
         End If
-        Return "No varible name and/or value specified."
+        Return "No variable name and/or value specified."
     End Function
 
     Public Function langs(args As String()) As String

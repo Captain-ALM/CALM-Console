@@ -1,6 +1,4 @@
-﻿Imports System.Threading
-
-Public Module Types
+﻿Public Module Types
     ''' <summary>
     ''' Any commands set in libraries need to use this as the delegate type.
     ''' </summary>
@@ -15,11 +13,11 @@ Public Module Types
     ''' <remarks></remarks>
     Public Delegate Sub CommandStackHook(ByRef stack As Stack(Of String))
     ''' <summary>
-    ''' This is the hook delegate type required to hook to the Varible Dictionary.
+    ''' This is the hook delegate type required to hook to the variable Dictionary.
     ''' </summary>
-    ''' <param name="dictionary">The passed Varible Dictionary instance.</param>
+    ''' <param name="dictionary">The passed variable Dictionary instance.</param>
     ''' <remarks></remarks>
-    Public Delegate Sub VaribleDictionaryHook(ByRef dictionary As Dictionary(Of String, String))
+    Public Delegate Sub variableDictionaryHook(ByRef dictionary As Dictionary(Of String, String))
     ''' <summary>
     ''' This is the hook delegate used for the start and stop program hook events.
     ''' </summary>
@@ -142,10 +140,10 @@ Public Structure HookInfo
     ''' <remarks></remarks>
     Public hook_commandstack As CommandStackHook
     ''' <summary>
-    ''' The hook varible dictionary delegate.
+    ''' The hook variable dictionary delegate.
     ''' </summary>
     ''' <remarks></remarks>
-    Public hook_varibledictionary As VaribleDictionaryHook
+    Public hook_variabledictionary As variableDictionaryHook
     ''' <summary>
     ''' The hook program start delegate.
     ''' </summary>
@@ -196,7 +194,7 @@ Public Structure HookInfo
     ''' </summary>
     ''' <param name="hook_set_name">The name of the hook set.</param>
     ''' <param name="hcmdstk">The command stack hook delegate.</param>
-    ''' <param name="hvardic">The varible dictionary hook delegate</param>
+    ''' <param name="hvardic">The variable dictionary hook delegate</param>
     ''' <param name="hcompreex">The Pre-Command Execute hook delegate.</param>
     ''' <param name="hcompstex">The Post-Command Execute hook delegate.</param>
     ''' <param name="hprostr">The Program Start hook delegate.</param>
@@ -207,10 +205,10 @@ Public Structure HookInfo
     ''' <param name="getwout">The Get WriteOutput Hook delegate.</param>
     ''' <param name="getrout">The Get ReadOutput Hook delegate.</param>
     ''' <remarks></remarks>
-    Public Sub New(ByVal hook_set_name As String, Optional ByVal hcmdstk As CommandStackHook = Nothing, Optional ByVal hvardic As VaribleDictionaryHook = Nothing, Optional ByVal hprostr As ProgramEventHook = Nothing, Optional ByVal hprostp As ProgramEventHook = Nothing, Optional ByVal hcompreex As PreCommandExecuteHook = Nothing, Optional ByVal hcompstex As PostCommandExecuteHook = Nothing, Optional ByVal hform As FormHook = Nothing, Optional ByVal hout As OutputTextBoxHook = Nothing, Optional ByVal getrcom As GetRunCommandHook = Nothing, Optional ByVal getwout As GetWriteOutputHook = Nothing, Optional ByVal getrout As GetReadOutputHook = Nothing)
+    Public Sub New(ByVal hook_set_name As String, Optional ByVal hcmdstk As CommandStackHook = Nothing, Optional ByVal hvardic As variableDictionaryHook = Nothing, Optional ByVal hprostr As ProgramEventHook = Nothing, Optional ByVal hprostp As ProgramEventHook = Nothing, Optional ByVal hcompreex As PreCommandExecuteHook = Nothing, Optional ByVal hcompstex As PostCommandExecuteHook = Nothing, Optional ByVal hform As FormHook = Nothing, Optional ByVal hout As OutputTextBoxHook = Nothing, Optional ByVal getrcom As GetRunCommandHook = Nothing, Optional ByVal getwout As GetWriteOutputHook = Nothing, Optional ByVal getrout As GetReadOutputHook = Nothing)
         name = hook_set_name
         hook_commandstack = hcmdstk
-        hook_varibledictionary = hvardic
+        hook_variabledictionary = hvardic
         hook_programstart = hprostr
         hook_programstop = hprostp
         hook_command_preexecute = hcompreex

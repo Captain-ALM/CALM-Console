@@ -19,11 +19,11 @@ cnsrapi
  </summary>
 	<param name="stack">The passed command stack instance.</param>
 	<remarks></remarks>
-</member><member name="T:captainalm.calmcon.api.Types.VaribleDictionaryHook">
+</member><member name="T:captainalm.calmcon.api.Types.variableDictionaryHook">
 	<summary>
- This is the hook delegate type required to hook to the Varible Dictionary.
+ This is the hook delegate type required to hook to the variable Dictionary.
  </summary>
-	<param name="dictionary">The passed Varible Dictionary instance.</param>
+	<param name="dictionary">The passed variable Dictionary instance.</param>
 	<remarks></remarks>
 </member><member name="T:captainalm.calmcon.api.Types.ProgramEventHook">
 	<summary>
@@ -131,9 +131,9 @@ cnsrapi
  The hook command stack delegate.
  </summary>
 	<remarks></remarks>
-</member><member name="F:captainalm.calmcon.api.HookInfo.hook_varibledictionary">
+</member><member name="F:captainalm.calmcon.api.HookInfo.hook_variabledictionary">
 	<summary>
- The hook varible dictionary delegate.
+ The hook variable dictionary delegate.
  </summary>
 	<remarks></remarks>
 </member><member name="F:captainalm.calmcon.api.HookInfo.hook_programstart">
@@ -181,13 +181,13 @@ cnsrapi
  The hook get readoutput delegate.
  </summary>
 	<remarks></remarks>
-</member><member name="M:captainalm.calmcon.api.HookInfo.#ctor(System.String,captainalm.calmcon.api.Types.CommandStackHook,captainalm.calmcon.api.Types.VaribleDictionaryHook,captainalm.calmcon.api.Types.ProgramEventHook,captainalm.calmcon.api.Types.ProgramEventHook,captainalm.calmcon.api.Types.PreCommandExecuteHook,captainalm.calmcon.api.Types.PostCommandExecuteHook,captainalm.calmcon.api.Types.FormHook,captainalm.calmcon.api.Types.OutputTextBoxHook,captainalm.calmcon.api.Types.GetRunCommandHook,captainalm.calmcon.api.Types.GetWriteOutputHook,captainalm.calmcon.api.Types.GetReadOutputHook)">
+</member><member name="M:captainalm.calmcon.api.HookInfo.#ctor(System.String,captainalm.calmcon.api.Types.CommandStackHook,captainalm.calmcon.api.Types.variableDictionaryHook,captainalm.calmcon.api.Types.ProgramEventHook,captainalm.calmcon.api.Types.ProgramEventHook,captainalm.calmcon.api.Types.PreCommandExecuteHook,captainalm.calmcon.api.Types.PostCommandExecuteHook,captainalm.calmcon.api.Types.FormHook,captainalm.calmcon.api.Types.OutputTextBoxHook,captainalm.calmcon.api.Types.GetRunCommandHook,captainalm.calmcon.api.Types.GetWriteOutputHook,captainalm.calmcon.api.Types.GetReadOutputHook)">
 	<summary>
  Constructs a new set of hook info, use nothing as a parameter if you do not want to register a certain hook.
  </summary>
 	<param name="hook_set_name">The name of the hook set.</param>
 	<param name="hcmdstk">The command stack hook delegate.</param>
-	<param name="hvardic">The varible dictionary hook delegate</param>
+	<param name="hvardic">The variable dictionary hook delegate</param>
 	<param name="hcompreex">The Pre-Command Execute hook delegate.</param>
 	<param name="hcompstex">The Post-Command Execute hook delegate.</param>
 	<param name="hprostr">The Program Start hook delegate.</param>

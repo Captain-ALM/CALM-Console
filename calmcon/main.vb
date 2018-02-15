@@ -143,11 +143,20 @@ Public Class main
                    End Sub)
         For Each ihook As HookInfo In hooks_info.Values
             Try
+                If Not ihook.hook_runcommand Is Nothing Then
+                    ihook.hook_runcommand.Invoke(runcommandhook)
+                End If
+                If Not ihook.hook_readoutput Is Nothing Then
+                    ihook.hook_readoutput.Invoke(readoutputhook)
+                End If
+                If Not ihook.hook_writeoutput Is Nothing Then
+                    ihook.hook_writeoutput.Invoke(writeoutputhook)
+                End If
                 If Not ihook.hook_commandstack Is Nothing Then
                     ihook.hook_commandstack.Invoke(command_stack)
                 End If
-                If Not ihook.hook_varibledictionary Is Nothing Then
-                    ihook.hook_varibledictionary.Invoke(var_dict)
+                If Not ihook.hook_variabledictionary Is Nothing Then
+                    ihook.hook_variabledictionary.Invoke(var_dict)
                 End If
                 If Not ihook.hook_out_txtbx Is Nothing Then
                     ihook.hook_out_txtbx.Invoke(txtbxlog)

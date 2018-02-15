@@ -111,16 +111,16 @@ Public Module cmdpr
         commands.Add("log", New executable_command("log", New Cmd(AddressOf logger)))
         commands.Add("logger", New executable_command("logger", New Cmd(AddressOf logger)))
         commandhelplst.Add("log/logger%true/on/enabled/false/off/disabled/default(default folder for log)/dump/clear/*(folder for log)% : performs command for the log.")
-        'set / set_var / set_varible
+        'set / set_var / set_variable
         commands.Add("set", New executable_command("set", New Cmd(AddressOf var_set)))
         commands.Add("set_var", New executable_command("set_var", New Cmd(AddressOf var_set)))
-        commands.Add("set_varible", New executable_command("set_varible", New Cmd(AddressOf var_set)))
-        commandhelplst.Add("set/set_var/set_varible%*(string)[name]%%*(any)[value]% : sets a value on the internal varible dictionary.")
-        'get / get_var / get_varible
+        commands.Add("set_variable", New executable_command("set_variable", New Cmd(AddressOf var_set)))
+        commandhelplst.Add("set/set_var/set_variable%*(string)[name]%%*(any)[value]% : sets a value on the internal variable dictionary.")
+        'get / get_var / get_variable
         commands.Add("get", New executable_command("get", New Cmd(AddressOf var_get)))
         commands.Add("get_var", New executable_command("get_var", New Cmd(AddressOf var_get)))
-        commands.Add("get_varible", New executable_command("get_varible", New Cmd(AddressOf var_get)))
-        commandhelplst.Add("get/get_var/get_varible%*(string)[name]% : returns a value from the internal varible dictionary.")
+        commands.Add("get_variable", New executable_command("get_variable", New Cmd(AddressOf var_get)))
+        commandhelplst.Add("get/get_var/get_variable%*(string)[name]% : returns a value from the internal variable dictionary.")
         'lib / libs / library / libraries
         commands.Add("lib", New executable_command("lib", New Cmd(AddressOf lib_man)))
         commands.Add("libs", New executable_command("libs", New Cmd(AddressOf lib_man)))
@@ -138,8 +138,10 @@ Public Class int_command
     Private log As String = ""
     Private ecmd As executable_command
     Private args As String() = Nothing
+    Public constructed_without_syntax As Boolean = False
 
     Public Sub New(cmdstrp As String, cmdtypearg As String, Optional initnow As Boolean = False)
+        constructed_without_syntax = False
         cmdstr = cmdstrp
         cmdtype = cmdtypearg
         If initnow Then
@@ -147,38 +149,57 @@ Public Class int_command
         End If
     End Sub
 
-    Public Sub init()
+    Public Sub New(cmd As String, _args As String())
         Try
-            If name = "" And cmdstr <> "" Then
-                Dim argumentsstr As List(Of String) = dcmd(cmdstr, cmdtype)
-                name = argumentsstr(0)
-                If argumentsstr.Count > 1 Then
-                    If args Is Nothing Then
-                        args = New String() {}
-                    End If
-                    ReDim Preserve args(argumentsstr.Count - 2)
-                    For i As Integer = 1 To argumentsstr.Count - 1 Step 1
-                        'ReDim Preserve args(i - 1)
-                        If ((argumentsstr(i).StartsWith(ControlChars.Quote) And argumentsstr(i).EndsWith(ControlChars.Quote)) Or (argumentsstr(i).StartsWith("'") And argumentsstr(i).EndsWith("'"))) Then
-                            args(i - 1) = argumentsstr(i).Substring(1, argumentsstr(i).Length - 2)
-                        Else
-                            arguments.Add(New int_command(argumentsstr(i), cmdtype, True))
-                            args(i - 1) = arguments(arguments.Count - 1).execute()
-                        End If
-                    Next
-                Else
-                    args = Nothing
-                End If
-                If commands.ContainsKey(name) Then
-                    ecmd = commands(name)
-                Else
-                    ecmd = commands("invalid")
-                End If
-            End If
+            ecmd = commands(cmd)
+            args = _args
+        Catch ex As ThreadAbortException
+            Throw ex
         Catch ex As Exception
             args = Nothing
             ecmd = commands("invalid")
         End Try
+        constructed_without_syntax = True
+    End Sub
+
+    Public Sub init()
+        If Not constructed_without_syntax Then
+            Try
+                If name = "" And cmdstr <> "" Then
+                    Dim argumentsstr As List(Of String) = dcmd(cmdstr, cmdtype)
+                    name = argumentsstr(0)
+                    If argumentsstr.Count > 1 Then
+                        If args Is Nothing Then
+                            args = New String() {}
+                        End If
+                        ReDim Preserve args(argumentsstr.Count - 2)
+                        For i As Integer = 1 To argumentsstr.Count - 1 Step 1
+                            'ReDim Preserve args(i - 1)
+                            If ((argumentsstr(i).StartsWith(ControlChars.Quote) And argumentsstr(i).EndsWith(ControlChars.Quote)) Or (argumentsstr(i).StartsWith("'") And argumentsstr(i).EndsWith("'"))) Then
+                                args(i - 1) = argumentsstr(i).Substring(1, argumentsstr(i).Length - 2)
+                            Else
+                                arguments.Add(New int_command(argumentsstr(i), cmdtype, True))
+                                args(i - 1) = arguments(arguments.Count - 1).execute()
+                            End If
+                        Next
+                    Else
+                        args = Nothing
+                    End If
+                    If commands.ContainsKey(name) Then
+                        ecmd = commands(name)
+                    Else
+                        ecmd = commands("invalid")
+                    End If
+                End If
+            Catch ex As ThreadAbortException
+                Throw ex
+            Catch ex As Exception
+                args = Nothing
+                ecmd = commands("invalid")
+            End Try
+        Else
+            Throw New InvalidOperationException("The command must be constructed with syntax in order to be inited.")
+        End If
     End Sub
 
     Public Function execute() As String
