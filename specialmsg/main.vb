@@ -24,7 +24,7 @@ Public Class main
         Return "Shown Reset."
     End Function
 
-    Public Function load_msg(ByVal args As String()) As String
+    Public Function save_msg(ByVal args As String()) As String
         If args.Length >= 1 Then
             File.WriteAllText(args(0), convertobjecttostring(messages))
             Return "Saved Messages to: " & args(0)
@@ -33,7 +33,7 @@ Public Class main
         End If
     End Function
 
-    Public Function save_msg(ByVal args As String()) As String
+    Public Function load_msg(ByVal args As String()) As String
         If args.Length >= 1 Then
             messages = convertstringtoobject(File.ReadAllText(args(0)))
             Return "Loaded Messages from: " & args(0)
