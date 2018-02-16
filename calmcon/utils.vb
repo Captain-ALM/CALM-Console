@@ -153,4 +153,5 @@ Module utils
     Public Declare Function SetActiveWindow Lib "user32.dll" (hWnd As IntPtr) As IntPtr
     Public Declare Function FindWindow Lib "user32.dll" (lpClassName As String, lpWindowName As String) As IntPtr
     Public Declare Function GetActiveWindow Lib "user32.dll" () As IntPtr
+    Public Declare Function Beep Lib "kernel32.dll" (dwFreq As Int32, dwDuration As Int32) As <MarshalAs(UnmanagedType.Bool)> Boolean
 End Module

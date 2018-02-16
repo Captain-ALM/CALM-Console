@@ -139,9 +139,9 @@ Public Module cmdpr
         commands.Add("write_line", New executable_command("write_line", New Cmd(AddressOf writeline)))
         commandhelplst.Add("writeline/write_line%*(string)[text]% : writes a line of text to the outputbox on the GUI and a new line character.")
         'beep / bell
-        commands.Add("beep", New executable_command("beep", New Cmd(AddressOf beep)))
-        commands.Add("bell", New executable_command("bell", New Cmd(AddressOf beep)))
-        commandhelplst.Add("beep/bell : plays the system beep (bell) sound.")
+        commands.Add("beep", New executable_command("beep", New Cmd(AddressOf commands_data.beep)))
+        commands.Add("bell", New executable_command("bell", New Cmd(AddressOf commands_data.beep)))
+        commandhelplst.Add("beep/bell%*(integer)[frequency, make it 0 to play system bell]%%*(integer)[duration in milliseconds, make it 0 to play the system bell]% : plays a tone out of the machine speaker or the system beep (bell) sound.")
     End Sub
 End Module
 

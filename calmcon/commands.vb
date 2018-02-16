@@ -5,7 +5,27 @@ Module commands_data
     Public commandhelplst As New List(Of String)
 
     Public Function beep(args As String()) As String
-        System.Media.SystemSounds.Beep.Play()
+        If Not args Is Nothing Then
+            If args.Length >= 1 Then
+                Dim freq As Integer = convertstringtoint(args(0))
+                If args.Length = 1 Then
+                    If freq >= 37 And freq <= 32767 Then
+                        utils.Beep(freq, 200)
+                    Else
+                        System.Media.SystemSounds.Beep.Play()
+                    End If
+                ElseIf args.Length >= 2 Then
+                    Dim length As Integer = convertstringtoint(args(1))
+                    If freq >= 37 And freq <= 32767 And length > 0 Then
+                        utils.Beep(freq, length)
+                    Else
+                        System.Media.SystemSounds.Beep.Play()
+                    End If
+                End If
+            End If
+        Else
+            utils.Beep(800, 200)
+        End If
         Return "Beep!"
     End Function
 
@@ -406,6 +426,16 @@ Module commands_data
             End Try
         End If
         Return "Logger Settings Changed."
+    End Function
+
+    Public Function convertstringtoint(str As String) As Integer
+        Dim ret As Integer = 0
+        Try
+            ret = Integer.Parse(str)
+        Catch ex As InvalidCastException
+            ret = 0
+        End Try
+        Return ret
     End Function
 
     Public Function convertobjectargstostringargs(args As String()) As String()
