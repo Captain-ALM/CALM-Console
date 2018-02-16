@@ -14,6 +14,7 @@ Public Module form_flags
     Public logpath As String = ""
     Public aboutbx_showing As Boolean = False
     Public cancel_action As Boolean = False
+    Public disablechkbx As Boolean = False
     'form flags
     Public tocleartxt As Boolean = False
     Public movetobottom As Boolean = False
@@ -30,6 +31,7 @@ Public Module form_flags
     Public restart_have_args As Boolean = True
     Public restart_custom As Boolean = False
     Public restart_custom_args As String()
+    Public restart_admin As Boolean = False
     Public ui_queue As New Queue(Of [Delegate])
     Public form_instance As main
 End Module

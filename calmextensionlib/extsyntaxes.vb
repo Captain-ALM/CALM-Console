@@ -119,7 +119,7 @@ Public Structure calm_type
         ElseIf isdecimal Then
             Return "dec['" & toconv & "']"
         ElseIf isstring Then
-            Return "str['" & toconv.Replace("[", "/[").Replace("]", "/]") & "']"
+            Return "str['" & toconv.Replace("/", "//").Replace("[", "/[").Replace("]", "/]") & "']"
         ElseIf isfunc Then
             Return toconv
         End If
@@ -237,7 +237,7 @@ Public Structure spaced_type
         ElseIf isdecimal Then
             Return "dec '" & toconv & "'"
         ElseIf isstring Then
-            Return "str '" & toconv.Replace(" ", "/ ") & "'"
+            Return "str '" & toconv.Replace("/", "//").Replace(" ", "/ ") & "'"
         ElseIf isfunc Then
             Return toconv
         End If
@@ -365,7 +365,7 @@ Public Structure objective_type
         ElseIf isdecimal Then
             Return "dec('" & toconv & "')"
         ElseIf isstring Then
-            Return "str('" & toconv.Replace("(", "/(").Replace(")", "/)").Replace(",", "/,") & "')"
+            Return "str('" & toconv.Replace("/", "//").Replace("(", "/(").Replace(")", "/)").Replace(",", "/,") & "')"
         ElseIf isfunc Then
             Return toconv
         End If
@@ -483,7 +483,7 @@ Public Structure commad_type
         ElseIf isdecimal Then
             Return "dec,'" & toconv & "'"
         ElseIf isstring Then
-            Return "str,'" & toconv.Replace(",", "/,") & "'"
+            Return "str,'" & toconv.Replace("/", "//").Replace(",", "/,") & "'"
         ElseIf isfunc Then
             Return toconv
         End If
@@ -611,7 +611,7 @@ Public Structure cbrak_objective_type
         ElseIf isdecimal Then
             Return "dec{'" & toconv & "'}"
         ElseIf isstring Then
-            Return "str{'" & toconv.Replace("{", "/{").Replace("}", "/}").Replace(",", "/,") & "'}"
+            Return "str{'" & toconv.Replace("/", "//").Replace("{", "/{").Replace("}", "/}").Replace(",", "/,") & "'}"
         ElseIf isfunc Then
             Return toconv
         End If

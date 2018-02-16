@@ -27,6 +27,7 @@ Public Class main
 
     Private Sub main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         contrvis(False)
+        disablechkbx = True
 
         cmdpos = gui_pos_edit(cmd_gui_position.top)
 
@@ -89,18 +90,20 @@ Public Class main
                 get_dlls()
                 load_dlls()
                 load_libraries()
+                cancel_action_thread()
                 init_libraries()
+                cancel_action_thread()
             Catch ex As Exception
                 cancel_action = False
             End Try
+        Catch ex As Exception
+        Finally
             commands_init = True
             callonform(Sub()
                            butstop.Enabled = False
                            lblstatus.Text = ""
                            pgrsbarstatus.Style = ProgressBarStyle.Continuous
                        End Sub)
-        Catch ex As Exception
-        Finally
             ll = False
         End Try
     End Sub
@@ -122,17 +125,33 @@ Public Class main
         Next
         ll = True
         lib_load_t.Start()
+        Try
+            lib_load_t.Join()
+        Catch ex As ThreadStateException
+        End Try
         While ll
             Thread.Sleep(100)
         End While
         hook_running = True
         hook_start_t.Start()
+        Try
+            hook_start_t.Join()
+        Catch ex As ThreadStateException
+        End Try
         While hook_running
             Thread.Sleep(100)
         End While
         flags_threadabx.Start()
         command_thread.Start()
+        disablechkbx = False
         callonform(Sub() contrvis(True))
+    End Sub
+
+    Private Sub cancel_action_thread()
+        If cancel_action Then
+            cancel_action = False
+            Thread.CurrentThread.Abort()
+        End If
     End Sub
 
     Private Sub starthookexecutor()
@@ -143,34 +162,45 @@ Public Class main
                    End Sub)
         For Each ihook As HookInfo In hooks_info.Values
             Try
+                cancel_action_thread()
                 If Not ihook.hook_runcommand Is Nothing Then
                     ihook.hook_runcommand.Invoke(runcommandhook)
                 End If
+                cancel_action_thread()
                 If Not ihook.hook_readoutput Is Nothing Then
                     ihook.hook_readoutput.Invoke(readoutputhook)
                 End If
+                cancel_action_thread()
                 If Not ihook.hook_writeoutput Is Nothing Then
                     ihook.hook_writeoutput.Invoke(writeoutputhook)
                 End If
+                cancel_action_thread()
                 If Not ihook.hook_commandstack Is Nothing Then
                     ihook.hook_commandstack.Invoke(command_stack)
                 End If
+                cancel_action_thread()
                 If Not ihook.hook_variabledictionary Is Nothing Then
                     ihook.hook_variabledictionary.Invoke(var_dict)
                 End If
+                cancel_action_thread()
                 If Not ihook.hook_form Is Nothing Then
                     ihook.hook_form.Invoke(form_instance)
                 End If
+                cancel_action_thread()
                 If Not ihook.hook_out_txtbx Is Nothing Then
                     ihook.hook_out_txtbx.Invoke(txtbxlog)
                 End If
+                cancel_action_thread()
                 If Not ihook.hook_syntaxname Is Nothing Then
                     ihook.hook_syntaxname.Invoke(syntax_mode)
                 End If
+                cancel_action_thread()
                 If Not ihook.hook_programstart Is Nothing Then
                     ihook.hook_programstart.Invoke()
                 End If
+                cancel_action_thread()
             Catch ex As ThreadAbortException
+                cancel_action = False
                 callonform(Sub()
                                butstop.Enabled = False
                                lblstatus.Text = ""
@@ -187,6 +217,7 @@ Public Class main
                        pgrsbarstatus.Style = ProgressBarStyle.Continuous
                    End Sub)
         hook_running = False
+        cancel_action = False
     End Sub
 
     Private Sub stophookexecutor()
@@ -197,10 +228,13 @@ Public Class main
                    End Sub)
         For Each ihook As HookInfo In hooks_info.Values
             Try
+                cancel_action_thread()
                 If Not ihook.hook_programstop Is Nothing Then
                     ihook.hook_programstart.Invoke()
                 End If
+                cancel_action_thread()
             Catch ex As ThreadAbortException
+                cancel_action = False
                 callonform(Sub()
                                butstop.Enabled = False
                                lblstatus.Text = ""
@@ -218,6 +252,7 @@ Public Class main
                    End Sub)
         hook_running = False
         shutdown_hook_ran = True
+        cancel_action = False
         callonform(Sub() Me.Close())
     End Sub
 
@@ -354,7 +389,7 @@ threadstart1:
             Try
                 Try
                     callonform(Sub()
-                                   If txtbxcmd.Text.Length = 0 And Not aboutbx_showing Then
+                                   If txtbxcmd.Text.Length = 0 And Not aboutbx_showing And Not disablechkbx Then
                                        If chkbxenter.Enabled = False Then
                                            chkbxenter.Enabled = True
                                        End If
@@ -401,15 +436,28 @@ threadstart2:
                                        If restart_have_args Then
                                            If restart_custom Then
                                                Dim cargstoformat As String = convertcmdlinetocmdlinestr(restart_custom_args, 0)
-                                               Process.Start(assemblypath, cargstoformat)
+                                               If restart_admin Then
+                                                   Process.Start(New ProcessStartInfo(assemblypath, cargstoformat) With {.Verb = "runas"})
+                                               Else
+                                                   Process.Start(assemblypath, cargstoformat)
+                                               End If
                                            Else
-                                               Process.Start(assemblypath, convertcmdlinetocmdlinestr(Environment.GetCommandLineArgs(), 1))
+                                               If restart_admin Then
+                                                   Process.Start(New ProcessStartInfo(assemblypath, convertcmdlinetocmdlinestr(Environment.GetCommandLineArgs(), 1)) With {.Verb = "runas"})
+                                               Else
+                                                   Process.Start(assemblypath, convertcmdlinetocmdlinestr(Environment.GetCommandLineArgs(), 1))
+                                               End If
                                            End If
                                        Else
-                                           Process.Start(assemblypath)
+                                           If restart_admin Then
+                                               Process.Start(New ProcessStartInfo(assemblypath) With {.Verb = "runas"})
+                                           Else
+                                               Process.Start(assemblypath)
+                                           End If
                                        End If
                                        Me.Close()
                                        restart = False
+                                       restart_admin = False
                                    End If
                                    If tochangeenter Then
                                        contrvis(False)
@@ -428,6 +476,9 @@ threadstart2:
                                    End If
                                End Sub)
                 Catch ex As Exception
+                    If restart_admin Then
+                        restart_admin = False
+                    End If
                 End Try
                 Thread.Sleep(50)
             Catch ex As Exception
@@ -486,22 +537,44 @@ threadstart5:
     End Sub
 
     Private Sub main_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        disablechkbx = True
         contrvis(False)
         If shutdown_hook_ran And Not hook_running Then
+            prrun = False
             If checkchkbxthread.IsAlive Then
                 checkchkbxthread.Abort()
+                Try
+                    checkchkbxthread.Join(10000)
+                Catch ex As ThreadStateException
+                End Try
             End If
             If flags_thread.IsAlive Then
                 flags_thread.Abort()
+                Try
+                    flags_thread.Join(10000)
+                Catch ex As ThreadStateException
+                End Try
             End If
             If flags_threadabx.IsAlive Then
                 flags_threadabx.Abort()
+                Try
+                    flags_threadabx.Join(10000)
+                Catch ex As ThreadStateException
+                End Try
             End If
             If flags_threaddel.IsAlive Then
                 flags_threaddel.Abort()
+                Try
+                    flags_threaddel.Join(10000)
+                Catch ex As ThreadStateException
+                End Try
             End If
             If command_thread.IsAlive Then
                 command_thread.Abort()
+                Try
+                    command_thread.Join(10000)
+                Catch ex As ThreadStateException
+                End Try
             End If
             If log <> "" Then
                 savefile(logpath & "\calm_cmd-" & DateTime.Now.Hour & "-" & DateTime.Now.Minute & "-" & DateTime.Now.Second & "-" & DateTime.Now.Day & "-" & DateTime.Now.Month & "-" & DateTime.Now.Year & "-" & ".txt", log)
@@ -635,13 +708,22 @@ threadstart3:
             If Not lib_load_t Is Nothing Then
                 If lib_load_t.IsAlive Then
                     lib_load_t.Abort()
+                    Try
+                        lib_load_t.Join(10000)
+                    Catch ex As ThreadStateException
+                    End Try
                 End If
             End If
         ElseIf hook_running Then
             If at_end Then
                 If Not hook_stop_t Is Nothing Then
                     If hook_stop_t.IsAlive Then
+                        cancel_action = True
                         hook_stop_t.Abort()
+                        Try
+                            hook_stop_t.Join(10000)
+                        Catch ex As ThreadStateException
+                        End Try
                         hook_running = False
                         shutdown_hook_ran = True
                         Me.Close()
@@ -650,7 +732,12 @@ threadstart3:
             Else
                 If Not hook_start_t Is Nothing Then
                     If hook_start_t.IsAlive Then
+                        cancel_action = True
                         hook_start_t.Abort()
+                        Try
+                            hook_start_t.Join(10000)
+                        Catch ex As ThreadStateException
+                        End Try
                         hook_running = False
                     End If
                 End If

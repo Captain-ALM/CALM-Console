@@ -4,6 +4,29 @@ Imports captainalm.calmcon.api
 Module commands_data
     Public commandhelplst As New List(Of String)
 
+    Public Function beep(args As String()) As String
+        System.Media.SystemSounds.Beep.Play()
+        Return "Beep!"
+    End Function
+
+    Public Function write(args As String()) As String
+        If Not args Is Nothing Then
+            If args.Length >= 1 Then
+                Return args(0)
+            End If
+        End If
+        Return ""
+    End Function
+
+    Public Function writeline(args As String()) As String
+        If Not args Is Nothing Then
+            If args.Length >= 1 Then
+                Return args(0) & ControlChars.CrLf
+            End If
+        End If
+        Return ""
+    End Function
+
     Public Function lib_man(args As String()) As String
         Dim ret As String = ""
         If Not args Is Nothing Then
@@ -230,6 +253,36 @@ Module commands_data
     Public Function quitp(args As String()) As String
         quit = True
         Return "Ending..."
+    End Function
+
+    Public Function adminrestart(args As String()) As String
+        Dim numofargs As Integer = numberofindexes(args)
+        If numofargs = 1 Then
+            If args(0).ToString.ToLower = "true" Then
+                restart_have_args = True
+                restart_custom = False
+                restart_admin = True
+            ElseIf args(0).ToString.ToLower = "false" Then
+                restart_have_args = False
+                restart_custom = False
+                restart_admin = True
+            Else
+                ReDim Preserve restart_custom_args(0)
+                restart_custom_args(0) = args(0).ToString.Replace(ControlChars.Quote, "'")
+                restart_custom = True
+                restart_admin = True
+            End If
+        ElseIf numofargs >= 2 Then
+            ReDim Preserve restart_custom_args(numofargs - 1)
+            For i As Integer = 0 To numofargs - 1 Step 1
+                restart_custom_args(i) = args(i).ToString.Replace(ControlChars.Quote, "'")
+            Next
+            restart_custom = True
+            restart_admin = True
+        End If
+        restart_admin = True
+        restart = True
+        Return "Restarting As Admin..."
     End Function
 
     Public Function restartp(args As String()) As String

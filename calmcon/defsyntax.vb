@@ -96,7 +96,7 @@
         ElseIf isdecimal Then
             Return "dec,'" & toconv & "'"
         ElseIf isstring Then
-            Return "str,'" & toconv.Replace(",", "/,") & "'"
+            Return "str,'" & toconv.Replace("/", "//").Replace(",", "/,") & "'"
         End If
         Return toconv
     End Function

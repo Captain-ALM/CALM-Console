@@ -127,6 +127,21 @@ Public Module cmdpr
         commands.Add("library", New executable_command("library", New Cmd(AddressOf lib_man)))
         commands.Add("libraries", New executable_command("libraries", New Cmd(AddressOf lib_man)))
         commandhelplst.Add("lib/libs/library/libraries%list/add/remove%%*(string)[path]%%internal/*% : manages the loaded libraries, adding or removing libraries requires program restart.")
+        'reset_as_admin / restart_as_admin
+        commands.Add("reset_as_admin", New executable_command("reset_as_admin", New Cmd(AddressOf adminrestart)))
+        commands.Add("restart_as_admin", New executable_command("restart_as_admin", New Cmd(AddressOf adminrestart)))
+        commandhelplst.Add("reset_as_admin/restart_as_admin%false[no arguments]/true[use current program arguments]/*(args)...[this + later arguments are each command line argument to be passed to the restarted program]% : restarts the program as administrator.")
+        'write
+        commands.Add("write", New executable_command("write", New Cmd(AddressOf write)))
+        commandhelplst.Add("write%*(string)[text]% : writes a line of text to the outputbox on the GUI.")
+        'writeline /write_line
+        commands.Add("writeline", New executable_command("writeline", New Cmd(AddressOf writeline)))
+        commands.Add("write_line", New executable_command("write_line", New Cmd(AddressOf writeline)))
+        commandhelplst.Add("writeline/write_line%*(string)[text]% : writes a line of text to the outputbox on the GUI and a new line character.")
+        'beep / bell
+        commands.Add("beep", New executable_command("beep", New Cmd(AddressOf beep)))
+        commands.Add("bell", New executable_command("bell", New Cmd(AddressOf beep)))
+        commandhelplst.Add("beep/bell : plays the system beep (bell) sound.")
     End Sub
 End Module
 
