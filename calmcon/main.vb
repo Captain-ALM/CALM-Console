@@ -399,9 +399,13 @@ threadstart1:
                                        End If
                                    End If
                                End Sub)
+                Catch ex As ThreadAbortException
+                    Throw ex
                 Catch ex As Exception
                 End Try
                 Thread.Sleep(50)
+            Catch ex As ThreadAbortException
+                Throw ex
             Catch ex As Exception
                 GoTo threadstart1
             End Try
@@ -475,12 +479,16 @@ threadstart2:
                                        appendtext = ""
                                    End If
                                End Sub)
+                Catch ex As ThreadAbortException
+                    Throw ex
                 Catch ex As Exception
                     If restart_admin Then
                         restart_admin = False
                     End If
                 End Try
                 Thread.Sleep(50)
+            Catch ex As ThreadAbortException
+                Throw ex
             Catch ex As Exception
                 GoTo threadstart2
             End Try
@@ -502,9 +510,13 @@ threadstart4:
                                        showabout = False
                                    End If
                                End Sub)
+                Catch ex As ThreadAbortException
+                    Throw ex
                 Catch ex As Exception
                 End Try
                 Thread.Sleep(50)
+            Catch ex As ThreadAbortException
+                Throw ex
             Catch ex As Exception
                 GoTo threadstart4
             End Try
@@ -527,9 +539,13 @@ threadstart5:
                         Dim cdel As [Delegate] = ui_queue.Dequeue()
                         callonform(cdel)
                     End If
+                Catch ex As ThreadAbortException
+                    Throw ex
                 Catch ex As Exception
                 End Try
                 Thread.Sleep(50)
+            Catch ex As ThreadAbortException
+                Throw ex
             Catch ex As Exception
                 GoTo threadstart5
             End Try
@@ -686,9 +702,13 @@ threadstart3:
                             callonform(Sub() MsgBox("Error Saving Log To: " & logpath & ".", MsgBoxStyle.OkOnly + MsgBoxStyle.Critical, "calm_cmd Error"))
                         End If
                     End If
+                Catch ex As ThreadAbortException
+                    Throw ex
                 Catch ex As Exception
                 End Try
                 Thread.Sleep(50)
+            Catch ex As ThreadAbortException
+                Throw ex
             Catch ex As Exception
                 GoTo threadstart3
             End Try
