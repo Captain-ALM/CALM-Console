@@ -6,7 +6,151 @@ cnsrapi
 </name>
 </assembly>
 <members>
-<member name="T:captainalm.calmcon.api.Types.Cmd">
+<member name="M:captainalm.calmcon.api.OutputText.#ctor(System.String,System.Drawing.Color,System.Drawing.Color,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+	<summary>
+ Creates a new output text instance
+ </summary>
+	<param name="txt">The intal text.</param>
+	<param name="forecol">The intal forecolor.</param>
+	<param name="backcol">The intal back color.</param>
+	<param name="bld">Is the intal text bold.</param>
+	<param name="itl">Is the intal text italic.</param>
+	<param name="ul">Is the intal text underlined.</param>
+	<param name="so">Is the intal text strikeout.</param>
+	<remarks></remarks>
+</member><member name="M:captainalm.calmcon.api.OutputText.write(System.String)">
+	<summary>
+ Writes text to the current block with the current block's attributes.
+ </summary>
+	<param name="txt">The text to write.</param>
+	<exception cref="T:System.InvalidOperationException">Thrown when no blocks to write to.</exception>
+	<remarks></remarks>
+</member><member name="M:captainalm.calmcon.api.OutputText.writeline(System.String)">
+	<summary>
+ Writes text and a new line to the current block with the current block's attributes.
+ </summary>
+	<param name="txt">The text to write.</param>
+	<exception cref="T:System.InvalidOperationException">Thrown when no blocks to write to.</exception>
+	<remarks></remarks>
+</member><member name="M:captainalm.calmcon.api.OutputText.write(System.String,System.Drawing.Color,System.Drawing.Color,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+	<summary>
+ Writes text to a new or the current block depending on the current block's attributes or if there are any blocks at all.
+ </summary>
+	<param name="txt">The text.</param>
+	<param name="forecol">The forecolor.</param>
+	<param name="backcol">The back color.</param>
+	<param name="bld">Is the text bold.</param>
+	<param name="itl">Is the text italic.</param>
+	<param name="ul">Is the text underlined.</param>
+	<param name="so">Is the text strikeout.</param>
+	<remarks></remarks>
+</member><member name="M:captainalm.calmcon.api.OutputText.writeline(System.String,System.Drawing.Color,System.Drawing.Color,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+	<summary>
+ Writes text and a new line to a new or the current block depending on the current block's attributes or if there are any blocks at all.
+ </summary>
+	<param name="txt">The text.</param>
+	<param name="forecol">The forecolor.</param>
+	<param name="backcol">The back color.</param>
+	<param name="bld">Is the text bold.</param>
+	<param name="itl">Is the text italic.</param>
+	<param name="ul">Is the text underlined.</param>
+	<param name="so">Is the text strikeout.</param>
+	<remarks></remarks>
+</member><member name="M:captainalm.calmcon.api.OutputText.ToOutputTextBlocks">
+	<summary>
+ Converts the contents of the OutputText to an array of OutputTextBlock Structures.
+ </summary>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:captainalm.calmcon.api.OutputText.BlockCount">
+	<summary>
+ Returns the number of blocks in the OutputText object.
+ </summary>
+	<value>Integer.</value>
+	<returns>The number of blocks in the OutputText object.</returns>
+	<remarks></remarks>
+</member><member name="P:captainalm.calmcon.api.OutputText.Block(System.Int32)">
+	<summary>
+ The default property, gets a block form an index.
+ </summary>
+	<param name="index">The index number.</param>
+	<value>OutputTextBlock</value>
+	<returns>The OutputTextBlock as that index.</returns>
+	<remarks></remarks>
+</member><member name="M:captainalm.calmcon.api.OutputText.op_Implicit(System.String)~captainalm.calmcon.api.OutputText">
+	<summary>
+ Converts a string to outputtext.
+ </summary>
+	<param name="str">The string to convert.</param>
+	<returns>The output text instance.</returns>
+	<remarks></remarks>
+</member><member name="M:captainalm.calmcon.api.OutputText.op_Implicit(captainalm.calmcon.api.OutputTextBlock[])~captainalm.calmcon.api.OutputText">
+	<summary>
+ Converts an array of outputtextblock to outputtext.
+ </summary>
+	<param name="otba">The outputtextblock array to convert.</param>
+	<returns>The output text instance.</returns>
+	<remarks></remarks>
+</member><member name="M:captainalm.calmcon.api.OutputText.op_Explicit(captainalm.calmcon.api.OutputText)~System.String">
+	<summary>
+ Converts an outputtext instance to an string.
+ </summary>
+	<param name="optxt">The outputtext instance to convert.</param>
+	<returns>The string held by the outputtext instance.</returns>
+	<remarks></remarks>
+</member><member name="M:captainalm.calmcon.api.OutputText.op_Explicit(captainalm.calmcon.api.OutputText)~captainalm.calmcon.api.OutputTextBlock[]">
+	<summary>
+ Converts an outputtext instance to an output text block array.
+ </summary>
+	<param name="optxt">The outputtext instance to convert.</param>
+	<returns>A outputtextblock array form the outputtext instance.</returns>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.OutputText">
+	<summary>
+ This class is used to output text to the rich textbox output.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.OutputTextBlock.text">
+	<summary>
+ The held text.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.OutputTextBlock.forecolor">
+	<summary>
+ The foreground colour of the text.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.OutputTextBlock.backcolor">
+	<summary>
+ The background colour of the text.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.OutputTextBlock.bold">
+	<summary>
+ If the text is bold.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.OutputTextBlock.italic">
+	<summary>
+ If the text is italic.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.OutputTextBlock.underline">
+	<summary>
+ If the text is underlined.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.OutputTextBlock.strike">
+	<summary>
+ If the text is striked out.
+ </summary>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.OutputTextBlock">
+	<summary>
+ This is what is the split up parts of OutputText.
+ </summary>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Types.Cmd">
 	<summary>
  Any commands set in libraries need to use this as the delegate type.
  </summary>
