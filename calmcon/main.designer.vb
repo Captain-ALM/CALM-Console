@@ -22,6 +22,7 @@ Partial Class main
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(main))
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.GroupBoxLog = New System.Windows.Forms.GroupBox()
@@ -31,10 +32,10 @@ Partial Class main
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.GroupBoxCMDARR = New System.Windows.Forms.GroupBox()
         Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
+        Me.txtbxcmd = New System.Windows.Forms.RichTextBox()
         Me.TableLayoutPanel4 = New System.Windows.Forms.TableLayoutPanel()
         Me.butenter = New System.Windows.Forms.Button()
         Me.chkbxenter = New System.Windows.Forms.CheckBox()
-        Me.txtbxcmd = New System.Windows.Forms.TextBox()
         Me.GroupBoxPRCONTR = New System.Windows.Forms.GroupBox()
         Me.TableLayoutPanel5 = New System.Windows.Forms.TableLayoutPanel()
         Me.butexit = New System.Windows.Forms.Button()
@@ -45,6 +46,14 @@ Partial Class main
         Me.lblstatus = New System.Windows.Forms.Label()
         Me.pgrsbarstatus = New System.Windows.Forms.ProgressBar()
         Me.butstop = New System.Windows.Forms.Button()
+        Me.ContextMenuStripRtb = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.UndoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CopyToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.PasteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SelectAllToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.GroupBoxLog.SuspendLayout()
         Me.TableLayoutPanel6.SuspendLayout()
@@ -56,6 +65,7 @@ Partial Class main
         Me.GroupBoxPRCONTR.SuspendLayout()
         Me.TableLayoutPanel5.SuspendLayout()
         Me.TableLayoutPanel8.SuspendLayout()
+        Me.ContextMenuStripRtb.SuspendLayout()
         Me.SuspendLayout()
         '
         'TableLayoutPanel1
@@ -118,6 +128,7 @@ Partial Class main
         '
         'txtbxlog
         '
+        Me.txtbxlog.ContextMenuStrip = Me.ContextMenuStripRtb
         Me.txtbxlog.DetectUrls = False
         Me.txtbxlog.Dock = System.Windows.Forms.DockStyle.Fill
         Me.txtbxlog.Font = New System.Drawing.Font("Consolas", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -160,8 +171,8 @@ Partial Class main
         Me.TableLayoutPanel3.ColumnCount = 2
         Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70.0!))
         Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.0!))
-        Me.TableLayoutPanel3.Controls.Add(Me.TableLayoutPanel4, 1, 0)
         Me.TableLayoutPanel3.Controls.Add(Me.txtbxcmd, 0, 0)
+        Me.TableLayoutPanel3.Controls.Add(Me.TableLayoutPanel4, 1, 0)
         Me.TableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel3.Location = New System.Drawing.Point(3, 16)
         Me.TableLayoutPanel3.Name = "TableLayoutPanel3"
@@ -170,6 +181,19 @@ Partial Class main
         Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 62.0!))
         Me.TableLayoutPanel3.Size = New System.Drawing.Size(334, 62)
         Me.TableLayoutPanel3.TabIndex = 0
+        '
+        'txtbxcmd
+        '
+        Me.txtbxcmd.ContextMenuStrip = Me.ContextMenuStripRtb
+        Me.txtbxcmd.DetectUrls = False
+        Me.txtbxcmd.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtbxcmd.Font = New System.Drawing.Font("Consolas", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtbxcmd.Location = New System.Drawing.Point(3, 3)
+        Me.txtbxcmd.Name = "txtbxcmd"
+        Me.txtbxcmd.Size = New System.Drawing.Size(227, 56)
+        Me.txtbxcmd.TabIndex = 2
+        Me.txtbxcmd.Text = ""
+        Me.txtbxcmd.WordWrap = False
         '
         'TableLayoutPanel4
         '
@@ -207,18 +231,6 @@ Partial Class main
         Me.chkbxenter.TabIndex = 1
         Me.chkbxenter.Text = "Read Enter Key"
         Me.chkbxenter.UseVisualStyleBackColor = True
-        '
-        'txtbxcmd
-        '
-        Me.txtbxcmd.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.txtbxcmd.Font = New System.Drawing.Font("Consolas", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtbxcmd.Location = New System.Drawing.Point(3, 3)
-        Me.txtbxcmd.Multiline = True
-        Me.txtbxcmd.Name = "txtbxcmd"
-        Me.txtbxcmd.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.txtbxcmd.Size = New System.Drawing.Size(227, 56)
-        Me.txtbxcmd.TabIndex = 0
-        Me.txtbxcmd.WordWrap = False
         '
         'GroupBoxPRCONTR
         '
@@ -334,6 +346,52 @@ Partial Class main
         Me.butstop.Text = "X"
         Me.butstop.UseVisualStyleBackColor = True
         '
+        'ContextMenuStripRtb
+        '
+        Me.ContextMenuStripRtb.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.UndoToolStripMenuItem, Me.ToolStripSeparator1, Me.CutToolStripMenuItem, Me.CopyToolStripMenuItem, Me.PasteToolStripMenuItem, Me.ToolStripSeparator2, Me.SelectAllToolStripMenuItem})
+        Me.ContextMenuStripRtb.Name = "ContextMenuStripRtb"
+        Me.ContextMenuStripRtb.Size = New System.Drawing.Size(153, 148)
+        '
+        'UndoToolStripMenuItem
+        '
+        Me.UndoToolStripMenuItem.Name = "UndoToolStripMenuItem"
+        Me.UndoToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.UndoToolStripMenuItem.Text = "Undo"
+        '
+        'CutToolStripMenuItem
+        '
+        Me.CutToolStripMenuItem.Name = "CutToolStripMenuItem"
+        Me.CutToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.CutToolStripMenuItem.Text = "Cut"
+        '
+        'CopyToolStripMenuItem
+        '
+        Me.CopyToolStripMenuItem.Name = "CopyToolStripMenuItem"
+        Me.CopyToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.CopyToolStripMenuItem.Text = "Copy"
+        '
+        'PasteToolStripMenuItem
+        '
+        Me.PasteToolStripMenuItem.Name = "PasteToolStripMenuItem"
+        Me.PasteToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.PasteToolStripMenuItem.Text = "Paste"
+        '
+        'SelectAllToolStripMenuItem
+        '
+        Me.SelectAllToolStripMenuItem.Name = "SelectAllToolStripMenuItem"
+        Me.SelectAllToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.SelectAllToolStripMenuItem.Text = "Select All"
+        '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(149, 6)
+        '
+        'ToolStripSeparator2
+        '
+        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(149, 6)
+        '
         'main
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -351,11 +409,11 @@ Partial Class main
         Me.TableLayoutPanel2.ResumeLayout(False)
         Me.GroupBoxCMDARR.ResumeLayout(False)
         Me.TableLayoutPanel3.ResumeLayout(False)
-        Me.TableLayoutPanel3.PerformLayout()
         Me.TableLayoutPanel4.ResumeLayout(False)
         Me.GroupBoxPRCONTR.ResumeLayout(False)
         Me.TableLayoutPanel5.ResumeLayout(False)
         Me.TableLayoutPanel8.ResumeLayout(False)
+        Me.ContextMenuStripRtb.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -367,7 +425,6 @@ Partial Class main
     Friend WithEvents TableLayoutPanel4 As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents GroupBoxPRCONTR As System.Windows.Forms.GroupBox
     Friend WithEvents TableLayoutPanel5 As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents txtbxcmd As System.Windows.Forms.TextBox
     Friend WithEvents butenter As System.Windows.Forms.Button
     Friend WithEvents chkbxenter As System.Windows.Forms.CheckBox
     Friend WithEvents butmcmdarr As System.Windows.Forms.Button
@@ -381,5 +438,14 @@ Partial Class main
     Friend WithEvents pgrsbarstatus As System.Windows.Forms.ProgressBar
     Friend WithEvents butstop As System.Windows.Forms.Button
     Friend WithEvents txtbxlog As System.Windows.Forms.RichTextBox
+    Friend WithEvents txtbxcmd As System.Windows.Forms.RichTextBox
+    Friend WithEvents ContextMenuStripRtb As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents UndoToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents CutToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents CopyToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents PasteToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SelectAllToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
 
 End Class

@@ -105,6 +105,30 @@ cnsrapi
 	<param name="optxt">The outputtext instance to convert.</param>
 	<returns>A outputtextblock array form the outputtext instance.</returns>
 	<remarks></remarks>
+</member><member name="M:captainalm.calmcon.api.OutputText.op_Concatenate(captainalm.calmcon.api.OutputText,captainalm.calmcon.api.OutputText)">
+	<summary>
+ Concats two Output Texts Together.
+ </summary>
+	<param name="optxt1">The first output text.</param>
+	<param name="optxt2">The second output text.</param>
+	<returns>The concated output text object.</returns>
+	<remarks></remarks>
+</member><member name="M:captainalm.calmcon.api.OutputText.op_Inequality(captainalm.calmcon.api.OutputText,captainalm.calmcon.api.OutputText)">
+	<summary>
+ Checks if two output texts are not equal.
+ </summary>
+	<param name="optxt1">The first output text.</param>
+	<param name="optxt2">The second output text.</param>
+	<returns>The boolean of if they are not equal.</returns>
+	<remarks></remarks>
+</member><member name="M:captainalm.calmcon.api.OutputText.op_Equality(captainalm.calmcon.api.OutputText,captainalm.calmcon.api.OutputText)">
+	<summary>
+ Checks if two output texts are equal.
+ </summary>
+	<param name="optxt1">The first output text.</param>
+	<param name="optxt2">The second output text.</param>
+	<returns>The boolean of if they are equal.</returns>
+	<remarks></remarks>
 </member><member name="T:captainalm.calmcon.api.OutputText">
 	<summary>
  This class is used to output text to the rich textbox output.

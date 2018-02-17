@@ -180,6 +180,39 @@ Public Class OutputText
         Next
         Return lst.ToArray
     End Operator
+    ''' <summary>
+    ''' Concats two Output Texts Together.
+    ''' </summary>
+    ''' <param name="optxt1">The first output text.</param>
+    ''' <param name="optxt2">The second output text.</param>
+    ''' <returns>The concated output text object.</returns>
+    ''' <remarks></remarks>
+    Public Shared Operator &(ByVal optxt1 As OutputText, ByVal optxt2 As OutputText) As OutputText
+        Dim noptxt As New OutputText()
+        noptxt._blocks.AddRange(optxt1._blocks)
+        noptxt._blocks.AddRange(optxt2._blocks)
+        Return noptxt
+    End Operator
+    ''' <summary>
+    ''' Checks if two output texts are not equal.
+    ''' </summary>
+    ''' <param name="optxt1">The first output text.</param>
+    ''' <param name="optxt2">The second output text.</param>
+    ''' <returns>The boolean of if they are not equal.</returns>
+    ''' <remarks></remarks>
+    Public Shared Operator <>(ByVal optxt1 As OutputText, ByVal optxt2 As OutputText) As Boolean
+        Return (Not optxt1._blocks.Equals(optxt2._blocks)) And (Not optxt2._blocks.Equals(optxt1._blocks))
+    End Operator
+    ''' <summary>
+    ''' Checks if two output texts are equal.
+    ''' </summary>
+    ''' <param name="optxt1">The first output text.</param>
+    ''' <param name="optxt2">The second output text.</param>
+    ''' <returns>The boolean of if they are equal.</returns>
+    ''' <remarks></remarks>
+    Public Shared Operator =(ByVal optxt1 As OutputText, ByVal optxt2 As OutputText) As Boolean
+        Return (optxt1._blocks.Equals(optxt2._blocks)) And (optxt2._blocks.Equals(optxt1._blocks))
+    End Operator
     'This is the internal textblock instance.
     Private Class TextBlock
         Private _text As String = ""

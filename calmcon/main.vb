@@ -613,19 +613,20 @@ threadstart5:
         contrcmdvis(True)
     End Sub
 
-    Private Sub cmd_inter(cmd As String)
-        If txtbxcmd.Text <> "" Then
+    Private Sub cmd_inter(icmd As String)
+        Dim ccmd As String = icmd.Replace(ControlChars.Lf, ControlChars.CrLf)
+        If ccmd <> "" Then
             If allowenter Then
                 Dim ccom As String = ""
                 Dim cuchar As String = ""
                 Dim lchar As String = ""
                 Dim comlist As New List(Of String)
-                For i As Integer = 0 To txtbxcmd.Text.Length - 1 Step 1
-                    cuchar = txtbxcmd.Text.Substring(i, 1)
+                For i As Integer = 0 To cCmd.Length - 1 Step 1
+                    cuchar = cCmd.Substring(i, 1)
                     If (cuchar = Chr(10) And lchar = Chr(13)) Then
                         comlist.Add(ccom)
                         ccom = ""
-                    ElseIf i = txtbxcmd.Text.Length - 1 Then
+                    ElseIf i = ccmd.Length - 1 Then
                         If cuchar <> Chr(10) And cuchar <> Chr(13) Then
                             ccom = ccom & cuchar
                         End If
@@ -649,7 +650,7 @@ threadstart5:
                     command_stack.Push(comcmd)
                 Next
             Else
-                command_stack.Push(cmd)
+                command_stack.Push(ccmd)
             End If
         End If
         txtbxcmd.Text = ""
@@ -764,6 +765,97 @@ threadstart3:
             End If
         Else
             cancel_action = True
+        End If
+    End Sub
+
+    Private Sub UndoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UndoToolStripMenuItem.Click
+        Dim casted As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
+        Dim cms As ContextMenuStrip = casted.GetCurrentParent()
+        If cms.SourceControl.Name = txtbxcmd.Name Then
+            If txtbxcmd.CanUndo Then
+                txtbxcmd.Undo()
+            ElseIf txtbxcmd.CanRedo Then
+                txtbxcmd.Redo()
+            End If
+        End If
+    End Sub
+
+    Private Sub ContextMenuStripRtb_Opening(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles ContextMenuStripRtb.Opening
+        Dim cms As ContextMenuStrip = CType(sender, ContextMenuStrip)
+        If cms.SourceControl.Name = txtbxcmd.Name Then
+            If txtbxcmd.SelectedText <> "" Then
+                CutToolStripMenuItem.Enabled = True
+                CopyToolStripMenuItem.Enabled = True
+            Else
+                CutToolStripMenuItem.Enabled = False
+                CopyToolStripMenuItem.Enabled = False
+            End If
+            If Clipboard.ContainsText() Then
+                PasteToolStripMenuItem.Enabled = True
+            Else
+                PasteToolStripMenuItem.Enabled = False
+            End If
+            If txtbxcmd.CanUndo Then
+                UndoToolStripMenuItem.Enabled = True
+            ElseIf txtbxcmd.CanRedo Then
+                UndoToolStripMenuItem.Enabled = True
+            Else
+                UndoToolStripMenuItem.Enabled = False
+            End If
+        Else
+            UndoToolStripMenuItem.Enabled = False
+            CutToolStripMenuItem.Enabled = False
+            PasteToolStripMenuItem.Enabled = False
+            If txtbxlog.SelectedText <> "" Then
+                CopyToolStripMenuItem.Enabled = True
+            Else
+                CopyToolStripMenuItem.Enabled = False
+            End If
+        End If
+    End Sub
+
+    Private Sub CutToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CutToolStripMenuItem.Click
+        Dim casted As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
+        Dim cms As ContextMenuStrip = casted.GetCurrentParent()
+        If cms.SourceControl.Name = txtbxcmd.Name And txtbxcmd.SelectedText <> "" Then
+            Clipboard.SetText(txtbxcmd.SelectedText, TextDataFormat.UnicodeText)
+            'Clipboard.SetText(txtbxcmd.SelectedText.Replace(ControlChars.Lf, ControlChars.CrLf))
+            txtbxcmd.Text.Remove(txtbxcmd.SelectionStart, txtbxcmd.SelectionLength)
+        End If
+    End Sub
+
+    Private Sub CopyToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CopyToolStripMenuItem.Click
+        Dim casted As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
+        Dim cms As ContextMenuStrip = casted.GetCurrentParent()
+        If cms.SourceControl.Name = txtbxcmd.Name And txtbxcmd.SelectedText <> "" Then
+            Clipboard.SetText(txtbxcmd.SelectedText, TextDataFormat.UnicodeText)
+            'Clipboard.SetText(txtbxcmd.SelectedText.Replace(ControlChars.Lf, ControlChars.CrLf))
+        ElseIf cms.SourceControl.Name = txtbxlog.Name And txtbxlog.SelectedText <> "" Then
+            Clipboard.SetText(txtbxlog.SelectedText, TextDataFormat.UnicodeText)
+        End If
+    End Sub
+
+    Private Sub PasteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PasteToolStripMenuItem.Click
+        Dim casted As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
+        Dim cms As ContextMenuStrip = casted.GetCurrentParent()
+        If cms.SourceControl.Name = txtbxcmd.Name Then
+            If Clipboard.ContainsText() Then
+                If txtbxcmd.SelectedText <> "" Then
+                    txtbxcmd.Text = txtbxcmd.Text.Remove(txtbxcmd.SelectionStart, txtbxcmd.SelectionLength)
+                End If
+                txtbxcmd.Text = txtbxcmd.Text.Insert(txtbxcmd.SelectionStart, Clipboard.GetText(TextDataFormat.UnicodeText))
+                txtbxcmd.SelectionStart = txtbxcmd.SelectionStart + Clipboard.GetText(TextDataFormat.UnicodeText).Length
+            End If
+        End If
+    End Sub
+
+    Private Sub SelectAllToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SelectAllToolStripMenuItem.Click
+        Dim casted As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
+        Dim cms As ContextMenuStrip = casted.GetCurrentParent()
+        If cms.SourceControl.Name = txtbxcmd.Name Then
+            txtbxcmd.SelectAll()
+        ElseIf cms.SourceControl.Name = txtbxlog.Name Then
+            txtbxlog.SelectAll()
         End If
     End Sub
 End Class
