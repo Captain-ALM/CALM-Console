@@ -127,6 +127,7 @@ Partial Class main
         Me.txtbxlog.Size = New System.Drawing.Size(560, 197)
         Me.txtbxlog.TabIndex = 0
         Me.txtbxlog.Text = ""
+        Me.txtbxlog.WordWrap = False
         '
         'TableLayoutPanel2
         '
