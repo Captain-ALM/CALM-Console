@@ -333,7 +333,7 @@ Public Class main
         End If
     End Sub
 
-    Private Sub txtbxlog_KeyDown(sender As Object, e As KeyEventArgs) Handles txtbxlog.KeyDown
+    Private Sub txtbxlog_KeyDown(sender As Object, e As KeyEventArgs)
         If (e.KeyCode = Keys.A And e.Control And Not txtbxlog.SelectionLength >= txtbxlog.Text.Length) Then
             e.SuppressKeyPress = True
             txtbxlog.SelectAll()

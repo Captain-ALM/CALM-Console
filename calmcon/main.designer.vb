@@ -27,7 +27,7 @@ Partial Class main
         Me.GroupBoxLog = New System.Windows.Forms.GroupBox()
         Me.TableLayoutPanel6 = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel7 = New System.Windows.Forms.TableLayoutPanel()
-        Me.txtbxlog = New System.Windows.Forms.TextBox()
+        Me.txtbxlog = New System.Windows.Forms.RichTextBox()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.GroupBoxCMDARR = New System.Windows.Forms.GroupBox()
         Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
@@ -118,15 +118,15 @@ Partial Class main
         '
         'txtbxlog
         '
+        Me.txtbxlog.DetectUrls = False
         Me.txtbxlog.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtbxlog.Font = New System.Drawing.Font("Consolas", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtbxlog.Location = New System.Drawing.Point(3, 3)
-        Me.txtbxlog.Multiline = True
         Me.txtbxlog.Name = "txtbxlog"
         Me.txtbxlog.ReadOnly = True
-        Me.txtbxlog.ScrollBars = System.Windows.Forms.ScrollBars.Both
         Me.txtbxlog.Size = New System.Drawing.Size(560, 197)
         Me.txtbxlog.TabIndex = 0
-        Me.txtbxlog.WordWrap = False
+        Me.txtbxlog.Text = ""
         '
         'TableLayoutPanel2
         '
@@ -210,6 +210,7 @@ Partial Class main
         'txtbxcmd
         '
         Me.txtbxcmd.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtbxcmd.Font = New System.Drawing.Font("Consolas", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtbxcmd.Location = New System.Drawing.Point(3, 3)
         Me.txtbxcmd.Multiline = True
         Me.txtbxcmd.Name = "txtbxcmd"
@@ -346,7 +347,6 @@ Partial Class main
         Me.GroupBoxLog.ResumeLayout(False)
         Me.TableLayoutPanel6.ResumeLayout(False)
         Me.TableLayoutPanel7.ResumeLayout(False)
-        Me.TableLayoutPanel7.PerformLayout()
         Me.TableLayoutPanel2.ResumeLayout(False)
         Me.GroupBoxCMDARR.ResumeLayout(False)
         Me.TableLayoutPanel3.ResumeLayout(False)
@@ -375,10 +375,10 @@ Partial Class main
     Friend WithEvents butreset As System.Windows.Forms.Button
     Friend WithEvents TableLayoutPanel6 As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents TableLayoutPanel7 As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents txtbxlog As System.Windows.Forms.TextBox
     Friend WithEvents TableLayoutPanel8 As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents lblstatus As System.Windows.Forms.Label
     Friend WithEvents pgrsbarstatus As System.Windows.Forms.ProgressBar
     Friend WithEvents butstop As System.Windows.Forms.Button
+    Friend WithEvents txtbxlog As System.Windows.Forms.RichTextBox
 
 End Class
