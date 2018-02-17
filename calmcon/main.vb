@@ -25,6 +25,36 @@ Public Class main
     Private at_end As Boolean = False
     Private shutdown_hook_ran As Boolean = False
 
+    Friend Sub render_outtxt(ByVal rtfbx As RichTextBox, ByVal optxt As OutputText)
+        If Not rtfbx.InvokeRequired Then
+            Dim blocks As OutputTextBlock() = optxt.ToOutputTextBlocks()
+            For Each c_block As OutputTextBlock In blocks
+                rtfbx.Select(rtfbx.TextLength, 0)
+                rtfbx.SelectionColor = c_block.forecolor
+                Dim fstyle_flag As FontStyle = FontStyle.Regular
+                If c_block.bold Then
+                    fstyle_flag += FontStyle.Bold
+                End If
+                If c_block.italic Then
+                    fstyle_flag += FontStyle.Italic
+                End If
+                If c_block.underline Then
+                    fstyle_flag += FontStyle.Underline
+                End If
+                If c_block.strikeout Then
+                    fstyle_flag += FontStyle.Strikeout
+                End If
+                rtfbx.SelectionFont = New Font("Consolas", 8.25, fstyle_flag)
+                rtfbx.AppendText(c_block.text)
+            Next
+            rtfbx.Select(rtfbx.TextLength, 0)
+            rtfbx.SelectionColor = Color.Black
+            rtfbx.SelectionFont = New Font("Consolas", 8.25, FontStyle.Regular)
+        Else
+            calloncontrol(rtfbx, Sub() render_outtxt(rtfbx, optxt))
+        End If
+    End Sub
+
     Private Sub main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         contrvis(False)
         disablechkbx = True
@@ -471,7 +501,8 @@ threadstart2:
                                        tochangeenter = False
                                    End If
                                    If toappendtext Then
-                                       txtbxlog.AppendText(appendtext)
+                                       'txtbxlog.AppendText(appendtext)
+                                       render_outtxt(txtbxlog, appendtext)
                                        If loged Then
                                            log = log & appendtext
                                        End If
@@ -650,7 +681,7 @@ threadstart5:
                     command_stack.Push(comcmd)
                 Next
             Else
-                command_stack.Push(ccmd)
+                command_stack.Push(ccmd.Replace(ControlChars.Lf, ControlChars.CrLf).Replace(ControlChars.CrLf, ""))
             End If
         End If
         txtbxcmd.Text = ""
@@ -680,13 +711,14 @@ threadstart3:
                                End Sub)
                     While command_stack.Count > 0 And commands_init
                         Dim curcom As String = command_stack.Pop()
-                        Dim retfromruncmd As String = run_cmd(curcom)
+                        Dim retfromruncmd As OutputText = run_cmd(curcom)
                         If retfromruncmd <> "" Then
                             If loged Then
                                 log = log & retfromruncmd & ControlChars.CrLf
                             End If
                             callonform(Sub()
-                                           txtbxlog.AppendText(retfromruncmd & ControlChars.CrLf)
+                                           'txtbxlog.AppendText(retfromruncmd & ControlChars.CrLf)
+                                           render_outtxt(txtbxlog, retfromruncmd & ControlChars.CrLf)
                                            lblstatus.Text = "Executing Commands: " & command_stack.Count & " Commands Left..."
                                        End Sub)
                         End If
@@ -818,7 +850,7 @@ threadstart3:
         Dim casted As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
         Dim cms As ContextMenuStrip = casted.GetCurrentParent()
         If cms.SourceControl.Name = txtbxcmd.Name And txtbxcmd.SelectedText <> "" Then
-            Clipboard.SetText(txtbxcmd.SelectedText, TextDataFormat.UnicodeText)
+            Clipboard.SetText(txtbxcmd.SelectedText.Replace(ControlChars.Lf, ControlChars.CrLf), TextDataFormat.UnicodeText)
             'Clipboard.SetText(txtbxcmd.SelectedText.Replace(ControlChars.Lf, ControlChars.CrLf))
             txtbxcmd.Text.Remove(txtbxcmd.SelectionStart, txtbxcmd.SelectionLength)
         End If
@@ -828,10 +860,10 @@ threadstart3:
         Dim casted As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
         Dim cms As ContextMenuStrip = casted.GetCurrentParent()
         If cms.SourceControl.Name = txtbxcmd.Name And txtbxcmd.SelectedText <> "" Then
-            Clipboard.SetText(txtbxcmd.SelectedText, TextDataFormat.UnicodeText)
+            Clipboard.SetText(txtbxcmd.SelectedText.Replace(ControlChars.Lf, ControlChars.CrLf), TextDataFormat.UnicodeText)
             'Clipboard.SetText(txtbxcmd.SelectedText.Replace(ControlChars.Lf, ControlChars.CrLf))
         ElseIf cms.SourceControl.Name = txtbxlog.Name And txtbxlog.SelectedText <> "" Then
-            Clipboard.SetText(txtbxlog.SelectedText, TextDataFormat.UnicodeText)
+            Clipboard.SetText(txtbxlog.SelectedText.Replace(ControlChars.Lf, ControlChars.CrLf), TextDataFormat.UnicodeText)
         End If
     End Sub
 
@@ -840,11 +872,13 @@ threadstart3:
         Dim cms As ContextMenuStrip = casted.GetCurrentParent()
         If cms.SourceControl.Name = txtbxcmd.Name Then
             If Clipboard.ContainsText() Then
+                Dim sinx As Integer = txtbxcmd.SelectionStart
                 If txtbxcmd.SelectedText <> "" Then
-                    txtbxcmd.Text = txtbxcmd.Text.Remove(txtbxcmd.SelectionStart, txtbxcmd.SelectionLength)
+                    txtbxcmd.Text = txtbxcmd.Text.Remove(sinx, txtbxcmd.SelectionLength)
                 End If
-                txtbxcmd.Text = txtbxcmd.Text.Insert(txtbxcmd.SelectionStart, Clipboard.GetText(TextDataFormat.UnicodeText))
-                txtbxcmd.SelectionStart = txtbxcmd.SelectionStart + Clipboard.GetText(TextDataFormat.UnicodeText).Length
+                Dim clip As String = Clipboard.GetText(TextDataFormat.UnicodeText)
+                txtbxcmd.Text = txtbxcmd.Text.Insert(sinx, clip)
+                txtbxcmd.SelectionStart = sinx + clip.Length
             End If
         End If
     End Sub

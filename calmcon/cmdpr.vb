@@ -8,7 +8,7 @@ Public Module cmdpr
     'old code
     'Public commandmode As commandtype_mode = commandtype_mode.calm_type
 
-    Public Function run_cmd(cmd As String) As String
+    Public Function run_cmd(cmd As String) As OutputText
         Try
             Dim com As int_command = New int_command(cmd, syntax_mode, False)
             For Each ihook As HookInfo In hooks_info.Values
@@ -22,7 +22,7 @@ Public Module cmdpr
                 End Try
             Next
             com.init()
-            Dim toret As String = com.execute()
+            Dim toret As OutputText = com.execute()
             For Each ihook As HookInfo In hooks_info.Values
                 Try
                     If Not ihook.hook_command_postexecute Is Nothing Then
@@ -217,8 +217,8 @@ Public Class int_command
         End If
     End Sub
 
-    Public Function execute() As String
-        Dim toret As String = ecmd.execute_and_return(args)
+    Public Function execute() As OutputText
+        Dim toret As OutputText = ecmd.execute_and_return(args)
         ecmd.flush()
         Return toret
     End Function
@@ -567,7 +567,7 @@ Public Class executable_command
     Private _isthread As Boolean = False
     Private _thread As Thread
     Private _args As String() = Nothing
-    Private _retur As String = Nothing
+    Private _retur As OutputText = Nothing
 
     Sub New(name As String, passed_delegate As [Delegate], Optional isthreaded As Boolean = False)
         _name = name
@@ -596,7 +596,7 @@ Public Class executable_command
         End Set
     End Property
 
-    Public ReadOnly Property returned_values As String
+    Public ReadOnly Property returned_values As OutputText
         Get
             Return _retur
         End Get
@@ -619,7 +619,7 @@ Public Class executable_command
         End If
     End Sub
 
-    Public Function execute_and_return(Optional args As String() = Nothing)
+    Public Function execute_and_return(Optional args As String() = Nothing) As OutputText
         If Not args Is Nothing Then
             _args = args
         End If

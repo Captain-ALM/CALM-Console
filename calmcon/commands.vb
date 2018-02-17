@@ -199,7 +199,7 @@ Module commands_data
 
     Public Function help(args As String()) As String
         If args Is Nothing Then
-            Dim helpstr As String = "Help:" & ControlChars.CrLf
+            Dim helpstr As OutputText = "Help:" & ControlChars.CrLf
             For i As Integer = 0 To commandhelplst.Count - 1 Step 1
                 helpstr = helpstr & commandhelplst(i)
                 If i <> commandhelplst.Count - 1 Then

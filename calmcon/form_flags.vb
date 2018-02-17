@@ -1,5 +1,6 @@
 ﻿Imports System.Reflection
 Imports System.IO
+Imports captainalm.calmcon.api
 
 Public Module form_flags
     'form shared
@@ -25,7 +26,7 @@ Public Module form_flags
     Public tochangeenter As Boolean = False
     Public changeenterto As Boolean = False
     Public toappendtext As Boolean = False
-    Public appendtext As String = ""
+    Public appendtext As OutputText = ""
     Public rundelegate As Boolean = False
     Public deltorun As [Delegate] = Nothing
     Public restart_have_args As Boolean = True

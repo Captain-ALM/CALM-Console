@@ -6,13 +6,12 @@ cnsrapi
 </name>
 </assembly>
 <members>
-<member name="M:captainalm.calmcon.api.OutputText.#ctor(System.String,System.Drawing.Color,System.Drawing.Color,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+<member name="M:captainalm.calmcon.api.OutputText.#ctor(System.String,System.Drawing.Color,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
 	<summary>
  Creates a new output text instance
  </summary>
 	<param name="txt">The intal text.</param>
 	<param name="forecol">The intal forecolor.</param>
-	<param name="backcol">The intal back color.</param>
 	<param name="bld">Is the intal text bold.</param>
 	<param name="itl">Is the intal text italic.</param>
 	<param name="ul">Is the intal text underlined.</param>
@@ -32,25 +31,23 @@ cnsrapi
 	<param name="txt">The text to write.</param>
 	<exception cref="T:System.InvalidOperationException">Thrown when no blocks to write to.</exception>
 	<remarks></remarks>
-</member><member name="M:captainalm.calmcon.api.OutputText.write(System.String,System.Drawing.Color,System.Drawing.Color,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+</member><member name="M:captainalm.calmcon.api.OutputText.write(System.String,System.Drawing.Color,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
 	<summary>
  Writes text to a new or the current block depending on the current block's attributes or if there are any blocks at all.
  </summary>
 	<param name="txt">The text.</param>
 	<param name="forecol">The forecolor.</param>
-	<param name="backcol">The back color.</param>
 	<param name="bld">Is the text bold.</param>
 	<param name="itl">Is the text italic.</param>
 	<param name="ul">Is the text underlined.</param>
 	<param name="so">Is the text strikeout.</param>
 	<remarks></remarks>
-</member><member name="M:captainalm.calmcon.api.OutputText.writeline(System.String,System.Drawing.Color,System.Drawing.Color,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+</member><member name="M:captainalm.calmcon.api.OutputText.writeline(System.String,System.Drawing.Color,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
 	<summary>
  Writes text and a new line to a new or the current block depending on the current block's attributes or if there are any blocks at all.
  </summary>
 	<param name="txt">The text.</param>
 	<param name="forecol">The forecolor.</param>
-	<param name="backcol">The back color.</param>
 	<param name="bld">Is the text bold.</param>
 	<param name="itl">Is the text italic.</param>
 	<param name="ul">Is the text underlined.</param>
@@ -144,11 +141,6 @@ cnsrapi
  The foreground colour of the text.
  </summary>
 	<remarks></remarks>
-</member><member name="F:captainalm.calmcon.api.OutputTextBlock.backcolor">
-	<summary>
- The background colour of the text.
- </summary>
-	<remarks></remarks>
 </member><member name="F:captainalm.calmcon.api.OutputTextBlock.bold">
 	<summary>
  If the text is bold.
@@ -164,7 +156,7 @@ cnsrapi
  If the text is underlined.
  </summary>
 	<remarks></remarks>
-</member><member name="F:captainalm.calmcon.api.OutputTextBlock.strike">
+</member><member name="F:captainalm.calmcon.api.OutputTextBlock.strikeout">
 	<summary>
  If the text is striked out.
  </summary>
@@ -179,7 +171,7 @@ cnsrapi
  Any commands set in libraries need to use this as the delegate type.
  </summary>
 	<param name="arr">The array of parameters for the command.</param>
-	<returns></returns>
+	<returns>Return value of the command.</returns>
 	<remarks></remarks>
 </member><member name="T:captainalm.calmcon.api.Types.CommandStackHook">
 	<summary>
@@ -209,7 +201,7 @@ cnsrapi
  This is the hook used for the postexecute command hook event.
  </summary>
 	<param name="commandstr">The command string being executed.</param>
-	<param name="returnval">The return string from the command.</param>
+	<param name="returnval">The return output text from the command.</param>
 	<remarks></remarks>
 </member><member name="T:captainalm.calmcon.api.Types.FormHook">
 	<summary>
@@ -249,7 +241,7 @@ cnsrapi
  This hook is used to write to the output textbox,
  and can be invoked by the library once an instance is retrieved via the GetWriteOutputHook.
  </summary>
-	<param name="text">The string to write to the output textbox.</param>
+	<param name="text">The Output Text to write to the output textbox.</param>
 	<remarks></remarks>
 </member><member name="T:captainalm.calmcon.api.Types.GetWriteOutputHook">
 	<summary>

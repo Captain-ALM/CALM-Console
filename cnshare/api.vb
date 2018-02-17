@@ -3,9 +3,9 @@
     ''' Any commands set in libraries need to use this as the delegate type.
     ''' </summary>
     ''' <param name="arr">The array of parameters for the command.</param>
-    ''' <returns></returns>
+    ''' <returns>Return value of the command.</returns>
     ''' <remarks></remarks>
-    Public Delegate Function Cmd(ByVal arr As String()) As String
+    Public Delegate Function Cmd(ByVal arr As String()) As OutputText
     ''' <summary>
     ''' This is the hook delegate type required to hook to the command stack.
     ''' </summary>
@@ -33,9 +33,9 @@
     ''' This is the hook used for the postexecute command hook event.
     ''' </summary>
     ''' <param name="commandstr">The command string being executed.</param>
-    ''' <param name="returnval">The return string from the command.</param>
+    ''' <param name="returnval">The return output text from the command.</param>
     ''' <remarks></remarks>
-    Public Delegate Sub PostCommandExecuteHook(ByVal commandstr As String, ByVal returnval As String)
+    Public Delegate Sub PostCommandExecuteHook(ByVal commandstr As String, ByVal returnval As OutputText)
     ''' <summary>
     ''' This hook is used to access and modify the main form.
     ''' </summary>
@@ -62,7 +62,7 @@
     ''' <param name="args">The arguments to pass.</param>
     ''' <returns>The return value of the command.</returns>
     ''' <remarks></remarks>
-    Public Delegate Function RunCommandHook(ByVal command As String, ByVal args As String()) As String
+    Public Delegate Function RunCommandHook(ByVal command As String, ByVal args As String()) As OutputText
     ''' <summary>
     ''' Gets the hook instance for RunCommandHook so it can be invoked by the library.
     ''' </summary>
@@ -73,9 +73,9 @@
     ''' This hook is used to write to the output textbox,
     ''' and can be invoked by the library once an instance is retrieved via the GetWriteOutputHook.
     ''' </summary>
-    ''' <param name="text">The string to write to the output textbox.</param>
+    ''' <param name="text">The Output Text to write to the output textbox.</param>
     ''' <remarks></remarks>
-    Public Delegate Sub WriteOutputHook(ByVal text As String)
+    Public Delegate Sub WriteOutputHook(ByVal text As OutputText)
     ''' <summary>
     ''' Gets the hook instance for WriteOutputHook so it can be invoked by the library.
     ''' </summary>

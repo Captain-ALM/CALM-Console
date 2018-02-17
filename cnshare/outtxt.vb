@@ -9,15 +9,14 @@ Public Class OutputText
     ''' </summary>
     ''' <param name="txt">The intal text.</param>
     ''' <param name="forecol">The intal forecolor.</param>
-    ''' <param name="backcol">The intal back color.</param>
     ''' <param name="bld">Is the intal text bold.</param>
     ''' <param name="itl">Is the intal text italic.</param>
     ''' <param name="ul">Is the intal text underlined.</param>
     ''' <param name="so">Is the intal text strikeout.</param>
     ''' <remarks></remarks>
-    Public Sub New(Optional txt As String = "", Optional forecol As Drawing.Color = Nothing, Optional backcol As Drawing.Color = Nothing, Optional bld As Boolean = False, Optional itl As Boolean = False, Optional ul As Boolean = False, Optional so As Boolean = False)
+    Public Sub New(Optional txt As String = "", Optional forecol As Drawing.Color = Nothing, Optional bld As Boolean = False, Optional itl As Boolean = False, Optional ul As Boolean = False, Optional so As Boolean = False)
         If Not txt Is Nothing And txt <> "" Then
-            Dim cblock As New TextBlock(txt, forecol, backcol, bld, itl, ul, so)
+            Dim cblock As New TextBlock(txt, forecol, bld, itl, ul, so)
             _blocks.Add(cblock)
         End If
     End Sub
@@ -58,22 +57,21 @@ Public Class OutputText
     ''' </summary>
     ''' <param name="txt">The text.</param>
     ''' <param name="forecol">The forecolor.</param>
-    ''' <param name="backcol">The back color.</param>
     ''' <param name="bld">Is the text bold.</param>
     ''' <param name="itl">Is the text italic.</param>
     ''' <param name="ul">Is the text underlined.</param>
     ''' <param name="so">Is the text strikeout.</param>
     ''' <remarks></remarks>
-    Public Sub write(txt As String, Optional forecol As Drawing.Color = Nothing, Optional backcol As Drawing.Color = Nothing, Optional bld As Boolean = False, Optional itl As Boolean = False, Optional ul As Boolean = False, Optional so As Boolean = False)
+    Public Sub write(txt As String, Optional forecol As Drawing.Color = Nothing, Optional bld As Boolean = False, Optional itl As Boolean = False, Optional ul As Boolean = False, Optional so As Boolean = False)
         If Not _blocks.Count = 0 Then
-            If _blocks(_blocks.Count - 1).forecolor = forecol And _blocks(_blocks.Count - 1).backcolor = backcol And _blocks(_blocks.Count - 1).bold = bld And _blocks(_blocks.Count - 1).italic = itl And _blocks(_blocks.Count - 1).underline = ul And _blocks(_blocks.Count - 1).strikeout = so Then
+            If _blocks(_blocks.Count - 1).forecolor = forecol And _blocks(_blocks.Count - 1).bold = bld And _blocks(_blocks.Count - 1).italic = itl And _blocks(_blocks.Count - 1).underline = ul And _blocks(_blocks.Count - 1).strikeout = so Then
                 _blocks(_blocks.Count - 1).write(txt)
             Else
-                Dim cblock As New TextBlock(txt, forecol, backcol, bld, itl, ul, so)
+                Dim cblock As New TextBlock(txt, forecol, bld, itl, ul, so)
                 _blocks.Add(cblock)
             End If
         Else
-            Dim cblock As New TextBlock(txt, forecol, backcol, bld, itl, ul, so)
+            Dim cblock As New TextBlock(txt, forecol, bld, itl, ul, so)
             _blocks.Add(cblock)
         End If
     End Sub
@@ -82,22 +80,21 @@ Public Class OutputText
     ''' </summary>
     ''' <param name="txt">The text.</param>
     ''' <param name="forecol">The forecolor.</param>
-    ''' <param name="backcol">The back color.</param>
     ''' <param name="bld">Is the text bold.</param>
     ''' <param name="itl">Is the text italic.</param>
     ''' <param name="ul">Is the text underlined.</param>
     ''' <param name="so">Is the text strikeout.</param>
     ''' <remarks></remarks>
-    Public Sub writeline(txt As String, Optional forecol As Drawing.Color = Nothing, Optional backcol As Drawing.Color = Nothing, Optional bld As Boolean = False, Optional itl As Boolean = False, Optional ul As Boolean = False, Optional so As Boolean = False)
+    Public Sub writeline(txt As String, Optional forecol As Drawing.Color = Nothing, Optional bld As Boolean = False, Optional itl As Boolean = False, Optional ul As Boolean = False, Optional so As Boolean = False)
         If Not _blocks.Count = 0 Then
-            If _blocks(_blocks.Count - 1).forecolor = forecol And _blocks(_blocks.Count - 1).backcolor = backcol And _blocks(_blocks.Count - 1).bold = bld And _blocks(_blocks.Count - 1).italic = itl And _blocks(_blocks.Count - 1).underline = ul And _blocks(_blocks.Count - 1).strikeout = so Then
+            If _blocks(_blocks.Count - 1).forecolor = forecol And _blocks(_blocks.Count - 1).bold = bld And _blocks(_blocks.Count - 1).italic = itl And _blocks(_blocks.Count - 1).underline = ul And _blocks(_blocks.Count - 1).strikeout = so Then
                 _blocks(_blocks.Count - 1).writeline(txt)
             Else
-                Dim cblock As New TextBlock(txt & ControlChars.CrLf, forecol, backcol, bld, itl, ul, so)
+                Dim cblock As New TextBlock(txt & ControlChars.CrLf, forecol, bld, itl, ul, so)
                 _blocks.Add(cblock)
             End If
         Else
-            Dim cblock As New TextBlock(txt & ControlChars.CrLf, forecol, backcol, bld, itl, ul, so)
+            Dim cblock As New TextBlock(txt & ControlChars.CrLf, forecol, bld, itl, ul, so)
             _blocks.Add(cblock)
         End If
     End Sub
@@ -188,9 +185,12 @@ Public Class OutputText
     ''' <returns>The concated output text object.</returns>
     ''' <remarks></remarks>
     Public Shared Operator &(ByVal optxt1 As OutputText, ByVal optxt2 As OutputText) As OutputText
-        Dim noptxt As New OutputText()
-        noptxt._blocks.AddRange(optxt1._blocks)
-        noptxt._blocks.AddRange(optxt2._blocks)
+        Dim noptxt As New OutputText(optxt1.ToOutputTextBlocks)
+        For Each cb As TextBlock In optxt2._blocks
+            noptxt.write(cb.text, cb.forecolor, cb.bold, cb.italic, cb.underline, cb.strikeout)
+        Next
+        'noptxt._blocks.AddRange(optxt1._blocks)
+        'noptxt._blocks.AddRange(optxt2._blocks)
         Return noptxt
     End Operator
     ''' <summary>
@@ -217,7 +217,6 @@ Public Class OutputText
     Private Class TextBlock
         Private _text As String = ""
         Private _forecolor As Drawing.Color = Drawing.Color.Black
-        Private _backcolor As Drawing.Color = Drawing.Color.White
         Private _bold As Boolean = False
         Private _italic As Boolean = False
         Private _underline As Boolean = False
@@ -226,24 +225,18 @@ Public Class OutputText
         Public Sub New(otb As OutputTextBlock)
             _text = otb.text
             _forecolor = otb.forecolor
-            _backcolor = otb.backcolor
             _bold = otb.bold
             _italic = otb.italic
             _underline = otb.underline
-            _strike = otb.strike
+            _strike = otb.strikeout
         End Sub
 
-        Public Sub New(Optional txt As String = "", Optional forecol As Drawing.Color = Nothing, Optional backcol As Drawing.Color = Nothing, Optional bld As Boolean = False, Optional itl As Boolean = False, Optional ul As Boolean = False, Optional so As Boolean = False)
+        Public Sub New(Optional txt As String = "", Optional forecol As Drawing.Color = Nothing, Optional bld As Boolean = False, Optional itl As Boolean = False, Optional ul As Boolean = False, Optional so As Boolean = False)
             _text = txt
             If forecol.IsEmpty Then
                 _forecolor = Drawing.Color.Black
             Else
                 _forecolor = forecol
-            End If
-            If backcol.IsEmpty Then
-                _backcolor = Drawing.Color.White
-            Else
-                _backcolor = backcol
             End If
             _bold = bld
             _italic = itl
@@ -266,15 +259,6 @@ Public Class OutputText
             End Get
             Set(value As Drawing.Color)
                 _forecolor = value
-            End Set
-        End Property
-
-        Public Property backcolor As Drawing.Color
-            Get
-                Return _backcolor
-            End Get
-            Set(value As Drawing.Color)
-                _backcolor = value
             End Set
         End Property
 
@@ -323,7 +307,7 @@ Public Class OutputText
         End Sub
 
         Public Function ToOutputTextBlock() As OutputTextBlock
-            Return New OutputTextBlock(_text, _forecolor, _backcolor, _bold, _italic, _underline, _strike)
+            Return New OutputTextBlock(_text, _forecolor, _bold, _italic, _underline, _strike)
         End Function
     End Class
 End Class
@@ -343,11 +327,6 @@ Public Structure OutputTextBlock
     ''' <remarks></remarks>
     Public forecolor As Drawing.Color
     ''' <summary>
-    ''' The background colour of the text.
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public backcolor As Drawing.Color
-    ''' <summary>
     ''' If the text is bold.
     ''' </summary>
     ''' <remarks></remarks>
@@ -366,15 +345,14 @@ Public Structure OutputTextBlock
     ''' If the text is striked out.
     ''' </summary>
     ''' <remarks></remarks>
-    Public strike As Boolean
+    Public strikeout As Boolean
     'Only accessible in the Shared & API Library.
-    Friend Sub New(txt As String, forecol As Drawing.Color, backcol As Drawing.Color, bld As Boolean, itl As Boolean, ul As Boolean, so As Boolean)
+    Friend Sub New(txt As String, forecol As Drawing.Color, bld As Boolean, itl As Boolean, ul As Boolean, so As Boolean)
         text = txt
         forecolor = forecol
-        backcolor = backcol
         bold = bld
         italic = itl
         underline = ul
-        strike = so
+        strikeout = so
     End Sub
 End Structure
