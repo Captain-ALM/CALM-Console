@@ -5,6 +5,67 @@ Imports System.Text
 Imports System.Runtime.InteropServices
 
 Module utils
+    Public Function convertstringtobool(str As String) As Boolean
+        Dim ret As Boolean = False
+        Try
+            ret = Boolean.Parse(str)
+        Catch ex As InvalidCastException
+            ret = False
+        End Try
+        Return ret
+    End Function
+
+    Public Function convertstringtoint(str As String) As Integer
+        Dim ret As Integer = 0
+        Try
+            ret = Integer.Parse(str)
+        Catch ex As InvalidCastException
+            ret = 0
+        End Try
+        Return ret
+    End Function
+
+    Public Function convertobjectargstostringargs(args As String()) As String()
+        Dim toret(0) As String
+        If IsNothing(args) Then
+            Return Nothing
+        End If
+        Try
+            Dim numofi As Integer = numberofindexes(args)
+            ReDim toret(numofi - 1)
+            For i As Integer = 0 To numofi - 1 Step 1
+                toret(i) = args(i).ToString
+            Next
+        Catch ex As Exception
+            Return Nothing
+        End Try
+        Return toret
+    End Function
+
+    Public Function numberofindexes(args As String()) As Integer
+        If args Is Nothing Then
+            Return 0
+        Else
+            Return args.Length
+        End If
+        'old code
+        'Try
+        '    Dim i As Integer = 0
+        '    Try
+        '        While "True"
+        '            Dim tmp As Object = args(i)
+        '            tmp = Nothing
+        '            i = i + 1
+        '        End While
+        '        Return 0
+        '    Catch ex As Exception
+        '        Return i
+        '    End Try
+        'Catch ex As Exception
+        '    Return 0
+        'End Try
+    End Function
+
     Public Function loadfile(filepath As String) As String
         Try
             Dim filecontents As String = ""

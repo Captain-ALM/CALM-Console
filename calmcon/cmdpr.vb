@@ -22,7 +22,12 @@ Public Module cmdpr
                 End Try
             Next
             com.init()
-            Dim toret As OutputText = com.execute()
+            Dim toret As OutputText = Nothing
+            If echo_command Then
+                toret = cmd & ControlChars.CrLf & com.execute()
+            Else
+                toret = com.execute()
+            End If
             For Each ihook As HookInfo In hooks_info.Values
                 Try
                     If Not ihook.hook_command_postexecute Is Nothing Then
@@ -37,7 +42,11 @@ Public Module cmdpr
         Catch ex As ThreadAbortException
             Throw ex
         Catch ex As Exception
-            Return ""
+            If echo_command Then
+                Return cmd & ControlChars.CrLf
+            Else
+                Return ""
+            End If
         End Try
     End Function
 
@@ -49,7 +58,11 @@ Public Module cmdpr
     Public Sub init_cmd()
         'help
         commands.Add("help", New executable_command("help", New Cmd(AddressOf help)))
-        commandhelplst.Add("help : provides help for commands.")
+        commandhelplst.Add("help%*(string)[optional command name]% : provides help for commands.")
+        'help_ext / help_extended
+        commands.Add("help_ext", New executable_command("help_ext", New Cmd(AddressOf helpext)))
+        commands.Add("help_extended", New executable_command("help_extended", New Cmd(AddressOf helpext)))
+        commandhelplst.Add("help_ext/help_extened%*(string)[optional command name]% : provides help for commands, including '.' commands.")
         'invalid
         commands.Add("invalid", New executable_command("invalid", New Cmd(AddressOf invalid)))
         commandhelplst.Add("invalid : provides an invalid command error message.")
@@ -142,6 +155,10 @@ Public Module cmdpr
         commands.Add("beep", New executable_command("beep", New Cmd(AddressOf commands_data.beep)))
         commands.Add("bell", New executable_command("bell", New Cmd(AddressOf commands_data.beep)))
         commandhelplst.Add("beep/bell%*(integer)[frequency, make it 0 to play system bell]%%*(integer)[duration in milliseconds, make it 0 to play the system bell]% : plays a tone out of the machine speaker or the system beep (bell) sound.")
+        'echo / echo_mode
+        commands.Add("echo", New executable_command("echo", New Cmd(AddressOf echo)))
+        commands.Add("echo_mode", New executable_command("echo_mode", New Cmd(AddressOf echo)))
+        commandhelplst.Add("echo/echo_mode%true/false[if echo is enabled]% : enables and disables command echoing.")
     End Sub
 End Module
 
@@ -149,7 +166,7 @@ Public Class int_command
     Private name As String = ""
     Private cmdstr As String = ""
     Private arguments As New List(Of int_command)
-    Private cmdtype As String = "calm_type"
+    Private cmdtype As String = "calm_console_default_type"
     Private log As String = ""
     Private ecmd As executable_command
     Private args As String() = Nothing

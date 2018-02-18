@@ -35,4 +35,5 @@ Public Module form_flags
     Public restart_admin As Boolean = False
     Public ui_queue As New Queue(Of [Delegate])
     Public form_instance As main
+    Public echo_command As Boolean = False
 End Module

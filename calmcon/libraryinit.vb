@@ -42,7 +42,7 @@ Module libraryinit
                             commandhelplst.Add(coms.help)
                         End If
                         commands.Add(libstupd.name & "." & coms.name, New executable_command(libstupd.name & "." & coms.name, coms.command))
-                        commandhelplst.Add(libstupd.name & "." & coms.help)
+                        commandhelplstext.Add(libstupd.name & "." & coms.help)
                     Next
                 End If
             Catch ex As Threading.ThreadAbortException

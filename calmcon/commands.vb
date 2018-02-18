@@ -3,6 +3,18 @@ Imports captainalm.calmcon.api
 
 Module commands_data
     Public commandhelplst As New List(Of String)
+    Public commandhelplstext As New List(Of String)
+
+    Public Function echo(args As String()) As OutputText
+        If Not args Is Nothing Then
+            If args.Length >= 1 Then
+                Dim b As Boolean = convertstringtobool(args(0))
+                echo_command = b
+                Return "Echo Mode Set To: " & echo_command & "."
+            End If
+        End If
+        Return "Echo Mode: " & echo_command & "."
+    End Function
 
     Public Function beep(args As String()) As String
         If Not args Is Nothing Then
@@ -195,6 +207,36 @@ Module commands_data
             i += 1
         Next
         Return retstr
+    End Function
+
+    Public Function helpext(args As String()) As String
+        Dim lstcomb As New List(Of String)
+        lstcomb.AddRange(commandhelplst)
+        lstcomb.AddRange(commandhelplstext)
+        If args Is Nothing Then
+            Dim helpstr As OutputText = "Help:" & ControlChars.CrLf
+            For i As Integer = 0 To lstcomb.Count - 1 Step 1
+                helpstr = helpstr & lstcomb(i)
+                If i <> lstcomb.Count - 1 Then
+                    helpstr = helpstr & ControlChars.CrLf
+                End If
+            Next
+            Return helpstr
+        Else
+            Try
+                Dim commandhelplst_local As List(Of String) = lstcomb.FindAll(Function(x) x.Contains(args(0)))
+                Dim helpstr As String = "Help:" & ControlChars.CrLf & "Help Returned For '" & args(0) & "'" & ControlChars.CrLf
+                For i As Integer = 0 To commandhelplst_local.Count - 1 Step 1
+                    helpstr = helpstr & commandhelplst_local(i)
+                    If i <> commandhelplst_local.Count - 1 Then
+                        helpstr = helpstr & ControlChars.CrLf
+                    End If
+                Next
+                Return helpstr
+            Catch ex As Exception
+                Return "Command Error: " & ex.GetType.ToString & " : " & ex.Message
+            End Try
+        End If
     End Function
 
     Public Function help(args As String()) As String
@@ -426,56 +468,5 @@ Module commands_data
             End Try
         End If
         Return "Logger Settings Changed."
-    End Function
-
-    Public Function convertstringtoint(str As String) As Integer
-        Dim ret As Integer = 0
-        Try
-            ret = Integer.Parse(str)
-        Catch ex As InvalidCastException
-            ret = 0
-        End Try
-        Return ret
-    End Function
-
-    Public Function convertobjectargstostringargs(args As String()) As String()
-        Dim toret(0) As String
-        If IsNothing(args) Then
-            Return Nothing
-        End If
-        Try
-            Dim numofi As Integer = numberofindexes(args)
-            ReDim toret(numofi - 1)
-            For i As Integer = 0 To numofi - 1 Step 1
-                toret(i) = args(i).ToString
-            Next
-        Catch ex As Exception
-            Return Nothing
-        End Try
-        Return toret
-    End Function
-
-    Public Function numberofindexes(args As String()) As Integer
-        If args Is Nothing Then
-            Return 0
-        Else
-            Return args.Length
-        End If
-        'old code
-        'Try
-        '    Dim i As Integer = 0
-        '    Try
-        '        While "True"
-        '            Dim tmp As Object = args(i)
-        '            tmp = Nothing
-        '            i = i + 1
-        '        End While
-        '        Return 0
-        '    Catch ex As Exception
-        '        Return i
-        '    End Try
-        'Catch ex As Exception
-        '    Return 0
-        'End Try
     End Function
 End Module

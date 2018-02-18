@@ -77,6 +77,9 @@ Public Class main
 
         form_instance = Me
 
+        txtbxcmd.AutoWordSelection = False
+        txtbxlog.AutoWordSelection = False
+
         checkchkbxthread = New Thread(New ThreadStart(AddressOf chkchkbxtsub))
         flags_thread = New Thread(New ThreadStart(AddressOf flags_sub))
         command_thread = New Thread(New ThreadStart(AddressOf command_sub))
