@@ -5,12 +5,31 @@ Module commands_data
     Public commandhelplst As New List(Of String)
     Public commandhelplstext As New List(Of String)
 
+    Public Function cmdbuffer(args As String()) As OutputText
+        If Not args Is Nothing Then
+            If args.Length >= 1 Then
+                If args(0).ToLower = "clear" Then
+                    command_buffer_index = 1
+                    command_buffer.Clear()
+                ElseIf args.Length >= 2 Then
+                    If args(0).ToLower = "limit" Or args(0).ToLower = "number" Then
+                        Dim int As Integer = convertstringtoint(args(1))
+                        command_buffer_limit = int
+                    ElseIf args(0).ToLower = "mode" Then
+                        Dim bool As Boolean = convertstringtobool(args(1))
+                        command_buffer_shortcuts_enabled = bool
+                    End If
+                End If
+            End If
+        End If
+        Return "Buffer Limit: " & command_buffer_limit & " Buffer Shortcuts Enabled: " & command_buffer_shortcuts_enabled & "."
+    End Function
+
     Public Function echo(args As String()) As OutputText
         If Not args Is Nothing Then
             If args.Length >= 1 Then
                 Dim b As Boolean = convertstringtobool(args(0))
                 echo_command = b
-                Return "Echo Mode Set To: " & echo_command & "."
             End If
         End If
         Return "Echo Mode: " & echo_command & "."

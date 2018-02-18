@@ -363,6 +363,42 @@ Public Class main
             contrcmdvis(False)
             cmd_inter(txtbxcmd.Text)
             contrcmdvis(True)
+        ElseIf e.KeyCode = Keys.Up And e.Alt And command_buffer_shortcuts_enabled Then
+            e.SuppressKeyPress = True
+            e.Handled = True
+            command_buffer_index -= 1
+            If command_buffer_index > command_buffer_limit Then
+                command_buffer_index = command_buffer_limit
+            End If
+            If command_buffer_index > command_buffer.Count Then
+                command_buffer_index = command_buffer.Count
+            End If
+            If command_buffer_index <= 0 Then
+                command_buffer_index = 1
+            End If
+            If command_buffer_limit > 0 Then
+                If Not command_buffer.Count = 0 Then
+                    txtbxcmd.Text = command_buffer(command_buffer_index - 1)
+                End If
+            End If
+        ElseIf e.KeyCode = Keys.Down And e.Alt And command_buffer_shortcuts_enabled Then
+            e.SuppressKeyPress = True
+            e.Handled = True
+            command_buffer_index += 1
+            If command_buffer_index > command_buffer_limit Then
+                command_buffer_index = command_buffer_limit
+            End If
+            If command_buffer_index > command_buffer.Count Then
+                command_buffer_index = command_buffer.Count
+            End If
+            If command_buffer_index <= 0 Then
+                command_buffer_index = 1
+            End If
+            If command_buffer_limit > 0 Then
+                If Not command_buffer.Count = 0 Then
+                    txtbxcmd.Text = command_buffer(command_buffer_index - 1)
+                End If
+            End If
         End If
     End Sub
 
@@ -649,8 +685,28 @@ threadstart5:
 
     Private Sub cmd_inter(icmd As String)
         Dim ccmd As String = icmd.Replace(ControlChars.Lf, ControlChars.CrLf)
+
+        If command_buffer.Count <> 0 Then
+            command_buffer.Insert(command_buffer_index, icmd)
+            command_buffer_index += 1
+        Else
+            command_buffer.Add(icmd)
+            command_buffer_index = 1
+        End If
+        If command_buffer.Count > command_buffer_limit And command_buffer_limit > 0 Then
+            command_buffer.RemoveAt(0)
+        End If
+        If command_buffer_index > command_buffer_limit Then
+            command_buffer_index = command_buffer_limit
+        End If
+        If command_buffer_index > command_buffer.Count Then
+            command_buffer_index = command_buffer.Count
+        End If
+        If command_buffer_index <= 0 Then
+            command_buffer_index = 1
+        End If
+
         If ccmd <> "" Then
-            If allowenter Then
                 Dim ccom As String = ""
                 Dim cuchar As String = ""
                 Dim lchar As String = ""
@@ -683,10 +739,7 @@ threadstart5:
                     Dim comcmd As String = l_stack.Pop()
                     command_stack.Push(comcmd)
                 Next
-            Else
-                command_stack.Push(ccmd.Replace(ControlChars.Lf, ControlChars.CrLf).Replace(ControlChars.CrLf, ""))
             End If
-        End If
         txtbxcmd.Text = ""
     End Sub
 

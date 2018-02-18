@@ -159,6 +159,11 @@ Public Module cmdpr
         commands.Add("echo", New executable_command("echo", New Cmd(AddressOf echo)))
         commands.Add("echo_mode", New executable_command("echo_mode", New Cmd(AddressOf echo)))
         commandhelplst.Add("echo/echo_mode%true/false[if echo is enabled]% : enables and disables command echoing.")
+        'buffer / cmd_buffer / command_buffer
+        commands.Add("buffer", New executable_command("buffer", New Cmd(AddressOf cmdbuffer)))
+        commands.Add("cmd_buffer", New executable_command("cmd_buffer", New Cmd(AddressOf cmdbuffer)))
+        commands.Add("command_buffer", New executable_command("command_buffer", New Cmd(AddressOf cmdbuffer)))
+        commandhelplst.Add("buffer/cmd_buffer/command_buffer%limit/number/mode/clear%%*(integer/boolean/none)[limit and number : limit of the buffer, mode : the shortcut mode in the textbox, clear : clears the buffer] : manages the command buffer, alt+up/alt+down to cycle through the buffer.")
     End Sub
 End Module
 

@@ -16,6 +16,11 @@ Public Module form_flags
     Public aboutbx_showing As Boolean = False
     Public cancel_action As Boolean = False
     Public disablechkbx As Boolean = False
+    Public command_buffer As New List(Of String)
+    '1 based
+    Public command_buffer_index As Integer = 1
+    Public command_buffer_limit As Integer = 40
+    Public command_buffer_shortcuts_enabled As Boolean = True
     'form flags
     Public tocleartxt As Boolean = False
     Public movetobottom As Boolean = False
