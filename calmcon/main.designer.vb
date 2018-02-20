@@ -276,6 +276,7 @@ Partial Class main
         Me.txtbxcmd.ScrollBars = System.Windows.Forms.ScrollBars.Both
         Me.txtbxcmd.Size = New System.Drawing.Size(227, 56)
         Me.txtbxcmd.TabIndex = 2
+        Me.txtbxcmd.WordWrap = False
         '
         'GroupBoxPRCONTR
         '
