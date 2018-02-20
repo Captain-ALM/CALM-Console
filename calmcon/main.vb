@@ -77,7 +77,6 @@ Public Class main
 
         form_instance = Me
 
-        txtbxcmd.AutoWordSelection = False
         txtbxlog.AutoWordSelection = False
 
         checkchkbxthread = New Thread(New ThreadStart(AddressOf chkchkbxtsub))
@@ -862,8 +861,6 @@ threadstart3:
         If cms.SourceControl.Name = txtbxcmd.Name Then
             If txtbxcmd.CanUndo Then
                 txtbxcmd.Undo()
-            ElseIf txtbxcmd.CanRedo Then
-                txtbxcmd.Redo()
             End If
         End If
     End Sub
@@ -884,8 +881,6 @@ threadstart3:
                 PasteToolStripMenuItem.Enabled = False
             End If
             If txtbxcmd.CanUndo Then
-                UndoToolStripMenuItem.Enabled = True
-            ElseIf txtbxcmd.CanRedo Then
                 UndoToolStripMenuItem.Enabled = True
             Else
                 UndoToolStripMenuItem.Enabled = False
@@ -908,7 +903,7 @@ threadstart3:
         If cms.SourceControl.Name = txtbxcmd.Name And txtbxcmd.SelectedText <> "" Then
             Clipboard.SetText(txtbxcmd.SelectedText.Replace(ControlChars.Lf, ControlChars.CrLf), TextDataFormat.UnicodeText)
             'Clipboard.SetText(txtbxcmd.SelectedText.Replace(ControlChars.Lf, ControlChars.CrLf))
-            txtbxcmd.Text.Remove(txtbxcmd.SelectionStart, txtbxcmd.SelectionLength)
+            txtbxcmd.Text = txtbxcmd.Text.Remove(txtbxcmd.SelectionStart, txtbxcmd.SelectionLength)
         End If
     End Sub
 

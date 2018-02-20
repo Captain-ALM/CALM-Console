@@ -57,7 +57,7 @@ Module libraryinit
             Dim ass As Assembly = dlls(nom)
             For Each clib As Type In ass.GetTypes()
                 Try
-                    Dim clib_nom As String = clib.Name
+                    Dim clib_nom As String = ass.GetName.Name & "." & clib.FullName
                     Dim cintlib As New internal_lib(clib_nom, ass.CreateInstance(clib.FullName))
                     If Not libraries.ContainsKey(clib_nom) Then
                         libraries.Add(clib_nom, cintlib)

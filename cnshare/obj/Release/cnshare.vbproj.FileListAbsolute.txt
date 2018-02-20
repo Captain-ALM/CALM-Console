@@ -14,3 +14,4 @@ C:\Users\Alfred\Documents\GitHub\CALM-Console\cnshare\obj\Release\cnshare.vbproj
 C:\Users\Alfred\Documents\GitHub\CALM-Console\cnshare\obj\Release\cnsrapi.dll
 C:\Users\Alfred\Documents\GitHub\CALM-Console\cnshare\obj\Release\cnsrapi.xml
 C:\Users\Alfred\Documents\GitHub\CALM-Console\cnshare\obj\Release\cnsrapi.pdb
+C:\Users\Alfred\Documents\GitHub\CALM-Console\cnshare\obj\Release\cnshare.vbprojResolveAssemblyReference.cache

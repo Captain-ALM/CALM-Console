@@ -104,7 +104,7 @@ Module commands_data
                                             If Not Directory.Exists(assemblydir & "\lib") Then
                                                 Directory.CreateDirectory(assemblydir & "\lib")
                                             End If
-                                            File.Copy(args(1), assemblydir & "\lib\" & Path.GetFileName(args(1)))
+                                            File.Copy(args(1), assemblydir & "\lib\" & Path.GetFileName(args(1)), True)
                                             ret = "Added Library: " & args(1) & ", You must now restart the program."
                                         Catch ex As Threading.ThreadAbortException
                                             Throw ex
