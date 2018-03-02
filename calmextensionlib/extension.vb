@@ -1,6 +1,7 @@
 ﻿Imports captainalm.calmcon.api
 
 Public Class extension
+    '<SetupMethod()>
     Public Function setup() As LibrarySetup
         'reg syntaxes
         Dim syntaxes(4) As ISyntax

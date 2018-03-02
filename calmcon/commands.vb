@@ -84,16 +84,29 @@ Module commands_data
             If args.Length >= 1 Then
                 Select Case args(0).ToLower
                     Case Is = "list"
-                        ret = "Library List:" & ControlChars.CrLf
-                        For Each c As String In dll_paths
+                        ret = "Registered Libraries Loaded List:" & ControlChars.CrLf
+                        For Each c As String In dlls_loaded
                             ret = ret & c & ControlChars.CrLf
                         Next
-                        If dll_paths.Count = 1 Then
-                            ret &= dll_paths.Count & " Library Loaded."
-                        ElseIf dll_paths.Count = 0 Then
+                        If dlls_loaded.Count = 1 Then
+                            ret &= dlls_loaded.Count & " Library Loaded."
+                        ElseIf dlls_loaded.Count = 0 Then
                             ret &= "No Libraries Loaded."
                         Else
-                            ret &= dll_paths.Count & " Libraries Loaded."
+                            ret &= dlls_loaded.Count & " Libraries Loaded."
+                        End If
+                        If dlls_not_loaded.Count > 0 Then
+                            ret &= ControlChars.CrLf
+                            ret &= "Registered Libraries Not Loaded List:" & ControlChars.CrLf
+                            For Each c As String In dlls_not_loaded
+                                ret = ret & c & ControlChars.CrLf
+                            Next
+                            If dlls_not_loaded.Count = 1 Then
+                                ret &= dlls_not_loaded.Count & " Library Not Loaded."
+                            ElseIf dlls_not_loaded.Count = 0 Then
+                            Else
+                                ret &= dlls_not_loaded.Count & " Libraries Not Loaded."
+                            End If
                         End If
                     Case Is = "add"
                         If args.Length >= 2 Then

@@ -312,7 +312,7 @@ Public Class OutputText
     End Class
 End Class
 ''' <summary>
-''' This is what is the split up parts of OutputText.
+''' This is the split up parts of an OutputText Instance.
 ''' </summary>
 ''' <remarks></remarks>
 Public Structure OutputTextBlock

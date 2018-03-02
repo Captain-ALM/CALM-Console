@@ -228,7 +228,7 @@ Public Structure HookInfo
     End Sub
 End Structure
 ''' <summary>
-''' Pass this structure from your setup() function, you need one of these functions per class, structure or module.
+''' Pass this structure from a function with a <see cref="SetupMethodAttribute">SetupMethodAttribute</see>, you need one of these functions per library definition.
 ''' </summary>
 ''' <remarks></remarks>
 Public Structure LibrarySetup

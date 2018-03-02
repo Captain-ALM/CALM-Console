@@ -5,6 +5,8 @@ Imports System.IO
 Module libraryinit
     Public dll_ext As New List(Of String)
     Public dll_paths As New List(Of String)
+    Public dlls_loaded As New List(Of String)
+    Public dlls_not_loaded As New List(Of String)
     Public dlls As New Dictionary(Of String, Assembly)
     Public libraries As New Dictionary(Of String, internal_lib)
     Public library_info As New Dictionary(Of String, LibrarySetup)
@@ -16,7 +18,23 @@ Module libraryinit
                 Dim clib As internal_lib = libraries(nom)
 
                 'get setup data
-                Dim smethod As MethodInfo = clib.type.GetMethod("setup", BindingFlags.Public Or BindingFlags.Instance)
+                Dim smethod As MethodInfo = Nothing
+                For Each m As MethodInfo In clib.type.GetMethods(BindingFlags.Public Or BindingFlags.Instance)
+                    Dim aarr As SetupMethodAttribute() = m.GetCustomAttributes(GetType(SetupMethodAttribute), False)
+                    If aarr.Length <> 0 Then
+                        If m.ReturnType = GetType(LibrarySetup) Then
+                            smethod = m
+                        End If
+                    End If
+                Next
+
+                If smethod Is Nothing Then
+                    smethod = clib.type.GetMethod("setup", BindingFlags.Public Or BindingFlags.Instance)
+                    If Not smethod.ReturnType = GetType(LibrarySetup) Then
+                        smethod = Nothing
+                    End If
+                End If
+
                 Dim libstupd As LibrarySetup = smethod.Invoke(clib.instance, Nothing)
                 'add lib
                 If Not library_info.ContainsKey(nom) Then
@@ -73,15 +91,22 @@ Module libraryinit
     Public Sub load_dlls()
         For Each c_dll As String In dll_paths
             Try
-                Dim bytes As Byte() = File.ReadAllBytes(c_dll)
-                If dlls.ContainsKey(c_dll) Then
-                    dlls(c_dll) = Assembly.Load(bytes)
+                If File.Exists(c_dll) Then
+                    Dim bytes As Byte() = File.ReadAllBytes(c_dll)
+                    If dlls.ContainsKey(c_dll) Then
+                        dlls(c_dll) = Assembly.Load(bytes)
+                    Else
+                        dlls.Add(c_dll, Assembly.Load(bytes))
+                    End If
+                    If Not dlls_loaded.Contains(c_dll) Then dlls_loaded.Add(c_dll)
                 Else
-                    dlls.Add(c_dll, Assembly.Load(bytes))
+                    If Not dlls_not_loaded.Contains(c_dll) Then dlls_not_loaded.Add(c_dll)
                 End If
             Catch ex As Threading.ThreadAbortException
                 Throw ex
             Catch ex As Exception
+                If Not dlls_not_loaded.Contains(c_dll) Then dlls_not_loaded.Add(c_dll)
+                dlls_loaded.RemoveAll(Function(x) x.Contains(c_dll))
             End Try
         Next
     End Sub

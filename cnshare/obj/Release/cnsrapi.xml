@@ -6,7 +6,17 @@ cnsrapi
 </name>
 </assembly>
 <members>
-<member name="M:captainalm.calmcon.api.OutputText.#ctor(System.String,System.Drawing.Color,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+<member name="M:captainalm.calmcon.api.SetupMethodAttribute.#ctor">
+	<summary>
+ Initalizes a new instance of this Attribute on The Method.
+ </summary>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.SetupMethodAttribute">
+	<summary>
+ This Attribute is used to Specify The Setup Method of The Library.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:captainalm.calmcon.api.OutputText.#ctor(System.String,System.Drawing.Color,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
 	<summary>
  Creates a new output text instance
  </summary>
@@ -163,7 +173,7 @@ cnsrapi
 	<remarks></remarks>
 </member><member name="T:captainalm.calmcon.api.OutputTextBlock">
 	<summary>
- This is what is the split up parts of OutputText.
+ This is the split up parts of an OutputText Instance.
  </summary>
 	<remarks></remarks>
 </member><member name="T:captainalm.calmcon.api.Types.Cmd">
@@ -406,7 +416,7 @@ cnsrapi
 	<remarks></remarks>
 </member><member name="T:captainalm.calmcon.api.LibrarySetup">
 	<summary>
- Pass this structure from your setup() function, you need one of these functions per class, structure or module.
+ Pass this structure from a function with a <see cref="T:captainalm.calmcon.api.SetupMethodAttribute">SetupMethodAttribute</see>, you need one of these functions per library definition.
  </summary>
 	<remarks></remarks>
 </member><member name="F:captainalm.calmcon.api.Command.command">

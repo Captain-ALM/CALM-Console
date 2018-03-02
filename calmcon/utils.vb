@@ -1,7 +1,5 @@
 ﻿Imports System.IO
 Imports System.Runtime.Serialization.Formatters.Binary
-Imports System.Security.Cryptography
-Imports System.Text
 Imports System.Runtime.InteropServices
 
 Module utils
@@ -25,45 +23,12 @@ Module utils
         Return ret
     End Function
 
-    Public Function convertobjectargstostringargs(args As String()) As String()
-        Dim toret(0) As String
-        If IsNothing(args) Then
-            Return Nothing
-        End If
-        Try
-            Dim numofi As Integer = numberofindexes(args)
-            ReDim toret(numofi - 1)
-            For i As Integer = 0 To numofi - 1 Step 1
-                toret(i) = args(i).ToString
-            Next
-        Catch ex As Exception
-            Return Nothing
-        End Try
-        Return toret
-    End Function
-
     Public Function numberofindexes(args As String()) As Integer
         If args Is Nothing Then
             Return 0
         Else
             Return args.Length
         End If
-        'old code
-        'Try
-        '    Dim i As Integer = 0
-        '    Try
-        '        While "True"
-        '            Dim tmp As Object = args(i)
-        '            tmp = Nothing
-        '            i = i + 1
-        '        End While
-        '        Return 0
-        '    Catch ex As Exception
-        '        Return i
-        '    End Try
-        'Catch ex As Exception
-        '    Return 0
-        'End Try
     End Function
 
     Public Function loadfile(filepath As String) As String
@@ -101,22 +66,6 @@ Module utils
         End Try
     End Function
 
-    Public Function converintegertoboolean(int As Integer) As Boolean
-        If (int = 1) Then
-            Return True
-        Else
-            Return False
-        End If
-    End Function
-
-    Public Function converbooleantointeger(bool As Boolean) As Integer
-        If (bool) Then
-            Return 1
-        Else
-            Return 0
-        End If
-    End Function
-
     Public Function convertobjecttostring(obj As Object) As String
         Try
             Dim memorysteam As New MemoryStream
@@ -146,73 +95,5 @@ Module utils
         End Try
     End Function
 
-    Private KeyLengthBits As Integer = 256
-
-    Private SaltLength As Integer = 8
-
-    Private IterationCount As Integer = 2000
-
-    Private rng As RNGCryptoServiceProvider = New RNGCryptoServiceProvider()
-
-    Public Function DecryptString(ciphertext As String, passphrase As String) As String
-        Try
-            Dim expr_11 As String() = ciphertext.Split(":".ToCharArray(), 3)
-            Dim iv As Byte() = Convert.FromBase64String(expr_11(0))
-            Dim salt As Byte() = Convert.FromBase64String(expr_11(1))
-            Dim arg_35_0 As Byte() = Convert.FromBase64String(expr_11(2))
-            Dim key As Byte() = DeriveKeyFromPassphrase(passphrase, salt)
-            Dim bytes As Byte() = DoCryptoOperation(arg_35_0, key, iv, False)
-            Return Encoding.UTF8.GetString(bytes)
-        Catch ex As Exception
-
-        End Try
-        Return ""
-    End Function
-
-    Public Function EncryptString(plaintext As String, passphrase As String) As String
-        Try
-            Dim array As Byte() = GenerateRandomBytes(SaltLength)
-            Dim array2 As Byte() = GenerateRandomBytes(16)
-            Dim key As Byte() = DeriveKeyFromPassphrase(passphrase, array)
-            Dim inArray As Byte() = DoCryptoOperation(Encoding.UTF8.GetBytes(plaintext), key, array2, True)
-            Return String.Format("{0}:{1}:{2}", Convert.ToBase64String(array2), Convert.ToBase64String(array), Convert.ToBase64String(inArray))
-        Catch ex As Exception
-
-        End Try
-        Return ""
-    End Function
-
-    Private Function DeriveKeyFromPassphrase(passphrase As String, salt As Byte()) As Byte()
-        Return New Rfc2898DeriveBytes(passphrase, salt, IterationCount).GetBytes(KeyLengthBits / 8)
-    End Function
-
-    Private Function GenerateRandomBytes(lengthBytes As Integer) As Byte()
-        Dim array As Byte() = New Byte(lengthBytes - 1) {}
-        rng.GetBytes(array)
-        Return array
-    End Function
-
-    Private Function DoCryptoOperation(inputData As Byte(), key As Byte(), iv As Byte(), encrypt As Boolean) As Byte()
-        Dim result As Byte()
-        Using aesCryptoServiceProvider As AesCryptoServiceProvider = New AesCryptoServiceProvider()
-            Using memoryStream As MemoryStream = New MemoryStream()
-                Dim transform As ICryptoTransform = If(encrypt, aesCryptoServiceProvider.CreateEncryptor(key, iv), aesCryptoServiceProvider.CreateDecryptor(key, iv))
-                Try
-                    Using cryptoStream As CryptoStream = New CryptoStream(memoryStream, transform, CryptoStreamMode.Write)
-                        cryptoStream.Write(inputData, 0, inputData.Length)
-                    End Using
-                    result = memoryStream.ToArray()
-                Catch ex_5B As Exception
-                    result = New Byte(-1) {}
-                End Try
-            End Using
-        End Using
-        Return result
-    End Function
-
-    Public Declare Function SetForegroundWindow Lib "user32.dll" (hWnd As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
-    Public Declare Function SetActiveWindow Lib "user32.dll" (hWnd As IntPtr) As IntPtr
-    Public Declare Function FindWindow Lib "user32.dll" (lpClassName As String, lpWindowName As String) As IntPtr
-    Public Declare Function GetActiveWindow Lib "user32.dll" () As IntPtr
     Public Declare Function Beep Lib "kernel32.dll" (dwFreq As Int32, dwDuration As Int32) As <MarshalAs(UnmanagedType.Bool)> Boolean
 End Module
