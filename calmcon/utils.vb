@@ -9,6 +9,8 @@ Module utils
             ret = Boolean.Parse(str)
         Catch ex As InvalidCastException
             ret = False
+        Catch ex As FormatException
+            ret = False
         End Try
         Return ret
     End Function
@@ -18,6 +20,8 @@ Module utils
         Try
             ret = Integer.Parse(str)
         Catch ex As InvalidCastException
+            ret = 0
+        Catch ex As FormatException
             ret = 0
         End Try
         Return ret

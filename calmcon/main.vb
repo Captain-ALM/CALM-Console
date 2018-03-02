@@ -24,32 +24,36 @@ Public Class main
     Private hook_running As Boolean = False
     Private at_end As Boolean = False
     Private shutdown_hook_ran As Boolean = False
+    Private lock_ren As New Object()
 
     Friend Sub render_outtxt(ByVal rtfbx As RichTextBox, ByVal optxt As OutputText)
         If Not rtfbx.InvokeRequired Then
-            Dim blocks As OutputTextBlock() = optxt.ToOutputTextBlocks()
-            For Each c_block As OutputTextBlock In blocks
+            SyncLock lock_ren
+                Dim blocks As OutputTextBlock() = optxt.ToOutputTextBlocks()
+                For Each c_block As OutputTextBlock In blocks
+                    rtfbx.Select(rtfbx.TextLength, 0)
+                    rtfbx.SelectionColor = c_block.forecolor
+                    Dim fstyle_flag As FontStyle = FontStyle.Regular
+                    If c_block.bold Then
+                        fstyle_flag += FontStyle.Bold
+                    End If
+                    If c_block.italic Then
+                        fstyle_flag += FontStyle.Italic
+                    End If
+                    If c_block.underline Then
+                        fstyle_flag += FontStyle.Underline
+                    End If
+                    If c_block.strikeout Then
+                        fstyle_flag += FontStyle.Strikeout
+                    End If
+                    rtfbx.SelectionFont = New Font("Consolas", 8.25, fstyle_flag)
+                    rtfbx.AppendText(c_block.text)
+                Next
                 rtfbx.Select(rtfbx.TextLength, 0)
-                rtfbx.SelectionColor = c_block.forecolor
-                Dim fstyle_flag As FontStyle = FontStyle.Regular
-                If c_block.bold Then
-                    fstyle_flag += FontStyle.Bold
-                End If
-                If c_block.italic Then
-                    fstyle_flag += FontStyle.Italic
-                End If
-                If c_block.underline Then
-                    fstyle_flag += FontStyle.Underline
-                End If
-                If c_block.strikeout Then
-                    fstyle_flag += FontStyle.Strikeout
-                End If
-                rtfbx.SelectionFont = New Font("Consolas", 8.25, fstyle_flag)
-                rtfbx.AppendText(c_block.text)
-            Next
-            rtfbx.Select(rtfbx.TextLength, 0)
-            rtfbx.SelectionColor = Color.Black
-            rtfbx.SelectionFont = New Font("Consolas", 8.25, FontStyle.Regular)
+                rtfbx.SelectionColor = Color.Black
+                rtfbx.SelectionFont = New Font("Consolas", 8.25, FontStyle.Regular)
+                rtfbx.ScrollToCaret()
+            End SyncLock
         Else
             calloncontrol(rtfbx, Sub() render_outtxt(rtfbx, optxt))
         End If
@@ -207,6 +211,14 @@ Public Class main
                     ihook.hook_writeoutput.Invoke(writeoutputhook)
                 End If
                 cancel_action_thread()
+                If Not ihook.hook_eodrk Is Nothing Then
+                    ihook.hook_eodrk.Invoke(read_key)
+                End If
+                cancel_action_thread()
+                If Not ihook.hook_eodce Is Nothing Then
+                    ihook.hook_eodce.Invoke(cmd_read_ed)
+                End If
+                cancel_action_thread()
                 If Not ihook.hook_commandstack Is Nothing Then
                     ihook.hook_commandstack.Invoke(command_stack)
                 End If
@@ -294,6 +306,7 @@ Public Class main
         ElseIf cmdpos = cmd_gui_position.bottom Then
             cmdpos = gui_pos_edit(cmd_gui_position.top)
         End If
+        butmcmdarr.Select()
     End Sub
 
     Public Function gui_pos_edit(newpos As cmd_gui_position) As cmd_gui_position
@@ -362,6 +375,7 @@ Public Class main
             contrcmdvis(False)
             cmd_inter(txtbxcmd.Text)
             contrcmdvis(True)
+            txtbxcmd.Select()
         ElseIf e.KeyCode = Keys.Up And e.Alt And command_buffer_shortcuts_enabled Then
             e.SuppressKeyPress = True
             e.Handled = True
@@ -409,6 +423,20 @@ Public Class main
             'ElseIf e.KeyCode = Keys.A And e.Control Then
             '    e.SuppressKeyPress = True
             '    e.Handled = True
+        ElseIf read_key Then
+            e.SuppressKeyPress = True
+            Dim kc As New KeysConverter
+            For Each ihook As HookInfo In hooks_info.Values
+                Try
+                    If Not ihook.hook_rk Is Nothing Then
+                        ihook.hook_rk.Invoke(kc.ConvertToString(e.KeyCode))
+                    End If
+                Catch ex As ThreadAbortException
+                    Throw ex
+                Catch ex As Exception
+                End Try
+            Next
+            e.Handled = True
         End If
     End Sub
 
@@ -680,6 +708,7 @@ threadstart5:
         contrcmdvis(False)
         cmd_inter(txtbxcmd.Text)
         contrcmdvis(True)
+        txtbxcmd.Select()
     End Sub
 
     Private Sub cmd_inter(icmd As String)
@@ -747,42 +776,44 @@ threadstart5:
 threadstart3:
             Try
                 Try
-                    callonform(Sub()
-                                   If command_stack.Count > 0 And commands_init And butstop.Enabled = False Then
-                                       butstop.Enabled = True
-                                   ElseIf butstop.Enabled And command_stack.Count < 1 Then
-                                       butstop.Enabled = False
-                                   End If
-                                   If command_stack.Count > 0 And commands_init And pgrsbarstatus.Style <> ProgressBarStyle.Marquee Then
-                                       pgrsbarstatus.Style = ProgressBarStyle.Marquee
-                                   ElseIf pgrsbarstatus.Style = ProgressBarStyle.Marquee And command_stack.Count < 1 Then
-                                       pgrsbarstatus.Style = ProgressBarStyle.Continuous
-                                   End If
-                                   If command_stack.Count > 0 And commands_init And lblstatus.Text = "" Then
-                                       lblstatus.Text = "Executing Commands: " & command_stack.Count & " Commands Left..."
-                                   ElseIf lblstatus.Text.StartsWith("Executing Commands:") And command_stack.Count < 1 Then
-                                       lblstatus.Text = ""
-                                   End If
-                               End Sub)
-                    While command_stack.Count > 0 And commands_init
-                        Dim curcom As String = command_stack.Pop()
-                        Dim retfromruncmd As OutputText = run_cmd(curcom)
-                        If retfromruncmd <> "" Then
-                            If loged Then
-                                log = log & retfromruncmd & ControlChars.CrLf
-                            End If
-                            callonform(Sub()
-                                           'txtbxlog.AppendText(retfromruncmd & ControlChars.CrLf)
-                                           render_outtxt(txtbxlog, retfromruncmd & ControlChars.CrLf)
+                    If cmd_read_ed Then
+                        callonform(Sub()
+                                       If command_stack.Count > 0 And commands_init And butstop.Enabled = False Then
+                                           butstop.Enabled = True
+                                       ElseIf butstop.Enabled And command_stack.Count < 1 Then
+                                           butstop.Enabled = False
+                                       End If
+                                       If command_stack.Count > 0 And commands_init And pgrsbarstatus.Style <> ProgressBarStyle.Marquee Then
+                                           pgrsbarstatus.Style = ProgressBarStyle.Marquee
+                                       ElseIf pgrsbarstatus.Style = ProgressBarStyle.Marquee And command_stack.Count < 1 Then
+                                           pgrsbarstatus.Style = ProgressBarStyle.Continuous
+                                       End If
+                                       If command_stack.Count > 0 And commands_init And lblstatus.Text = "" Then
                                            lblstatus.Text = "Executing Commands: " & command_stack.Count & " Commands Left..."
-                                       End Sub)
-                        End If
-                        If cancel_action Then
-                            cancel_action = False
-                            command_stack.Clear()
-                        End If
-                        Thread.Sleep(25)
-                    End While
+                                       ElseIf lblstatus.Text.StartsWith("Executing Commands:") And command_stack.Count < 1 Then
+                                           lblstatus.Text = ""
+                                       End If
+                                   End Sub)
+                        While command_stack.Count > 0 And commands_init And cmd_read_ed
+                            Dim curcom As String = command_stack.Pop()
+                            Dim retfromruncmd As OutputText = run_cmd(curcom)
+                            If Not retfromruncmd Is Nothing And Not retfromruncmd = "" And Not retfromruncmd.BlockCount = 0 Then
+                                If loged Then
+                                    log = log & retfromruncmd & ControlChars.CrLf
+                                End If
+                                callonform(Sub()
+                                               'txtbxlog.AppendText(retfromruncmd & ControlChars.CrLf)
+                                               render_outtxt(txtbxlog, retfromruncmd & ControlChars.CrLf)
+                                               lblstatus.Text = "Executing Commands: " & command_stack.Count & " Commands Left..."
+                                           End Sub)
+                            End If
+                            If cancel_action Then
+                                cancel_action = False
+                                command_stack.Clear()
+                            End If
+                            Thread.Sleep(25)
+                        End While
+                    End If
                     If log.Length > 999999 And loged Then
                         If savefile(logpath & "\calm_cmd-" & DateTime.Now.Hour & "-" & DateTime.Now.Minute & "-" & DateTime.Now.Second & "-" & DateTime.Now.Day & "-" & DateTime.Now.Month & "-" & DateTime.Now.Year & "-" & ".txt", log) Then
                             log = ""

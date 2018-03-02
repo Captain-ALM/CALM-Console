@@ -122,7 +122,7 @@ Public Class OutputText
         End Get
     End Property
     ''' <summary>
-    ''' The default property, gets a block form an index.
+    ''' The default property, gets a block from an index.
     ''' </summary>
     ''' <param name="index">The index number.</param>
     ''' <value>OutputTextBlock</value>
@@ -168,7 +168,7 @@ Public Class OutputText
     ''' Converts an outputtext instance to an output text block array.
     ''' </summary>
     ''' <param name="optxt">The outputtext instance to convert.</param>
-    ''' <returns>A outputtextblock array form the outputtext instance.</returns>
+    ''' <returns>A outputtextblock array from the outputtext instance.</returns>
     ''' <remarks></remarks>
     Public Shared Narrowing Operator CType(ByVal optxt As OutputText) As OutputTextBlock()
         Dim lst As New List(Of OutputTextBlock)

@@ -42,5 +42,5 @@ Public Module form_flags
     Public form_instance As main
     Public echo_command As Boolean = False
     Public read_key As Boolean = False
-    Public disp_read_key As Boolean = False
+    Public cmd_read_ed As Boolean = True
 End Module

@@ -95,6 +95,24 @@
     ''' <param name="hook">The hook instance.</param>
     ''' <remarks></remarks>
     Public Delegate Sub GetReadOutputHook(ByRef hook As ReadOutputHook)
+    ''' <summary>
+    ''' This is the hook delegate type required to hook to the EnableOrDisableReadKey Boolean (In the operation log text box.)
+    ''' </summary>
+    ''' <param name="read_key">The EnableOrDisableReadKey Boolean instance.</param>
+    ''' <remarks></remarks>
+    Public Delegate Sub EnableOrDisableReadKeyHook(ByRef read_key As Boolean)
+    ''' <summary>
+    ''' This hook is used to listen for a key being pressed in the Operation Log Text Box event.
+    ''' </summary>
+    ''' <param name="key">The key data caught.</param>
+    ''' <remarks></remarks>
+    Public Delegate Sub ReadKeyHook(ByVal key As String)
+    ''' <summary>
+    ''' This is the hook delegate type required to hook to the EnableOrDisableCmdExecution Boolean
+    ''' </summary>
+    ''' <param name="eodcmdexec">The EnableOrDisableCmdExecution Boolean instance.</param>
+    ''' <remarks></remarks>
+    Public Delegate Sub EnableOrDisableCmdExecution(ByRef eodcmdexec As Boolean)
 End Module
 ''' <summary>
 ''' API interface for adding other syntax language interpreters.
@@ -195,6 +213,21 @@ Public Structure HookInfo
     ''' <remarks></remarks>
     Public hook_syntaxname As SyntaxNameHook
     ''' <summary>
+    ''' The hook enable or disable read key delegate.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public hook_eodrk As EnableOrDisableReadKeyHook
+    ''' <summary>
+    ''' The hook read key delegate.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public hook_rk As ReadKeyHook
+    ''' <summary>
+    ''' The hook eanbale or disable cmd execution delegate.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public hook_eodce As EnableOrDisableCmdExecution
+    ''' <summary>
     ''' Constructs a new set of hook info, use nothing as a parameter if you do not want to register a certain hook.
     ''' </summary>
     ''' <param name="hook_set_name">The name of the hook set.</param>
@@ -210,8 +243,11 @@ Public Structure HookInfo
     ''' <param name="getwout">The Get WriteOutput Hook delegate.</param>
     ''' <param name="getrout">The Get ReadOutput Hook delegate.</param>
     ''' <param name="synxnom">The Syntax Name Hook delegate.</param>
+    ''' <param name="eodrk">The Enable Or Disable Read Key (In the operation log text box.) Hook Delegate.</param>
+    ''' <param name="rk">The Read Key (In the operation log text box.) Hook Delegate.</param>
+    ''' <param name="eodce">The Enable Or Disable Cmd Execution Hook Delegate.</param>
     ''' <remarks></remarks>
-    Public Sub New(ByVal hook_set_name As String, Optional ByVal hcmdstk As CommandStackHook = Nothing, Optional ByVal hvardic As variableDictionaryHook = Nothing, Optional ByVal hprostr As ProgramEventHook = Nothing, Optional ByVal hprostp As ProgramEventHook = Nothing, Optional ByVal hcompreex As PreCommandExecuteHook = Nothing, Optional ByVal hcompstex As PostCommandExecuteHook = Nothing, Optional ByVal hform As FormHook = Nothing, Optional ByVal hout As OutputTextBoxHook = Nothing, Optional ByVal getrcom As GetRunCommandHook = Nothing, Optional ByVal getwout As GetWriteOutputHook = Nothing, Optional ByVal getrout As GetReadOutputHook = Nothing, Optional ByVal synxnom As SyntaxNameHook = Nothing)
+    Public Sub New(ByVal hook_set_name As String, Optional ByVal hcmdstk As CommandStackHook = Nothing, Optional ByVal hvardic As variableDictionaryHook = Nothing, Optional ByVal hprostr As ProgramEventHook = Nothing, Optional ByVal hprostp As ProgramEventHook = Nothing, Optional ByVal hcompreex As PreCommandExecuteHook = Nothing, Optional ByVal hcompstex As PostCommandExecuteHook = Nothing, Optional ByVal hform As FormHook = Nothing, Optional ByVal hout As OutputTextBoxHook = Nothing, Optional ByVal getrcom As GetRunCommandHook = Nothing, Optional ByVal getwout As GetWriteOutputHook = Nothing, Optional ByVal getrout As GetReadOutputHook = Nothing, Optional ByVal synxnom As SyntaxNameHook = Nothing, Optional ByVal eodrk As EnableOrDisableReadKeyHook = Nothing, Optional ByVal rk As ReadKeyHook = Nothing, Optional ByVal eodce As EnableOrDisableCmdExecution = Nothing)
         name = hook_set_name
         hook_commandstack = hcmdstk
         hook_variabledictionary = hvardic
@@ -225,6 +261,9 @@ Public Structure HookInfo
         hook_writeoutput = getwout
         hook_readoutput = getrout
         hook_syntaxname = synxnom
+        hook_eodrk = eodrk
+        hook_rk = rk
+        hook_eodce = eodce
     End Sub
 End Structure
 ''' <summary>
@@ -283,7 +322,7 @@ Public Structure Command
     ''' The held command delegate.
     ''' </summary>
     ''' <remarks></remarks>
-    Public command As [Delegate]
+    Public command As Cmd
     ''' <summary>
     ''' The name of the command.
     ''' </summary>

@@ -78,7 +78,7 @@ cnsrapi
 	<remarks></remarks>
 </member><member name="P:captainalm.calmcon.api.OutputText.Block(System.Int32)">
 	<summary>
- The default property, gets a block form an index.
+ The default property, gets a block from an index.
  </summary>
 	<param name="index">The index number.</param>
 	<value>OutputTextBlock</value>
@@ -110,7 +110,7 @@ cnsrapi
  Converts an outputtext instance to an output text block array.
  </summary>
 	<param name="optxt">The outputtext instance to convert.</param>
-	<returns>A outputtextblock array form the outputtext instance.</returns>
+	<returns>A outputtextblock array from the outputtext instance.</returns>
 	<remarks></remarks>
 </member><member name="M:captainalm.calmcon.api.OutputText.op_Concatenate(captainalm.calmcon.api.OutputText,captainalm.calmcon.api.OutputText)">
 	<summary>
@@ -272,6 +272,24 @@ cnsrapi
  </summary>
 	<param name="hook">The hook instance.</param>
 	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Types.EnableOrDisableReadKeyHook">
+	<summary>
+ This is the hook delegate type required to hook to the EnableOrDisableReadKey Boolean (In the operation log text box.)
+ </summary>
+	<param name="read_key">The EnableOrDisableReadKey Boolean instance.</param>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Types.ReadKeyHook">
+	<summary>
+ This hook is used to listen for a key being pressed in the Operation Log Text Box event.
+ </summary>
+	<param name="key">The key data caught.</param>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Types.EnableOrDisableCmdExecution">
+	<summary>
+ This is the hook delegate type required to hook to the EnableOrDisableCmdExecution Boolean
+ </summary>
+	<param name="eodcmdexec">The EnableOrDisableCmdExecution Boolean instance.</param>
+	<remarks></remarks>
 </member><member name="M:captainalm.calmcon.api.ISyntax.name">
 	<summary>
  Returns the Syntax Name.
@@ -356,7 +374,22 @@ cnsrapi
  The hook syntax name delegate.
  </summary>
 	<remarks></remarks>
-</member><member name="M:captainalm.calmcon.api.HookInfo.#ctor(System.String,captainalm.calmcon.api.Types.CommandStackHook,captainalm.calmcon.api.Types.variableDictionaryHook,captainalm.calmcon.api.Types.ProgramEventHook,captainalm.calmcon.api.Types.ProgramEventHook,captainalm.calmcon.api.Types.PreCommandExecuteHook,captainalm.calmcon.api.Types.PostCommandExecuteHook,captainalm.calmcon.api.Types.FormHook,captainalm.calmcon.api.Types.OutputTextBoxHook,captainalm.calmcon.api.Types.GetRunCommandHook,captainalm.calmcon.api.Types.GetWriteOutputHook,captainalm.calmcon.api.Types.GetReadOutputHook,captainalm.calmcon.api.Types.SyntaxNameHook)">
+</member><member name="F:captainalm.calmcon.api.HookInfo.hook_eodrk">
+	<summary>
+ The hook enable or disable read key delegate.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.HookInfo.hook_rk">
+	<summary>
+ The hook read key delegate.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.HookInfo.hook_eodce">
+	<summary>
+ The hook eanbale or disable cmd execution delegate.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:captainalm.calmcon.api.HookInfo.#ctor(System.String,captainalm.calmcon.api.Types.CommandStackHook,captainalm.calmcon.api.Types.variableDictionaryHook,captainalm.calmcon.api.Types.ProgramEventHook,captainalm.calmcon.api.Types.ProgramEventHook,captainalm.calmcon.api.Types.PreCommandExecuteHook,captainalm.calmcon.api.Types.PostCommandExecuteHook,captainalm.calmcon.api.Types.FormHook,captainalm.calmcon.api.Types.OutputTextBoxHook,captainalm.calmcon.api.Types.GetRunCommandHook,captainalm.calmcon.api.Types.GetWriteOutputHook,captainalm.calmcon.api.Types.GetReadOutputHook,captainalm.calmcon.api.Types.SyntaxNameHook,captainalm.calmcon.api.Types.EnableOrDisableReadKeyHook,captainalm.calmcon.api.Types.ReadKeyHook,captainalm.calmcon.api.Types.EnableOrDisableCmdExecution)">
 	<summary>
  Constructs a new set of hook info, use nothing as a parameter if you do not want to register a certain hook.
  </summary>
@@ -373,6 +406,9 @@ cnsrapi
 	<param name="getwout">The Get WriteOutput Hook delegate.</param>
 	<param name="getrout">The Get ReadOutput Hook delegate.</param>
 	<param name="synxnom">The Syntax Name Hook delegate.</param>
+	<param name="eodrk">The Enable Or Disable Read Key (In the operation log text box.) Hook Delegate.</param>
+	<param name="rk">The Read Key (In the operation log text box.) Hook Delegate.</param>
+	<param name="eodce">The Enable Or Disable Cmd Execution Hook Delegate.</param>
 	<remarks></remarks>
 </member><member name="T:captainalm.calmcon.api.HookInfo">
 	<summary>
