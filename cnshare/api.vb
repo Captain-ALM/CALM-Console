@@ -113,6 +113,12 @@
     ''' <param name="eodcmdexec">The EnableOrDisableCmdExecution Boolean instance.</param>
     ''' <remarks></remarks>
     Public Delegate Sub EnableOrDisableCmdExecution(ByRef eodcmdexec As Boolean)
+    ''' <summary>
+    ''' This is the hook delegate type required to hook to the EnableOrDisableMultilineCommandEntry Boolean.
+    ''' </summary>
+    ''' <param name="eodmcmde">The EnableOrDisableMultilineCommandEntry Boolean instance.</param>
+    ''' <remarks></remarks>
+    Public Delegate Sub EnableOrDisableMultilineCommandEntry(ByRef eodmcmde As Boolean)
 End Module
 ''' <summary>
 ''' API interface for adding other syntax language interpreters.
@@ -133,14 +139,6 @@ Public Interface ISyntax
     ''' <returns>The returned list has the command as the first item and the arguments as the other items.</returns>
     ''' <remarks></remarks>
     Function decrypt(ByVal strcmd As String, ByVal commands As List(Of String)) As List(Of String)
-    REM ''' <summary>
-    REM ''' Defines the conversion of literals like numbers and strings to the right commands str dec int.
-    REM ''' </summary>
-    REM ''' <param name="strcmd">This is where the command string is passed.</param>
-    REM ''' <param name="isConverted">This is where you should put if the literal was already converted.</param>
-    REM ''' <returns>The literal converted to a command with an argument.</returns>
-    REM ''' <remarks></remarks>
-    REM Function literalconvert(ByVal strcmd As String, ByVal isConverted As Boolean) As String
 End Interface
 ''' <summary>
 ''' Use this structure to register hooks against a delegate, use nothing to specify no hook.
@@ -223,10 +221,15 @@ Public Structure HookInfo
     ''' <remarks></remarks>
     Public hook_rk As ReadKeyHook
     ''' <summary>
-    ''' The hook eanbale or disable cmd execution delegate.
+    ''' The hook enable or disable cmd execution delegate.
     ''' </summary>
     ''' <remarks></remarks>
     Public hook_eodce As EnableOrDisableCmdExecution
+    ''' <summary>
+    ''' The hook to enable or disable entering multipule commands in the command textbox delegate.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public hook_eodmce As EnableOrDisableMultilineCommandEntry
     ''' <summary>
     ''' Constructs a new set of hook info, use nothing as a parameter if you do not want to register a certain hook.
     ''' </summary>
@@ -246,8 +249,9 @@ Public Structure HookInfo
     ''' <param name="eodrk">The Enable Or Disable Read Key (In the operation log text box.) Hook Delegate.</param>
     ''' <param name="rk">The Read Key (In the operation log text box.) Hook Delegate.</param>
     ''' <param name="eodce">The Enable Or Disable Cmd Execution Hook Delegate.</param>
+    ''' <param name="eodmce">The Enable or Disable Entry of Mutipule Commands in the Command Textbox.</param>
     ''' <remarks></remarks>
-    Public Sub New(ByVal hook_set_name As String, Optional ByVal hcmdstk As CommandStackHook = Nothing, Optional ByVal hvardic As variableDictionaryHook = Nothing, Optional ByVal hprostr As ProgramEventHook = Nothing, Optional ByVal hprostp As ProgramEventHook = Nothing, Optional ByVal hcompreex As PreCommandExecuteHook = Nothing, Optional ByVal hcompstex As PostCommandExecuteHook = Nothing, Optional ByVal hform As FormHook = Nothing, Optional ByVal hout As OutputTextBoxHook = Nothing, Optional ByVal getrcom As GetRunCommandHook = Nothing, Optional ByVal getwout As GetWriteOutputHook = Nothing, Optional ByVal getrout As GetReadOutputHook = Nothing, Optional ByVal synxnom As SyntaxNameHook = Nothing, Optional ByVal eodrk As EnableOrDisableReadKeyHook = Nothing, Optional ByVal rk As ReadKeyHook = Nothing, Optional ByVal eodce As EnableOrDisableCmdExecution = Nothing)
+    Public Sub New(ByVal hook_set_name As String, Optional ByVal hcmdstk As CommandStackHook = Nothing, Optional ByVal hvardic As variableDictionaryHook = Nothing, Optional ByVal hprostr As ProgramEventHook = Nothing, Optional ByVal hprostp As ProgramEventHook = Nothing, Optional ByVal hcompreex As PreCommandExecuteHook = Nothing, Optional ByVal hcompstex As PostCommandExecuteHook = Nothing, Optional ByVal hform As FormHook = Nothing, Optional ByVal hout As OutputTextBoxHook = Nothing, Optional ByVal getrcom As GetRunCommandHook = Nothing, Optional ByVal getwout As GetWriteOutputHook = Nothing, Optional ByVal getrout As GetReadOutputHook = Nothing, Optional ByVal synxnom As SyntaxNameHook = Nothing, Optional ByVal eodrk As EnableOrDisableReadKeyHook = Nothing, Optional ByVal rk As ReadKeyHook = Nothing, Optional ByVal eodce As EnableOrDisableCmdExecution = Nothing, Optional ByVal eodmce As EnableOrDisableMultilineCommandEntry = Nothing)
         name = hook_set_name
         hook_commandstack = hcmdstk
         hook_variabledictionary = hvardic
@@ -264,6 +268,7 @@ Public Structure HookInfo
         hook_eodrk = eodrk
         hook_rk = rk
         hook_eodce = eodce
+        hook_eodmce = eodmce
     End Sub
 End Structure
 ''' <summary>
@@ -337,7 +342,7 @@ Public Structure Command
     ''' Constructs a new command.
     ''' </summary>
     ''' <param name="_name">The name of the command.</param>
-    ''' <param name="del">The delegate for the command using <seealso cref=" captainalm.calmcon.api.types.Cmd">the Cmd delegate type</seealso>.</param>
+    ''' <param name="del">The delegate for the command using <seealso cref="captainalm.calmcon.api.types.Cmd">the Cmd delegate type</seealso>.</param>
     ''' <param name="_help">The help string for the command.</param>
     ''' <remarks></remarks>
     Public Sub New(ByVal _name As String, ByVal del As Cmd, Optional ByVal _help As String = "")

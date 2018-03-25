@@ -219,6 +219,10 @@ Public Class main
                     ihook.hook_eodce.Invoke(cmd_read_ed)
                 End If
                 cancel_action_thread()
+                If Not ihook.hook_eodmce Is Nothing Then
+                    ihook.hook_eodmce.Invoke(allowenter)
+                End If
+                cancel_action_thread()
                 If Not ihook.hook_commandstack Is Nothing Then
                     ihook.hook_commandstack.Invoke(command_stack)
                 End If
@@ -274,7 +278,7 @@ Public Class main
             Try
                 cancel_action_thread()
                 If Not ihook.hook_programstop Is Nothing Then
-                    ihook.hook_programstart.Invoke()
+                    ihook.hook_programstop.Invoke()
                 End If
                 cancel_action_thread()
             Catch ex As ThreadAbortException
@@ -441,11 +445,11 @@ Public Class main
     End Sub
 
     Private Sub chkbxenter_CheckedChanged(sender As Object, e As EventArgs) Handles chkbxenter.CheckedChanged
-        If txtbxcmd.Text.Length = 0 Then
-            allowenter = chkbxenter.Checked
-        Else
-            chkbxenter.Checked = allowenter
-        End If
+        'If txtbxcmd.Text.Length = 0 Then
+        allowenter = chkbxenter.Checked
+        'Else
+        '    chkbxenter.Checked = allowenter
+        'End If
     End Sub
 
     Private Sub butabout_Click(sender As Object, e As EventArgs) Handles butabout.Click
@@ -493,6 +497,12 @@ threadstart1:
                                        If chkbxenter.Enabled = True Then
                                            chkbxenter.Enabled = False
                                        End If
+                                   End If
+                                   If allowenter And Not chkbxenter.Checked Then
+                                       chkbxenter.Checked = True
+                                   End If
+                                   If Not allowenter And chkbxenter.Checked Then
+                                       chkbxenter.Checked = False
                                    End If
                                End Sub)
                 Catch ex As ThreadAbortException
@@ -734,7 +744,7 @@ threadstart5:
             command_buffer_index = 1
         End If
 
-        If ccmd <> "" Then
+        'If ccmd <> "" Then
                 Dim ccom As String = ""
                 Dim cuchar As String = ""
                 Dim lchar As String = ""
@@ -767,7 +777,7 @@ threadstart5:
                     Dim comcmd As String = l_stack.Pop()
                     command_stack.Push(comcmd)
                 Next
-            End If
+            'End If
         txtbxcmd.Text = ""
     End Sub
 
@@ -796,17 +806,19 @@ threadstart3:
                                    End Sub)
                         While command_stack.Count > 0 And commands_init And cmd_read_ed
                             Dim curcom As String = command_stack.Pop()
-                            Dim retfromruncmd As OutputText = run_cmd(curcom)
-                            If Not retfromruncmd Is Nothing And Not retfromruncmd = "" And Not retfromruncmd.BlockCount = 0 Then
-                                If loged Then
-                                    log = log & retfromruncmd & ControlChars.CrLf
-                                End If
-                                callonform(Sub()
-                                               'txtbxlog.AppendText(retfromruncmd & ControlChars.CrLf)
-                                               render_outtxt(txtbxlog, retfromruncmd & ControlChars.CrLf)
-                                               lblstatus.Text = "Executing Commands: " & command_stack.Count & " Commands Left..."
-                                           End Sub)
-                            End If
+							If curcom <> "" Then
+                            	Dim retfromruncmd As OutputText = run_cmd(curcom)
+                            	If Not retfromruncmd Is Nothing And Not retfromruncmd = "" And Not retfromruncmd.BlockCount = 0 Then
+                                	If loged Then
+                                    	log = log & retfromruncmd & ControlChars.CrLf
+                                	End If
+                                	callonform(Sub()
+                                    	           'txtbxlog.AppendText(retfromruncmd & ControlChars.CrLf)
+                                    	           render_outtxt(txtbxlog, retfromruncmd & ControlChars.CrLf)
+                                        	       lblstatus.Text = "Executing Commands: " & command_stack.Count & " Commands Left..."
+                                       	    End Sub)
+                            	End If
+							End If
                             If cancel_action Then
                                 cancel_action = False
                                 command_stack.Clear()
@@ -887,93 +899,121 @@ threadstart3:
     End Sub
 
     Private Sub UndoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UndoToolStripMenuItem.Click
-        Dim casted As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
-        Dim cms As ContextMenuStrip = casted.GetCurrentParent()
-        If cms.SourceControl.Name = txtbxcmd.Name Then
-            If txtbxcmd.CanUndo Then
-                txtbxcmd.Undo()
+        Dim casted As ToolStripMenuItem = cast(Of ToolStripMenuItem)(sender)
+        If Not casted Is Nothing Then
+            Dim cms As ContextMenuStrip = casted.GetCurrentParent()
+            If cms.SourceControl.Name = txtbxcmd.Name Then
+                If txtbxcmd.CanUndo Then
+                    txtbxcmd.Undo()
+                End If
             End If
         End If
     End Sub
 
     Private Sub ContextMenuStripRtb_Opening(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles ContextMenuStripRtb.Opening
-        Dim cms As ContextMenuStrip = CType(sender, ContextMenuStrip)
-        If cms.SourceControl.Name = txtbxcmd.Name Then
-            If txtbxcmd.SelectedText <> "" Then
-                CutToolStripMenuItem.Enabled = True
-                CopyToolStripMenuItem.Enabled = True
-            Else
-                CutToolStripMenuItem.Enabled = False
-                CopyToolStripMenuItem.Enabled = False
-            End If
-            If Clipboard.ContainsText() Then
-                PasteToolStripMenuItem.Enabled = True
-            Else
-                PasteToolStripMenuItem.Enabled = False
-            End If
-            If txtbxcmd.CanUndo Then
-                UndoToolStripMenuItem.Enabled = True
+        Dim cms As ContextMenuStrip = cast(Of ContextMenuStrip)(sender)
+        If Not cms Is Nothing Then
+            If cms.SourceControl.Name = txtbxcmd.Name Then
+                If txtbxcmd.SelectedText <> "" Then
+                    CutToolStripMenuItem.Enabled = True
+                    CopyToolStripMenuItem.Enabled = True
+                Else
+                    CutToolStripMenuItem.Enabled = False
+                    CopyToolStripMenuItem.Enabled = False
+                End If
+                If Clipboard.ContainsText() Then
+                    PasteToolStripMenuItem.Enabled = True
+                Else
+                    PasteToolStripMenuItem.Enabled = False
+                End If
+                If txtbxcmd.CanUndo Then
+                    UndoToolStripMenuItem.Enabled = True
+                Else
+                    UndoToolStripMenuItem.Enabled = False
+                End If
             Else
                 UndoToolStripMenuItem.Enabled = False
-            End If
-        Else
-            UndoToolStripMenuItem.Enabled = False
-            CutToolStripMenuItem.Enabled = False
-            PasteToolStripMenuItem.Enabled = False
-            If txtbxlog.SelectedText <> "" Then
-                CopyToolStripMenuItem.Enabled = True
-            Else
-                CopyToolStripMenuItem.Enabled = False
+                CutToolStripMenuItem.Enabled = False
+                PasteToolStripMenuItem.Enabled = False
+                If txtbxlog.SelectedText <> "" Then
+                    CopyToolStripMenuItem.Enabled = True
+                Else
+                    CopyToolStripMenuItem.Enabled = False
+                End If
             End If
         End If
     End Sub
 
     Private Sub CutToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CutToolStripMenuItem.Click
-        Dim casted As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
-        Dim cms As ContextMenuStrip = casted.GetCurrentParent()
-        If cms.SourceControl.Name = txtbxcmd.Name And txtbxcmd.SelectedText <> "" Then
-            Clipboard.SetText(txtbxcmd.SelectedText.Replace(ControlChars.Lf, ControlChars.CrLf), TextDataFormat.UnicodeText)
-            'Clipboard.SetText(txtbxcmd.SelectedText.Replace(ControlChars.Lf, ControlChars.CrLf))
-            txtbxcmd.Text = txtbxcmd.Text.Remove(txtbxcmd.SelectionStart, txtbxcmd.SelectionLength)
+        Dim casted As ToolStripMenuItem = cast(Of ToolStripMenuItem)(sender)
+        If Not casted Is Nothing Then
+            Dim cms As ContextMenuStrip = casted.GetCurrentParent()
+            If cms.SourceControl.Name = txtbxcmd.Name And txtbxcmd.SelectedText <> "" Then
+                Clipboard.SetText(txtbxcmd.SelectedText.Replace(ControlChars.Lf, ControlChars.CrLf), TextDataFormat.UnicodeText)
+                'Clipboard.SetText(txtbxcmd.SelectedText.Replace(ControlChars.Lf, ControlChars.CrLf))
+                txtbxcmd.Text = txtbxcmd.Text.Remove(txtbxcmd.SelectionStart, txtbxcmd.SelectionLength)
+            End If
         End If
     End Sub
 
     Private Sub CopyToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CopyToolStripMenuItem.Click
-        Dim casted As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
-        Dim cms As ContextMenuStrip = casted.GetCurrentParent()
-        If cms.SourceControl.Name = txtbxcmd.Name And txtbxcmd.SelectedText <> "" Then
-            Clipboard.SetText(txtbxcmd.SelectedText.Replace(ControlChars.Lf, ControlChars.CrLf), TextDataFormat.UnicodeText)
-            'Clipboard.SetText(txtbxcmd.SelectedText.Replace(ControlChars.Lf, ControlChars.CrLf))
-        ElseIf cms.SourceControl.Name = txtbxlog.Name And txtbxlog.SelectedText <> "" Then
-            Clipboard.SetText(txtbxlog.SelectedText.Replace(ControlChars.Lf, ControlChars.CrLf), TextDataFormat.UnicodeText)
+        Dim casted As ToolStripMenuItem = cast(Of ToolStripMenuItem)(sender)
+        If Not casted Is Nothing Then
+            Dim cms As ContextMenuStrip = casted.GetCurrentParent()
+            If cms.SourceControl.Name = txtbxcmd.Name And txtbxcmd.SelectedText <> "" Then
+                Clipboard.SetText(txtbxcmd.SelectedText.Replace(ControlChars.Lf, ControlChars.CrLf), TextDataFormat.UnicodeText)
+                'Clipboard.SetText(txtbxcmd.SelectedText.Replace(ControlChars.Lf, ControlChars.CrLf))
+            ElseIf cms.SourceControl.Name = txtbxlog.Name And txtbxlog.SelectedText <> "" Then
+                Clipboard.SetText(txtbxlog.SelectedText.Replace(ControlChars.Lf, ControlChars.CrLf), TextDataFormat.UnicodeText)
+            End If
         End If
     End Sub
 
     Private Sub PasteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PasteToolStripMenuItem.Click
-        Dim casted As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
-        Dim cms As ContextMenuStrip = casted.GetCurrentParent()
-        If cms.SourceControl.Name = txtbxcmd.Name Then
-            If Clipboard.ContainsText() Then
-                Dim sinx As Integer = txtbxcmd.SelectionStart
-                If txtbxcmd.SelectedText <> "" Then
-                    txtbxcmd.Text = txtbxcmd.Text.Remove(sinx, txtbxcmd.SelectionLength)
+        Dim casted As ToolStripMenuItem = cast(Of ToolStripMenuItem)(sender)
+        If Not casted Is Nothing Then
+            Dim cms As ContextMenuStrip = casted.GetCurrentParent()
+            If cms.SourceControl.Name = txtbxcmd.Name Then
+                If Clipboard.ContainsText() Then
+                    Dim sinx As Integer = txtbxcmd.SelectionStart
+                    If txtbxcmd.SelectedText <> "" Then
+                        txtbxcmd.Text = txtbxcmd.Text.Remove(sinx, txtbxcmd.SelectionLength)
+                    End If
+                    Dim clip As String = Clipboard.GetText(TextDataFormat.UnicodeText)
+                    txtbxcmd.Text = txtbxcmd.Text.Insert(sinx, clip)
+                    txtbxcmd.SelectionStart = sinx + clip.Length
                 End If
-                Dim clip As String = Clipboard.GetText(TextDataFormat.UnicodeText)
-                txtbxcmd.Text = txtbxcmd.Text.Insert(sinx, clip)
-                txtbxcmd.SelectionStart = sinx + clip.Length
             End If
         End If
     End Sub
 
     Private Sub SelectAllToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SelectAllToolStripMenuItem.Click
-        Dim casted As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
-        Dim cms As ContextMenuStrip = casted.GetCurrentParent()
-        If cms.SourceControl.Name = txtbxcmd.Name Then
-            txtbxcmd.SelectAll()
-        ElseIf cms.SourceControl.Name = txtbxlog.Name Then
-            txtbxlog.SelectAll()
+        Dim casted As ToolStripMenuItem = cast(Of ToolStripMenuItem)(sender)
+        If Not casted Is Nothing Then
+            Dim cms As ContextMenuStrip = casted.GetCurrentParent()
+            If cms.SourceControl.Name = txtbxcmd.Name Then
+                txtbxcmd.SelectAll()
+            ElseIf cms.SourceControl.Name = txtbxlog.Name Then
+                txtbxlog.SelectAll()
+            End If
         End If
     End Sub
+
+    Private Sub txtbxcmd_TextChanged(sender As Object, e As EventArgs) Handles txtbxcmd.TextChanged
+        If Not allowenter Then
+            txtbxcmd.Text = txtbxcmd.Text.Replace(ControlChars.CrLf, "")
+        End If
+    End Sub
+
+    Private Function cast(Of t)(tocast As Object) As t
+        Try
+            Return CType(tocast, t)
+        Catch ex As ThreadAbortException
+            Throw ex
+        Catch ex As Exception
+            Return Nothing
+        End Try
+    End Function
 End Class
 
 Public Enum cmd_gui_position As Integer

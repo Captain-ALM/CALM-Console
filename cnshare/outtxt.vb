@@ -213,6 +213,18 @@ Public Class OutputText
     Public Shared Operator =(ByVal optxt1 As OutputText, ByVal optxt2 As OutputText) As Boolean
         Return (optxt1._blocks.Equals(optxt2._blocks)) And (optxt2._blocks.Equals(optxt1._blocks))
     End Operator
+    ''' <summary>
+    ''' Returns the Value of this Object as a String.
+    ''' </summary>
+    ''' <returns>String that this object contains.</returns>
+    ''' <remarks></remarks>
+    Public Overrides Function ToString() As String
+        Dim toret As String = ""
+        For Each b As TextBlock In _blocks
+            toret &= b.text
+        Next
+        Return toret
+    End Function
     'This is the internal textblock instance.
     Private Class TextBlock
         Private _text As String = ""
@@ -306,6 +318,10 @@ Public Class OutputText
             _text &= txt & ControlChars.CrLf
         End Sub
 
+        Public Overrides Function ToString() As String
+            Return _text
+        End Function
+
         Public Function ToOutputTextBlock() As OutputTextBlock
             Return New OutputTextBlock(_text, _forecolor, _bold, _italic, _underline, _strike)
         End Function
@@ -355,4 +371,12 @@ Public Structure OutputTextBlock
         underline = ul
         strikeout = so
     End Sub
+    ''' <summary>
+    ''' Returns the String held by this object.
+    ''' </summary>
+    ''' <returns>The String held by this object.</returns>
+    ''' <remarks></remarks>
+    Public Overrides Function ToString() As String
+        Return text
+    End Function
 End Structure
