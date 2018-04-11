@@ -202,8 +202,8 @@ Module commands_data
         If Not args Is Nothing Then
             Dim noa As Integer = numberofindexes(args)
             If noa >= 1 Then
-                If var_dict.ContainsKey(args(0)) Then
-                    Return var_dict(args(0))
+                If VariableDictionary.ContainsKey(args(0)) Then
+                    Return VariableDictionary(args(0))
                 Else
                     Return ""
                 End If
@@ -216,11 +216,11 @@ Module commands_data
         If Not args Is Nothing Then
             Dim noa As Integer = numberofindexes(args)
             If noa >= 2 Then
-                If var_dict.ContainsKey(args(0)) Then
-                    var_dict(args(0)) = args(1)
+                If VariableDictionary.ContainsKey(args(0)) Then
+                    VariableDictionary(args(0)) = args(1)
                     Return args(1)
                 Else
-                    var_dict.Add(args(0), args(1))
+                    VariableDictionary.Add(args(0), args(1))
                     Return args(1)
                 End If
             End If
@@ -425,11 +425,11 @@ Module commands_data
     End Function
 
     Public Function changelang(args As String()) As String
-        Dim lastcmd As String = syntax_mode
+        Dim lastcmd As String = SyntaxMode
         Dim numofargs As Integer = numberofindexes(args)
         Try
             If syntaxes.ContainsKey(args(0)) Then
-                syntax_mode = args(0)
+                SyntaxMode = args(0)
             Else
                 Try
                     Dim i As Integer = Integer.Parse(args(0))
@@ -437,15 +437,15 @@ Module commands_data
                     For j As Integer = 0 To i Step 1
                         col.MoveNext()
                     Next
-                    syntax_mode = col.Current
+                    SyntaxMode = col.Current
                 Catch ex As Exception
                     Throw ex
                 End Try
             End If
         Catch ex As Exception
-            syntax_mode = lastcmd
+            SyntaxMode = lastcmd
         End Try
-        Return "Syntax Language Changed to: " & syntax_mode
+        Return "Syntax Language Changed to: " & SyntaxMode
     End Function
 
     Public Function runfile(args As String()) As String
@@ -462,7 +462,7 @@ Module commands_data
                     Next
                     For i As Integer = 1 To l_stack.Count Step 1
                         Dim comcmd As String = l_stack.Pop()
-                        command_stack.Push(comcmd)
+                        CommandStack.Push(comcmd)
                     Next
                 Else
                     Return "File Does Not Exist: " & args(0) & "."

@@ -7,18 +7,6 @@
     ''' <remarks></remarks>
     Public Delegate Function Cmd(ByVal arr As String()) As OutputText
     ''' <summary>
-    ''' This is the hook delegate type required to hook to the command stack.
-    ''' </summary>
-    ''' <param name="stack">The passed command stack instance.</param>
-    ''' <remarks></remarks>
-    Public Delegate Sub CommandStackHook(ByRef stack As Stack(Of String))
-    ''' <summary>
-    ''' This is the hook delegate type required to hook to the variable Dictionary.
-    ''' </summary>
-    ''' <param name="dictionary">The passed variable Dictionary instance.</param>
-    ''' <remarks></remarks>
-    Public Delegate Sub variableDictionaryHook(ByRef dictionary As Dictionary(Of String, String))
-    ''' <summary>
     ''' This is the hook delegate used for the start and stop program hook events.
     ''' </summary>
     ''' <remarks></remarks>
@@ -47,13 +35,13 @@
     ''' </summary>
     ''' <param name="txtbx">The output textbox on the form.</param>
     ''' <remarks></remarks>
-    Public Delegate Sub OutputTextBoxHook(ByRef txtbx As Windows.Forms.TextBoxBase)
+    Public Delegate Sub OutputTextBoxHook(ByRef txtbx As Windows.Forms.RichTextBox)
     ''' <summary>
-    ''' This hook is used to access the reference to the syntax name string.
+    ''' This hook is used to access the command box on the main form.
     ''' </summary>
-    ''' <param name="syntax_name"></param>
+    ''' <param name="txtbx">The command textbox on the form.</param>
     ''' <remarks></remarks>
-    Public Delegate Sub SyntaxNameHook(ByRef syntax_name As String)
+    Public Delegate Sub CommandTextBoxHook(ByRef txtbx As Windows.Forms.TextBox)
     ''' <summary>
     ''' This hook is used to run a command,
     ''' and can be invoked by the library once an instance is retrieved via the GetRunCommandHook.
@@ -96,29 +84,11 @@
     ''' <remarks></remarks>
     Public Delegate Sub GetReadOutputHook(ByRef hook As ReadOutputHook)
     ''' <summary>
-    ''' This is the hook delegate type required to hook to the EnableOrDisableReadKey Boolean (In the operation log text box.)
-    ''' </summary>
-    ''' <param name="read_key">The EnableOrDisableReadKey Boolean instance.</param>
-    ''' <remarks></remarks>
-    Public Delegate Sub EnableOrDisableReadKeyHook(ByRef read_key As Boolean)
-    ''' <summary>
     ''' This hook is used to listen for a key being pressed in the Operation Log Text Box event.
     ''' </summary>
     ''' <param name="key">The key data caught.</param>
     ''' <remarks></remarks>
     Public Delegate Sub ReadKeyHook(ByVal key As String)
-    ''' <summary>
-    ''' This is the hook delegate type required to hook to the EnableOrDisableCmdExecution Boolean
-    ''' </summary>
-    ''' <param name="eodcmdexec">The EnableOrDisableCmdExecution Boolean instance.</param>
-    ''' <remarks></remarks>
-    Public Delegate Sub EnableOrDisableCmdExecution(ByRef eodcmdexec As Boolean)
-    ''' <summary>
-    ''' This is the hook delegate type required to hook to the EnableOrDisableMultilineCommandEntry Boolean.
-    ''' </summary>
-    ''' <param name="eodmcmde">The EnableOrDisableMultilineCommandEntry Boolean instance.</param>
-    ''' <remarks></remarks>
-    Public Delegate Sub EnableOrDisableMultilineCommandEntry(ByRef eodmcmde As Boolean)
 End Module
 ''' <summary>
 ''' API interface for adding other syntax language interpreters.
@@ -150,16 +120,6 @@ Public Structure HookInfo
     ''' </summary>
     ''' <remarks></remarks>
     Public name As String
-    ''' <summary>
-    ''' The hook command stack delegate.
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public hook_commandstack As CommandStackHook
-    ''' <summary>
-    ''' The hook variable dictionary delegate.
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public hook_variabledictionary As variableDictionaryHook
     ''' <summary>
     ''' The hook program start delegate.
     ''' </summary>
@@ -206,69 +166,44 @@ Public Structure HookInfo
     ''' <remarks></remarks>
     Public hook_readoutput As GetReadOutputHook
     ''' <summary>
-    ''' The hook syntax name delegate.
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public hook_syntaxname As SyntaxNameHook
-    ''' <summary>
-    ''' The hook enable or disable read key delegate.
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public hook_eodrk As EnableOrDisableReadKeyHook
-    ''' <summary>
     ''' The hook read key delegate.
     ''' </summary>
     ''' <remarks></remarks>
     Public hook_rk As ReadKeyHook
     ''' <summary>
-    ''' The hook enable or disable cmd execution delegate.
+    ''' The hook out textbox delegate.
     ''' </summary>
     ''' <remarks></remarks>
-    Public hook_eodce As EnableOrDisableCmdExecution
-    ''' <summary>
-    ''' The hook to enable or disable entering multipule commands in the command textbox delegate.
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public hook_eodmce As EnableOrDisableMultilineCommandEntry
+    Public hook_cmd_txtbx As CommandTextBoxHook
     ''' <summary>
     ''' Constructs a new set of hook info, use nothing as a parameter if you do not want to register a certain hook.
     ''' </summary>
     ''' <param name="hook_set_name">The name of the hook set.</param>
-    ''' <param name="hcmdstk">The command stack hook delegate.</param>
-    ''' <param name="hvardic">The variable dictionary hook delegate</param>
     ''' <param name="hcompreex">The Pre-Command Execute hook delegate.</param>
     ''' <param name="hcompstex">The Post-Command Execute hook delegate.</param>
     ''' <param name="hprostr">The Program Start hook delegate.</param>
     ''' <param name="hprostp">The Program stop hook delegate.</param>
     ''' <param name="hform">The form hook delegate.</param>
-    ''' <param name="hout">The output textbox hook delegate.</param>
+    ''' <param name="houtbx">The output textbox hook delegate.</param>
     ''' <param name="getrcom">The Get RunCommand Hook delegate.</param>
     ''' <param name="getwout">The Get WriteOutput Hook delegate.</param>
     ''' <param name="getrout">The Get ReadOutput Hook delegate.</param>
-    ''' <param name="synxnom">The Syntax Name Hook delegate.</param>
-    ''' <param name="eodrk">The Enable Or Disable Read Key (In the operation log text box.) Hook Delegate.</param>
     ''' <param name="rk">The Read Key (In the operation log text box.) Hook Delegate.</param>
-    ''' <param name="eodce">The Enable Or Disable Cmd Execution Hook Delegate.</param>
-    ''' <param name="eodmce">The Enable or Disable Entry of Mutipule Commands in the Command Textbox.</param>
+    ''' <param name="hcmdbx">The command textbox hook delegate.</param>
     ''' <remarks></remarks>
-    Public Sub New(ByVal hook_set_name As String, Optional ByVal hcmdstk As CommandStackHook = Nothing, Optional ByVal hvardic As variableDictionaryHook = Nothing, Optional ByVal hprostr As ProgramEventHook = Nothing, Optional ByVal hprostp As ProgramEventHook = Nothing, Optional ByVal hcompreex As PreCommandExecuteHook = Nothing, Optional ByVal hcompstex As PostCommandExecuteHook = Nothing, Optional ByVal hform As FormHook = Nothing, Optional ByVal hout As OutputTextBoxHook = Nothing, Optional ByVal getrcom As GetRunCommandHook = Nothing, Optional ByVal getwout As GetWriteOutputHook = Nothing, Optional ByVal getrout As GetReadOutputHook = Nothing, Optional ByVal synxnom As SyntaxNameHook = Nothing, Optional ByVal eodrk As EnableOrDisableReadKeyHook = Nothing, Optional ByVal rk As ReadKeyHook = Nothing, Optional ByVal eodce As EnableOrDisableCmdExecution = Nothing, Optional ByVal eodmce As EnableOrDisableMultilineCommandEntry = Nothing)
+    Public Sub New(ByVal hook_set_name As String, Optional ByVal hprostr As ProgramEventHook = Nothing, Optional ByVal hprostp As ProgramEventHook = Nothing, Optional ByVal hcompreex As PreCommandExecuteHook = Nothing, Optional ByVal hcompstex As PostCommandExecuteHook = Nothing, Optional ByVal hform As FormHook = Nothing, Optional ByVal houtbx As OutputTextBoxHook = Nothing, Optional ByVal getrcom As GetRunCommandHook = Nothing, Optional ByVal getwout As GetWriteOutputHook = Nothing, Optional ByVal getrout As GetReadOutputHook = Nothing, Optional ByVal rk As ReadKeyHook = Nothing, Optional ByVal hcmdbx As CommandTextBoxHook = Nothing)
         name = hook_set_name
-        hook_commandstack = hcmdstk
-        hook_variabledictionary = hvardic
         hook_programstart = hprostr
         hook_programstop = hprostp
         hook_command_preexecute = hcompreex
         hook_command_postexecute = hcompstex
         hook_form = hform
-        hook_out_txtbx = hout
+        hook_out_txtbx = houtbx
         hook_runcommand = getrcom
         hook_writeoutput = getwout
         hook_readoutput = getrout
-        hook_syntaxname = synxnom
-        hook_eodrk = eodrk
         hook_rk = rk
-        hook_eodce = eodce
-        hook_eodmce = eodmce
+        hook_cmd_txtbx = hcmdbx
     End Sub
 End Structure
 ''' <summary>

@@ -8,20 +8,18 @@ Public Module form_flags
     Public assemblyname As String = Path.GetFileNameWithoutExtension(thisassembly.Location)
     Public assemblypath As String = thisassembly.Location
     Public assemblydir As String = Path.GetDirectoryName(thisassembly.Location)
-    Public command_stack As New Stack(Of String)
-    Public var_dict As New Dictionary(Of String, String)
     Public log As String = ""
     Public loged As Boolean = False
     Public logpath As String = ""
     Public aboutbx_showing As Boolean = False
     Public cancel_action As Boolean = False
-    Public disablechkbx As Boolean = False
     Public command_buffer As New List(Of String)
     '1 based
     Public command_buffer_index As Integer = 1
     Public command_buffer_limit As Integer = 40
     Public command_buffer_shortcuts_enabled As Boolean = True
     'form flags
+    Public disablechkbx As Boolean = False
     Public tocleartxt As Boolean = False
     Public movetobottom As Boolean = False
     Public movetotop As Boolean = False
@@ -41,6 +39,4 @@ Public Module form_flags
     Public ui_queue As New Queue(Of [Delegate])
     Public form_instance As main
     Public echo_command As Boolean = False
-    Public read_key As Boolean = False
-    Public cmd_read_ed As Boolean = True
 End Module

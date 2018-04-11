@@ -8,7 +8,7 @@ Public Class main
     Public wouthook As WriteOutputHook = Nothing
     <SetupMethod>
     Public Function library() As LibrarySetup
-        Dim hi As New HookInfo("special_msgs:0", Nothing, Nothing, Nothing, Nothing, New PreCommandExecuteHook(AddressOf todays_message), Nothing, Nothing, New OutputTextBoxHook(AddressOf oh_old), Nothing, New GetWriteOutputHook(AddressOf oh))
+        Dim hi As New HookInfo("special_msgs:0", Nothing, Nothing, New PreCommandExecuteHook(AddressOf todays_message), Nothing, Nothing, New OutputTextBoxHook(AddressOf oh_old), Nothing, New GetWriteOutputHook(AddressOf oh))
         Dim coms(4) As Command
         coms(0) = New Command("get_message", New Cmd(AddressOf get_msg), "get_message%(string)[optional : day]% : gets the current message")
         coms(1) = New Command("set_message", New Cmd(AddressOf set_msg), "set_message%(string)[message]%%(string)[optional : day]% : sets the current/given message")

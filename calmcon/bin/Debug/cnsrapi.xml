@@ -6,7 +6,52 @@ cnsrapi
 </name>
 </assembly>
 <members>
-<member name="M:captainalm.calmcon.api.OutputText.#ctor(System.String,System.Drawing.Color,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+<member name="F:captainalm.calmcon.api.Switches.MultilineCheckboxEnablement">
+	<summary>
+ Enable, Disable or Program Control the Multiline Entry Checkbox.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.Switches.OutputBoxReadKey">
+	<summary>
+ Read keys from the output boxes.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.Switches.CommandExecution">
+	<summary>
+ Enable Or Disable Command Execution.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.Switches.AllowMultiCommandEntry">
+	<summary>
+ Allow multipule Lines to be Entered into the command box.
+ </summary>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Switches">
+	<summary>
+ This provides API switching for the program.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.Manipulator.CommandStack">
+	<summary>
+ This provides the command stack for access and modification.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.Manipulator.VariableDictionary">
+	<summary>
+ This provides the variable dictionary for access and modification.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.Manipulator.SyntaxMode">
+	<summary>
+ Provides the syntax mode for access and manipulation, be careful!
+ </summary>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Manipulator">
+	<summary>
+ This provides API manipulation for the program.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:captainalm.calmcon.api.OutputText.#ctor(System.String,System.Drawing.Color,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
 	<summary>
  Creates a new output text instance
  </summary>
@@ -195,18 +240,6 @@ cnsrapi
 	<param name="arr">The array of parameters for the command.</param>
 	<returns>Return value of the command.</returns>
 	<remarks></remarks>
-</member><member name="T:captainalm.calmcon.api.Types.CommandStackHook">
-	<summary>
- This is the hook delegate type required to hook to the command stack.
- </summary>
-	<param name="stack">The passed command stack instance.</param>
-	<remarks></remarks>
-</member><member name="T:captainalm.calmcon.api.Types.variableDictionaryHook">
-	<summary>
- This is the hook delegate type required to hook to the variable Dictionary.
- </summary>
-	<param name="dictionary">The passed variable Dictionary instance.</param>
-	<remarks></remarks>
 </member><member name="T:captainalm.calmcon.api.Types.ProgramEventHook">
 	<summary>
  This is the hook delegate used for the start and stop program hook events.
@@ -237,11 +270,11 @@ cnsrapi
  </summary>
 	<param name="txtbx">The output textbox on the form.</param>
 	<remarks></remarks>
-</member><member name="T:captainalm.calmcon.api.Types.SyntaxNameHook">
+</member><member name="T:captainalm.calmcon.api.Types.CommandTextBoxHook">
 	<summary>
- This hook is used to access the reference to the syntax name string.
+ This hook is used to access the command box on the main form.
  </summary>
-	<param name="syntax_name"></param>
+	<param name="txtbx">The command textbox on the form.</param>
 	<remarks></remarks>
 </member><member name="T:captainalm.calmcon.api.Types.RunCommandHook">
 	<summary>
@@ -284,29 +317,11 @@ cnsrapi
  </summary>
 	<param name="hook">The hook instance.</param>
 	<remarks></remarks>
-</member><member name="T:captainalm.calmcon.api.Types.EnableOrDisableReadKeyHook">
-	<summary>
- This is the hook delegate type required to hook to the EnableOrDisableReadKey Boolean (In the operation log text box.)
- </summary>
-	<param name="read_key">The EnableOrDisableReadKey Boolean instance.</param>
-	<remarks></remarks>
 </member><member name="T:captainalm.calmcon.api.Types.ReadKeyHook">
 	<summary>
  This hook is used to listen for a key being pressed in the Operation Log Text Box event.
  </summary>
 	<param name="key">The key data caught.</param>
-	<remarks></remarks>
-</member><member name="T:captainalm.calmcon.api.Types.EnableOrDisableCmdExecution">
-	<summary>
- This is the hook delegate type required to hook to the EnableOrDisableCmdExecution Boolean
- </summary>
-	<param name="eodcmdexec">The EnableOrDisableCmdExecution Boolean instance.</param>
-	<remarks></remarks>
-</member><member name="T:captainalm.calmcon.api.Types.EnableOrDisableMultilineCommandEntry">
-	<summary>
- This is the hook delegate type required to hook to the EnableOrDisableMultilineCommandEntry Boolean.
- </summary>
-	<param name="eodmcmde">The EnableOrDisableMultilineCommandEntry Boolean instance.</param>
 	<remarks></remarks>
 </member><member name="M:captainalm.calmcon.api.ISyntax.name">
 	<summary>
@@ -330,16 +345,6 @@ cnsrapi
 </member><member name="F:captainalm.calmcon.api.HookInfo.name">
 	<summary>
  The hook set name.
- </summary>
-	<remarks></remarks>
-</member><member name="F:captainalm.calmcon.api.HookInfo.hook_commandstack">
-	<summary>
- The hook command stack delegate.
- </summary>
-	<remarks></remarks>
-</member><member name="F:captainalm.calmcon.api.HookInfo.hook_variabledictionary">
-	<summary>
- The hook variable dictionary delegate.
  </summary>
 	<remarks></remarks>
 </member><member name="F:captainalm.calmcon.api.HookInfo.hook_programstart">
@@ -387,52 +392,32 @@ cnsrapi
  The hook get readoutput delegate.
  </summary>
 	<remarks></remarks>
-</member><member name="F:captainalm.calmcon.api.HookInfo.hook_syntaxname">
-	<summary>
- The hook syntax name delegate.
- </summary>
-	<remarks></remarks>
-</member><member name="F:captainalm.calmcon.api.HookInfo.hook_eodrk">
-	<summary>
- The hook enable or disable read key delegate.
- </summary>
-	<remarks></remarks>
 </member><member name="F:captainalm.calmcon.api.HookInfo.hook_rk">
 	<summary>
  The hook read key delegate.
  </summary>
 	<remarks></remarks>
-</member><member name="F:captainalm.calmcon.api.HookInfo.hook_eodce">
+</member><member name="F:captainalm.calmcon.api.HookInfo.hook_cmd_txtbx">
 	<summary>
- The hook enable or disable cmd execution delegate.
+ The hook out textbox delegate.
  </summary>
 	<remarks></remarks>
-</member><member name="F:captainalm.calmcon.api.HookInfo.hook_eodmce">
-	<summary>
- The hook to enable or disable entering multipule commands in the command textbox delegate.
- </summary>
-	<remarks></remarks>
-</member><member name="M:captainalm.calmcon.api.HookInfo.#ctor(System.String,captainalm.calmcon.api.Types.CommandStackHook,captainalm.calmcon.api.Types.variableDictionaryHook,captainalm.calmcon.api.Types.ProgramEventHook,captainalm.calmcon.api.Types.ProgramEventHook,captainalm.calmcon.api.Types.PreCommandExecuteHook,captainalm.calmcon.api.Types.PostCommandExecuteHook,captainalm.calmcon.api.Types.FormHook,captainalm.calmcon.api.Types.OutputTextBoxHook,captainalm.calmcon.api.Types.GetRunCommandHook,captainalm.calmcon.api.Types.GetWriteOutputHook,captainalm.calmcon.api.Types.GetReadOutputHook,captainalm.calmcon.api.Types.SyntaxNameHook,captainalm.calmcon.api.Types.EnableOrDisableReadKeyHook,captainalm.calmcon.api.Types.ReadKeyHook,captainalm.calmcon.api.Types.EnableOrDisableCmdExecution,captainalm.calmcon.api.Types.EnableOrDisableMultilineCommandEntry)">
+</member><member name="M:captainalm.calmcon.api.HookInfo.#ctor(System.String,captainalm.calmcon.api.Types.ProgramEventHook,captainalm.calmcon.api.Types.ProgramEventHook,captainalm.calmcon.api.Types.PreCommandExecuteHook,captainalm.calmcon.api.Types.PostCommandExecuteHook,captainalm.calmcon.api.Types.FormHook,captainalm.calmcon.api.Types.OutputTextBoxHook,captainalm.calmcon.api.Types.GetRunCommandHook,captainalm.calmcon.api.Types.GetWriteOutputHook,captainalm.calmcon.api.Types.GetReadOutputHook,captainalm.calmcon.api.Types.ReadKeyHook,captainalm.calmcon.api.Types.CommandTextBoxHook)">
 	<summary>
  Constructs a new set of hook info, use nothing as a parameter if you do not want to register a certain hook.
  </summary>
 	<param name="hook_set_name">The name of the hook set.</param>
-	<param name="hcmdstk">The command stack hook delegate.</param>
-	<param name="hvardic">The variable dictionary hook delegate</param>
 	<param name="hcompreex">The Pre-Command Execute hook delegate.</param>
 	<param name="hcompstex">The Post-Command Execute hook delegate.</param>
 	<param name="hprostr">The Program Start hook delegate.</param>
 	<param name="hprostp">The Program stop hook delegate.</param>
 	<param name="hform">The form hook delegate.</param>
-	<param name="hout">The output textbox hook delegate.</param>
+	<param name="houtbx">The output textbox hook delegate.</param>
 	<param name="getrcom">The Get RunCommand Hook delegate.</param>
 	<param name="getwout">The Get WriteOutput Hook delegate.</param>
 	<param name="getrout">The Get ReadOutput Hook delegate.</param>
-	<param name="synxnom">The Syntax Name Hook delegate.</param>
-	<param name="eodrk">The Enable Or Disable Read Key (In the operation log text box.) Hook Delegate.</param>
 	<param name="rk">The Read Key (In the operation log text box.) Hook Delegate.</param>
-	<param name="eodce">The Enable Or Disable Cmd Execution Hook Delegate.</param>
-	<param name="eodmce">The Enable or Disable Entry of Mutipule Commands in the Command Textbox.</param>
+	<param name="hcmdbx">The command textbox hook delegate.</param>
 	<remarks></remarks>
 </member><member name="T:captainalm.calmcon.api.HookInfo">
 	<summary>

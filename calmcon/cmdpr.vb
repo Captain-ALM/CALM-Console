@@ -4,11 +4,10 @@ Imports captainalm.calmcon.api
 Public Module cmdpr
     Public commands As New Dictionary(Of String, executable_command)
     Public syntaxes As New Dictionary(Of String, ISyntax)
-    Public syntax_mode As String = ""
 
     Public Function run_cmd(cmd As String) As OutputText
         Try
-            Dim com As int_command = New int_command(cmd, syntax_mode, False)
+            Dim com As int_command = New int_command(cmd, SyntaxMode, False)
             For Each ihook As HookInfo In hooks_info.Values
                 Try
                     If Not ihook.hook_command_preexecute Is Nothing Then
@@ -50,7 +49,7 @@ Public Module cmdpr
 
     Public Sub init_snx()
         syntaxes.Add("calm_console_default_type", New calmconsole_type)
-        syntax_mode = "calm_console_default_type"
+        SyntaxMode = "calm_console_default_type"
     End Sub
 
     Public Sub init_cmd()

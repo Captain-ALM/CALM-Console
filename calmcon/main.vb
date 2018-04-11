@@ -5,7 +5,6 @@ Imports captainalm.calmcon.api
 
 Public Class main
     Public cmdpos As cmd_gui_position = cmd_gui_position.top
-    Public allowenter As Boolean = False
     Private aboutbx As New AboutBx
     Private license As String = ""
     Private description As String = ""
@@ -157,7 +156,7 @@ Public Class main
         Next
         For i As Integer = 1 To l_stack.Count Step 1
             Dim comcmd As String = l_stack.Pop()
-            command_stack.Push(comcmd)
+            CommandStack.Push(comcmd)
         Next
         ll = True
         lib_load_t.Start()
@@ -198,6 +197,7 @@ Public Class main
                    End Sub)
         For Each ihook As HookInfo In hooks_info.Values
             Try
+
                 cancel_action_thread()
                 If Not ihook.hook_runcommand Is Nothing Then
                     ihook.hook_runcommand.Invoke(runcommandhook)
@@ -211,36 +211,16 @@ Public Class main
                     ihook.hook_writeoutput.Invoke(writeoutputhook)
                 End If
                 cancel_action_thread()
-                If Not ihook.hook_eodrk Is Nothing Then
-                    ihook.hook_eodrk.Invoke(read_key)
-                End If
-                cancel_action_thread()
-                If Not ihook.hook_eodce Is Nothing Then
-                    ihook.hook_eodce.Invoke(cmd_read_ed)
-                End If
-                cancel_action_thread()
-                If Not ihook.hook_eodmce Is Nothing Then
-                    ihook.hook_eodmce.Invoke(allowenter)
-                End If
-                cancel_action_thread()
-                If Not ihook.hook_commandstack Is Nothing Then
-                    ihook.hook_commandstack.Invoke(command_stack)
-                End If
-                cancel_action_thread()
-                If Not ihook.hook_variabledictionary Is Nothing Then
-                    ihook.hook_variabledictionary.Invoke(var_dict)
-                End If
-                cancel_action_thread()
                 If Not ihook.hook_form Is Nothing Then
                     ihook.hook_form.Invoke(form_instance)
                 End If
                 cancel_action_thread()
-                If Not ihook.hook_out_txtbx Is Nothing Then
-                    ihook.hook_out_txtbx.Invoke(txtbxlog)
+                If Not ihook.hook_cmd_txtbx Is Nothing Then
+                    ihook.hook_cmd_txtbx.Invoke(txtbxcmd)
                 End If
                 cancel_action_thread()
-                If Not ihook.hook_syntaxname Is Nothing Then
-                    ihook.hook_syntaxname.Invoke(syntax_mode)
+                If Not ihook.hook_out_txtbx Is Nothing Then
+                    ihook.hook_out_txtbx.Invoke(txtbxlog)
                 End If
                 cancel_action_thread()
                 If Not ihook.hook_programstart Is Nothing Then
@@ -289,6 +269,9 @@ Public Class main
                                pgrsbarstatus.Style = ProgressBarStyle.Continuous
                            End Sub)
                 hook_running = False
+                shutdown_hook_ran = True
+                cancel_action = False
+                callonform(Sub() Me.Close())
                 Throw ex
             Catch ex As Exception
             End Try
@@ -373,7 +356,7 @@ Public Class main
             'ElseIf e.KeyCode = Keys.A And e.Control Then
             '    e.SuppressKeyPress = True
             '    e.Handled = True
-        ElseIf e.KeyCode = Keys.Return And Not allowenter Then
+        ElseIf e.KeyCode = Keys.Return And Not AllowMultiCommandEntry Then
             e.SuppressKeyPress = True
             e.Handled = True
             contrcmdvis(False)
@@ -427,7 +410,7 @@ Public Class main
             'ElseIf e.KeyCode = Keys.A And e.Control Then
             '    e.SuppressKeyPress = True
             '    e.Handled = True
-        ElseIf read_key Then
+        ElseIf OutputBoxReadKey Then
             e.SuppressKeyPress = True
             Dim kc As New KeysConverter
             For Each ihook As HookInfo In hooks_info.Values
@@ -446,7 +429,7 @@ Public Class main
 
     Private Sub chkbxenter_CheckedChanged(sender As Object, e As EventArgs) Handles chkbxenter.CheckedChanged
         'If txtbxcmd.Text.Length = 0 Then
-        allowenter = chkbxenter.Checked
+        AllowMultiCommandEntry = chkbxenter.Checked
         'Else
         '    chkbxenter.Checked = allowenter
         'End If
@@ -489,19 +472,28 @@ threadstart1:
             Try
                 Try
                     callonform(Sub()
-                                   If txtbxcmd.Text.Length = 0 And Not aboutbx_showing And Not disablechkbx Then
-                                       If chkbxenter.Enabled = False Then
-                                           chkbxenter.Enabled = True
+                                   If Not MultilineCheckboxEnablement.HasValue Then
+                                       If txtbxcmd.Text.Length = 0 And Not aboutbx_showing And Not disablechkbx Then
+                                           If chkbxenter.Enabled = False Then
+                                               chkbxenter.Enabled = True
+                                           End If
+                                       Else
+                                           If chkbxenter.Enabled = True Then
+                                               chkbxenter.Enabled = False
+                                           End If
                                        End If
                                    Else
-                                       If chkbxenter.Enabled = True Then
+                                       If MultilineCheckboxEnablement And Not chkbxenter.Enabled Then
+                                           chkbxenter.Enabled = True
+                                       End If
+                                       If Not MultilineCheckboxEnablement And chkbxenter.Enabled Then
                                            chkbxenter.Enabled = False
                                        End If
                                    End If
-                                   If allowenter And Not chkbxenter.Checked Then
+                                   If AllowMultiCommandEntry And Not chkbxenter.Checked Then
                                        chkbxenter.Checked = True
                                    End If
-                                   If Not allowenter And chkbxenter.Checked Then
+                                   If Not AllowMultiCommandEntry And chkbxenter.Checked Then
                                        chkbxenter.Checked = False
                                    End If
                                End Sub)
@@ -571,8 +563,8 @@ threadstart2:
                                    End If
                                    If tochangeenter Then
                                        contrvis(False)
-                                       allowenter = changeenterto
-                                       chkbxenter.Checked = allowenter
+                                       AllowMultiCommandEntry = changeenterto
+                                       chkbxenter.Checked = AllowMultiCommandEntry
                                        contrvis(True)
                                        tochangeenter = False
                                    End If
@@ -662,6 +654,7 @@ threadstart5:
     Private Sub main_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         disablechkbx = True
         contrvis(False)
+        cancel_action = False
         If shutdown_hook_ran And Not hook_running Then
             prrun = False
             If checkchkbxthread.IsAlive Then
@@ -707,7 +700,10 @@ threadstart5:
         ElseIf Not hook_running Then
             at_end = True
             hook_running = True
-            hook_stop_t.Start()
+            Try
+                hook_stop_t.Start()
+            Catch ex As ThreadStateException
+            End Try
             e.Cancel = True
         Else
             e.Cancel = True
@@ -745,39 +741,39 @@ threadstart5:
         End If
 
         'If ccmd <> "" Then
-                Dim ccom As String = ""
-                Dim cuchar As String = ""
-                Dim lchar As String = ""
-                Dim comlist As New List(Of String)
-                For i As Integer = 0 To cCmd.Length - 1 Step 1
-                    cuchar = cCmd.Substring(i, 1)
-                    If (cuchar = Chr(10) And lchar = Chr(13)) Then
-                        comlist.Add(ccom)
-                        ccom = ""
-                    ElseIf i = ccmd.Length - 1 Then
-                        If cuchar <> Chr(10) And cuchar <> Chr(13) Then
-                            ccom = ccom & cuchar
-                        End If
-                        comlist.Add(ccom)
-                        ccom = ""
-                    Else
-                        If cuchar <> Chr(10) And cuchar <> Chr(13) Then
-                            ccom = ccom & cuchar
-                        End If
-                    End If
-                    lchar = cuchar
-                Next
-                Dim l_stack As New Stack(Of String)
-                For Each curcom As String In comlist
-                    If curcom <> "" Then
-                        l_stack.Push(curcom)
-                    End If
-                Next
-                For i As Integer = 1 To l_stack.Count Step 1
-                    Dim comcmd As String = l_stack.Pop()
-                    command_stack.Push(comcmd)
-                Next
-            'End If
+        Dim ccom As String = ""
+        Dim cuchar As String = ""
+        Dim lchar As String = ""
+        Dim comlist As New List(Of String)
+        For i As Integer = 0 To ccmd.Length - 1 Step 1
+            cuchar = ccmd.Substring(i, 1)
+            If (cuchar = Chr(10) And lchar = Chr(13)) Then
+                comlist.Add(ccom)
+                ccom = ""
+            ElseIf i = ccmd.Length - 1 Then
+                If cuchar <> Chr(10) And cuchar <> Chr(13) Then
+                    ccom = ccom & cuchar
+                End If
+                comlist.Add(ccom)
+                ccom = ""
+            Else
+                If cuchar <> Chr(10) And cuchar <> Chr(13) Then
+                    ccom = ccom & cuchar
+                End If
+            End If
+            lchar = cuchar
+        Next
+        Dim l_stack As New Stack(Of String)
+        For Each curcom As String In comlist
+            l_stack.Push(curcom)
+        Next
+        For i As Integer = 1 To l_stack.Count Step 1
+            Dim comcmd As String = l_stack.Pop()
+            CommandStack.Push(comcmd)
+        Next
+        'Else
+        '   command_stack.Push("")
+        'End If
         txtbxcmd.Text = ""
     End Sub
 
@@ -786,42 +782,44 @@ threadstart5:
 threadstart3:
             Try
                 Try
-                    If cmd_read_ed Then
+                    If CommandExecution Then
                         callonform(Sub()
-                                       If command_stack.Count > 0 And commands_init And butstop.Enabled = False Then
+                                       If CommandStack.Count > 0 And commands_init And butstop.Enabled = False Then
                                            butstop.Enabled = True
-                                       ElseIf butstop.Enabled And command_stack.Count < 1 Then
+                                       ElseIf butstop.Enabled And CommandStack.Count < 1 Then
                                            butstop.Enabled = False
                                        End If
-                                       If command_stack.Count > 0 And commands_init And pgrsbarstatus.Style <> ProgressBarStyle.Marquee Then
+                                       If CommandStack.Count > 0 And commands_init And pgrsbarstatus.Style <> ProgressBarStyle.Marquee Then
                                            pgrsbarstatus.Style = ProgressBarStyle.Marquee
-                                       ElseIf pgrsbarstatus.Style = ProgressBarStyle.Marquee And command_stack.Count < 1 Then
+                                       ElseIf pgrsbarstatus.Style = ProgressBarStyle.Marquee And CommandStack.Count < 1 Then
                                            pgrsbarstatus.Style = ProgressBarStyle.Continuous
                                        End If
-                                       If command_stack.Count > 0 And commands_init And lblstatus.Text = "" Then
-                                           lblstatus.Text = "Executing Commands: " & command_stack.Count & " Commands Left..."
-                                       ElseIf lblstatus.Text.StartsWith("Executing Commands:") And command_stack.Count < 1 Then
+                                       If CommandStack.Count > 0 And commands_init And lblstatus.Text = "" Then
+                                           lblstatus.Text = "Executing Commands: " & CommandStack.Count & " Commands Left..."
+                                       ElseIf lblstatus.Text.StartsWith("Executing Commands:") And CommandStack.Count < 1 Then
                                            lblstatus.Text = ""
                                        End If
                                    End Sub)
-                        While command_stack.Count > 0 And commands_init And cmd_read_ed
-                            Dim curcom As String = command_stack.Pop()
-							If curcom <> "" Then
-                            	Dim retfromruncmd As OutputText = run_cmd(curcom)
-                            	If Not retfromruncmd Is Nothing And Not retfromruncmd = "" And Not retfromruncmd.BlockCount = 0 Then
-                                	If loged Then
-                                    	log = log & retfromruncmd & ControlChars.CrLf
-                                	End If
-                                	callonform(Sub()
-                                    	           'txtbxlog.AppendText(retfromruncmd & ControlChars.CrLf)
-                                    	           render_outtxt(txtbxlog, retfromruncmd & ControlChars.CrLf)
-                                        	       lblstatus.Text = "Executing Commands: " & command_stack.Count & " Commands Left..."
-                                       	    End Sub)
-                            	End If
-							End If
+                        While CommandStack.Count > 0 And commands_init And CommandExecution
+                            Dim curcom As String = CommandStack.Pop()
+                            If curcom <> "" Then
+                                Dim retfromruncmd As OutputText = run_cmd(curcom)
+                                If Not retfromruncmd Is Nothing And Not retfromruncmd = "" And Not retfromruncmd.BlockCount = 0 Then
+                                    If loged Then
+                                        log = log & retfromruncmd & ControlChars.CrLf
+                                    End If
+                                    callonform(Sub()
+                                                   'txtbxlog.AppendText(retfromruncmd & ControlChars.CrLf)
+                                                   render_outtxt(txtbxlog, retfromruncmd & ControlChars.CrLf)
+                                               End Sub)
+                                End If
+                            End If
+                            callonform(Sub()
+                                           lblstatus.Text = "Executing Commands: " & CommandStack.Count & " Commands Left..."
+                                       End Sub)
                             If cancel_action Then
                                 cancel_action = False
-                                command_stack.Clear()
+                                CommandStack.Clear()
                             End If
                             Thread.Sleep(25)
                         End While
@@ -1000,7 +998,7 @@ threadstart3:
     End Sub
 
     Private Sub txtbxcmd_TextChanged(sender As Object, e As EventArgs) Handles txtbxcmd.TextChanged
-        If Not allowenter Then
+        If Not AllowMultiCommandEntry Then
             txtbxcmd.Text = txtbxcmd.Text.Replace(ControlChars.CrLf, "")
         End If
     End Sub

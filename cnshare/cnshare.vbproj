@@ -81,6 +81,7 @@
     </Compile>
     <Compile Include="outtxt.vb" />
     <Compile Include="SetupMethodAttribute.vb" />
+    <Compile Include="SandM.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
