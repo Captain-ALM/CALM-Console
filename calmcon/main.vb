@@ -764,40 +764,40 @@ threadstart5:
             command_buffer_index = 1
         End If
 
-        'If ccmd <> "" Then
-        Dim ccom As String = ""
-        Dim cuchar As String = ""
-        Dim lchar As String = ""
-        Dim comlist As New List(Of String)
-        For i As Integer = 0 To ccmd.Length - 1 Step 1
-            cuchar = ccmd.Substring(i, 1)
-            If (cuchar = Chr(10) And lchar = Chr(13)) Then
-                comlist.Add(ccom)
-                ccom = ""
-            ElseIf i = ccmd.Length - 1 Then
-                If cuchar <> Chr(10) And cuchar <> Chr(13) Then
-                    ccom = ccom & cuchar
+        If ccmd <> "" Then
+            Dim ccom As String = ""
+            Dim cuchar As String = ""
+            Dim lchar As String = ""
+            Dim comlist As New List(Of String)
+            For i As Integer = 0 To ccmd.Length - 1 Step 1
+                cuchar = ccmd.Substring(i, 1)
+                If (cuchar = Chr(10) And lchar = Chr(13)) Then
+                    comlist.Add(ccom)
+                    ccom = ""
+                ElseIf i = ccmd.Length - 1 Then
+                    If cuchar <> Chr(10) And cuchar <> Chr(13) Then
+                        ccom = ccom & cuchar
+                    End If
+                    comlist.Add(ccom)
+                    ccom = ""
+                Else
+                    If cuchar <> Chr(10) And cuchar <> Chr(13) Then
+                        ccom = ccom & cuchar
+                    End If
                 End If
-                comlist.Add(ccom)
-                ccom = ""
-            Else
-                If cuchar <> Chr(10) And cuchar <> Chr(13) Then
-                    ccom = ccom & cuchar
-                End If
-            End If
-            lchar = cuchar
-        Next
-        Dim l_stack As New Stack(Of String)
-        For Each curcom As String In comlist
-            l_stack.Push(curcom)
-        Next
-        For i As Integer = 1 To l_stack.Count Step 1
-            Dim comcmd As String = l_stack.Pop()
-            CommandStack.Push(comcmd)
-        Next
-        'Else
-        '   command_stack.Push("")
-        'End If
+                lchar = cuchar
+            Next
+            Dim l_stack As New Stack(Of String)
+            For Each curcom As String In comlist
+                l_stack.Push(curcom)
+            Next
+            For i As Integer = 1 To l_stack.Count Step 1
+                Dim comcmd As String = l_stack.Pop()
+                CommandStack.Push(comcmd)
+            Next
+        Else
+            CommandStack.Push("")
+        End If
         txtbxcmd.Text = ""
     End Sub
 
