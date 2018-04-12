@@ -211,6 +211,30 @@ Public Class main
                     ihook.hook_writeoutput.Invoke(writeoutputhook)
                 End If
                 cancel_action_thread()
+                If Not ihook.hook_e_cmd_add Is Nothing Then
+                    ihook.hook_e_cmd_add.Invoke(addecmdhook)
+                End If
+                cancel_action_thread()
+                If Not ihook.hook_e_cmd_list Is Nothing Then
+                    ihook.hook_e_cmd_list.Invoke(listecmdshook)
+                End If
+                cancel_action_thread()
+                If Not ihook.hook_e_cmd_remove Is Nothing Then
+                    ihook.hook_e_cmd_remove.Invoke(removeecmdhook)
+                End If
+                cancel_action_thread()
+                If Not ihook.hook_e_snx_add Is Nothing Then
+                    ihook.hook_e_snx_add.Invoke(addesnxhook)
+                End If
+                cancel_action_thread()
+                If Not ihook.hook_e_snx_list Is Nothing Then
+                    ihook.hook_e_snx_list.Invoke(listesnxshook)
+                End If
+                cancel_action_thread()
+                If Not ihook.hook_e_snx_remove Is Nothing Then
+                    ihook.hook_e_snx_remove.Invoke(removeesnxhook)
+                End If
+                cancel_action_thread()
                 If Not ihook.hook_form Is Nothing Then
                     ihook.hook_form.Invoke(form_instance)
                 End If

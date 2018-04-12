@@ -307,7 +307,7 @@ cnsrapi
 </member><member name="T:captainalm.calmcon.api.Types.ReadOutputHook">
 	<summary>
  This hook is used to read from the output textbox,
- and can be invoked by the library once an instance is retrieved via the GetWriteOutputHook.
+ and can be invoked by the library once an instance is retrieved via the GetReadOutputHook.
  </summary>
 	<returns>The contents of the output textbox.</returns>
 	<remarks></remarks>
@@ -322,6 +322,94 @@ cnsrapi
  This hook is used to listen for a key being pressed in the Operation Log Text Box event.
  </summary>
 	<param name="key">The key data caught.</param>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Types.AddExternalCommandHook">
+	<summary>
+ This hook is used to add commands during program execution.
+ and can be invoked by the library once an instance is retrieved via the GetAddExternalCommandHook.
+ </summary>
+	<param name="libname">The library name.</param>
+	<param name="command">The command to add.</param>
+	<returns>The id of the added command or 0 for faliure.</returns>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Types.GetAddExternalCommandHook">
+	<summary>
+ Gets the hook instance for AddExternalCommandHook so it can be invoked by the library.
+ </summary>
+	<param name="hook">The hook instance.</param>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Types.RemoveExternalCommandHook">
+	<summary>
+ This hook is used to remove added commands during program execution.
+ and can be invoked by the library once an instance is retrieved via the GetRemoveExternalCommandHook.
+ </summary>
+	<param name="libname">The library name.</param>
+	<param name="id">The ID of the command to remove.</param>
+	<returns>If the removal succeded.</returns>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Types.GetRemoveExternalCommandHook">
+	<summary>
+ Gets the hook instance for RemoveExternalCommandHook so it can be invoked by the library.
+ </summary>
+	<param name="hook">The hook instance.</param>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Types.ListExternalCommandsHook">
+	<summary>
+ This hook is used to list added commands during program execution.
+ and can be invoked by the library once an instance is retrieved via the GetListExternalCommandsHook.
+ </summary>
+	<param name="libname">The library name.</param>
+	<returns>This list of the commands added by this library name in the form "id : name"</returns>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Types.GetListExternalCommandsHook">
+	<summary>
+ Gets the hook instance for ListExternalCommandsHook so it can be invoked by the library.
+ </summary>
+	<param name="hook">The hook instance.</param>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Types.AddExternalSyntaxHook">
+	<summary>
+ This hook is used to add syntaxes during program execution.
+ and can be invoked by the library once an instance is retrieved via the GetAddExternalSyntaxHook.
+ </summary>
+	<param name="libname">The library name.</param>
+	<param name="syntax">The syntax to add.</param>
+	<returns>The id of the added syntax or 0 for faliure.</returns>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Types.GetAddExternalSyntaxHook">
+	<summary>
+ Gets the hook instance for AddExternalSyntaxHook so it can be invoked by the library.
+ </summary>
+	<param name="hook">The hook instance.</param>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Types.RemoveExternalSyntaxHook">
+	<summary>
+ This hook is used to remove added syntaxes during program execution.
+ and can be invoked by the library once an instance is retrieved via the GetRemoveExternalSyntaxHook.
+ </summary>
+	<param name="libname">The library name.</param>
+	<param name="id">The ID of the syntax to remove.</param>
+	<returns>If the removal succeded.</returns>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Types.GetRemoveExternalSyntaxHook">
+	<summary>
+ Gets the hook instance for RemoveExternalSyntaxHook so it can be invoked by the library.
+ </summary>
+	<param name="hook">The hook instance.</param>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Types.ListExternalSyntaxesHook">
+	<summary>
+ This hook is used to list added syntaxes during program execution.
+ and can be invoked by the library once an instance is retrieved via the GetListExternalSyntaxesHook.
+ </summary>
+	<param name="libname">The library name.</param>
+	<returns>This list of the syntaxes added by this library name in the form "id : name"</returns>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Types.GetListExternalSyntaxesHook">
+	<summary>
+ Gets the hook instance for ListExternalSyntaxesHook so it can be invoked by the library.
+ </summary>
+	<param name="hook">The hook instance.</param>
 	<remarks></remarks>
 </member><member name="M:captainalm.calmcon.api.ISyntax.name">
 	<summary>
@@ -402,7 +490,37 @@ cnsrapi
  The hook out textbox delegate.
  </summary>
 	<remarks></remarks>
-</member><member name="M:captainalm.calmcon.api.HookInfo.#ctor(System.String,captainalm.calmcon.api.Types.ProgramEventHook,captainalm.calmcon.api.Types.ProgramEventHook,captainalm.calmcon.api.Types.PreCommandExecuteHook,captainalm.calmcon.api.Types.PostCommandExecuteHook,captainalm.calmcon.api.Types.FormHook,captainalm.calmcon.api.Types.OutputTextBoxHook,captainalm.calmcon.api.Types.GetRunCommandHook,captainalm.calmcon.api.Types.GetWriteOutputHook,captainalm.calmcon.api.Types.GetReadOutputHook,captainalm.calmcon.api.Types.ReadKeyHook,captainalm.calmcon.api.Types.CommandTextBoxHook)">
+</member><member name="F:captainalm.calmcon.api.HookInfo.hook_e_cmd_add">
+	<summary>
+ The hook get add external command delegate.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.HookInfo.hook_e_cmd_list">
+	<summary>
+ The hook get list external commands delegate.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.HookInfo.hook_e_cmd_remove">
+	<summary>
+ The hook get remove external command delegate.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.HookInfo.hook_e_snx_add">
+	<summary>
+ The hook get add external syntax delegate.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.HookInfo.hook_e_snx_list">
+	<summary>
+ The hook get list external syntaxes delegate.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.HookInfo.hook_e_snx_remove">
+	<summary>
+ The hook get remove external syntax delegate.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:captainalm.calmcon.api.HookInfo.#ctor(System.String,captainalm.calmcon.api.Types.ProgramEventHook,captainalm.calmcon.api.Types.ProgramEventHook,captainalm.calmcon.api.Types.PreCommandExecuteHook,captainalm.calmcon.api.Types.PostCommandExecuteHook,captainalm.calmcon.api.Types.FormHook,captainalm.calmcon.api.Types.OutputTextBoxHook,captainalm.calmcon.api.Types.GetRunCommandHook,captainalm.calmcon.api.Types.GetWriteOutputHook,captainalm.calmcon.api.Types.GetReadOutputHook,captainalm.calmcon.api.Types.ReadKeyHook,captainalm.calmcon.api.Types.CommandTextBoxHook,captainalm.calmcon.api.Types.GetAddExternalCommandHook,captainalm.calmcon.api.Types.GetListExternalCommandsHook,captainalm.calmcon.api.Types.GetRemoveExternalCommandHook,captainalm.calmcon.api.Types.GetAddExternalSyntaxHook,captainalm.calmcon.api.Types.GetListExternalSyntaxesHook,captainalm.calmcon.api.Types.GetRemoveExternalSyntaxHook)">
 	<summary>
  Constructs a new set of hook info, use nothing as a parameter if you do not want to register a certain hook.
  </summary>
@@ -418,6 +536,12 @@ cnsrapi
 	<param name="getrout">The Get ReadOutput Hook delegate.</param>
 	<param name="rk">The Read Key (In the operation log text box.) Hook Delegate.</param>
 	<param name="hcmdbx">The command textbox hook delegate.</param>
+	<param name="hecmdadd">The Get Add External Command During Runtime hook Delegate.</param>
+	<param name="hecmdlist">The Get List External Commands During Runtime hook Delegate.</param>
+	<param name="hecmdremove">The Get Remove External Command During Runtime hook Delegate.</param>
+	<param name="hesnxadd">The Get Add External Syntax During Runtime hook Delegate.</param>
+	<param name="hesnxlist">The Get List External Syntaxes During Runtime hook Delegate.</param>
+	<param name="hesnxremove">The Get Remove External Syntax During Runtime hook Delegate.</param>
 	<remarks></remarks>
 </member><member name="T:captainalm.calmcon.api.HookInfo">
 	<summary>

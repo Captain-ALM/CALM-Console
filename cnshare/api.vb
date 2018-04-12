@@ -72,7 +72,7 @@
     Public Delegate Sub GetWriteOutputHook(ByRef hook As WriteOutputHook)
     ''' <summary>
     ''' This hook is used to read from the output textbox,
-    ''' and can be invoked by the library once an instance is retrieved via the GetWriteOutputHook.
+    ''' and can be invoked by the library once an instance is retrieved via the GetReadOutputHook.
     ''' </summary>
     ''' <returns>The contents of the output textbox.</returns>
     ''' <remarks></remarks>
@@ -89,6 +89,94 @@
     ''' <param name="key">The key data caught.</param>
     ''' <remarks></remarks>
     Public Delegate Sub ReadKeyHook(ByVal key As String)
+    ''' <summary>
+    ''' This hook is used to add commands during program execution.
+    ''' and can be invoked by the library once an instance is retrieved via the GetAddExternalCommandHook.
+    ''' </summary>
+    ''' <param name="libname">The library name.</param>
+    ''' <param name="command">The command to add.</param>
+    ''' <returns>The id of the added command or 0 for faliure.</returns>
+    ''' <remarks></remarks>
+    Public Delegate Function AddExternalCommandHook(ByVal libname As String, ByVal command As Command) As Integer
+    ''' <summary>
+    ''' Gets the hook instance for AddExternalCommandHook so it can be invoked by the library.
+    ''' </summary>
+    ''' <param name="hook">The hook instance.</param>
+    ''' <remarks></remarks>
+    Public Delegate Sub GetAddExternalCommandHook(ByRef hook As AddExternalCommandHook)
+    ''' <summary>
+    ''' This hook is used to remove added commands during program execution.
+    ''' and can be invoked by the library once an instance is retrieved via the GetRemoveExternalCommandHook.
+    ''' </summary>
+    ''' <param name="libname">The library name.</param>
+    ''' <param name="id">The ID of the command to remove.</param>
+    ''' <returns>If the removal succeded.</returns>
+    ''' <remarks></remarks>
+    Public Delegate Function RemoveExternalCommandHook(ByVal libname As String, ByVal id As Integer) As Boolean
+    ''' <summary>
+    ''' Gets the hook instance for RemoveExternalCommandHook so it can be invoked by the library.
+    ''' </summary>
+    ''' <param name="hook">The hook instance.</param>
+    ''' <remarks></remarks>
+    Public Delegate Sub GetRemoveExternalCommandHook(ByRef hook As RemoveExternalCommandHook)
+    ''' <summary>
+    ''' This hook is used to list added commands during program execution.
+    ''' and can be invoked by the library once an instance is retrieved via the GetListExternalCommandsHook.
+    ''' </summary>
+    ''' <param name="libname">The library name.</param>
+    ''' <returns>This list of the commands added by this library name in the form "id : name"</returns>
+    ''' <remarks></remarks>
+    Public Delegate Function ListExternalCommandsHook(ByVal libname As String) As String()
+    ''' <summary>
+    ''' Gets the hook instance for ListExternalCommandsHook so it can be invoked by the library.
+    ''' </summary>
+    ''' <param name="hook">The hook instance.</param>
+    ''' <remarks></remarks>
+    Public Delegate Sub GetListExternalCommandsHook(ByRef hook As ListExternalCommandsHook)
+    ''' <summary>
+    ''' This hook is used to add syntaxes during program execution.
+    ''' and can be invoked by the library once an instance is retrieved via the GetAddExternalSyntaxHook.
+    ''' </summary>
+    ''' <param name="libname">The library name.</param>
+    ''' <param name="syntax">The syntax to add.</param>
+    ''' <returns>The id of the added syntax or 0 for faliure.</returns>
+    ''' <remarks></remarks>
+    Public Delegate Function AddExternalSyntaxHook(ByVal libname As String, ByVal syntax As ISyntax) As Integer
+    ''' <summary>
+    ''' Gets the hook instance for AddExternalSyntaxHook so it can be invoked by the library.
+    ''' </summary>
+    ''' <param name="hook">The hook instance.</param>
+    ''' <remarks></remarks>
+    Public Delegate Sub GetAddExternalSyntaxHook(ByRef hook As AddExternalSyntaxHook)
+    ''' <summary>
+    ''' This hook is used to remove added syntaxes during program execution.
+    ''' and can be invoked by the library once an instance is retrieved via the GetRemoveExternalSyntaxHook.
+    ''' </summary>
+    ''' <param name="libname">The library name.</param>
+    ''' <param name="id">The ID of the syntax to remove.</param>
+    ''' <returns>If the removal succeded.</returns>
+    ''' <remarks></remarks>
+    Public Delegate Function RemoveExternalSyntaxHook(ByVal libname As String, ByVal id As Integer) As Boolean
+    ''' <summary>
+    ''' Gets the hook instance for RemoveExternalSyntaxHook so it can be invoked by the library.
+    ''' </summary>
+    ''' <param name="hook">The hook instance.</param>
+    ''' <remarks></remarks>
+    Public Delegate Sub GetRemoveExternalSyntaxHook(ByRef hook As RemoveExternalSyntaxHook)
+    ''' <summary>
+    ''' This hook is used to list added syntaxes during program execution.
+    ''' and can be invoked by the library once an instance is retrieved via the GetListExternalSyntaxesHook.
+    ''' </summary>
+    ''' <param name="libname">The library name.</param>
+    ''' <returns>This list of the syntaxes added by this library name in the form "id : name"</returns>
+    ''' <remarks></remarks>
+    Public Delegate Function ListExternalSyntaxesHook(ByVal libname As String) As String()
+    ''' <summary>
+    ''' Gets the hook instance for ListExternalSyntaxesHook so it can be invoked by the library.
+    ''' </summary>
+    ''' <param name="hook">The hook instance.</param>
+    ''' <remarks></remarks>
+    Public Delegate Sub GetListExternalSyntaxesHook(ByRef hook As ListExternalSyntaxesHook)
 End Module
 ''' <summary>
 ''' API interface for adding other syntax language interpreters.
@@ -176,6 +264,37 @@ Public Structure HookInfo
     ''' <remarks></remarks>
     Public hook_cmd_txtbx As CommandTextBoxHook
     ''' <summary>
+    ''' The hook get add external command delegate.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public hook_e_cmd_add As GetAddExternalCommandHook
+    ''' <summary>
+    ''' The hook get list external commands delegate.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public hook_e_cmd_list As GetListExternalCommandsHook
+    ''' <summary>
+    ''' The hook get remove external command delegate.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public hook_e_cmd_remove As GetRemoveExternalCommandHook
+    ''' <summary>
+    ''' The hook get add external syntax delegate.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public hook_e_snx_add As GetAddExternalSyntaxHook
+    ''' <summary>
+    ''' The hook get list external syntaxes delegate.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public hook_e_snx_list As GetListExternalSyntaxesHook
+    ''' <summary>
+    ''' The hook get remove external syntax delegate.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public hook_e_snx_remove As GetRemoveExternalSyntaxHook
+
+    ''' <summary>
     ''' Constructs a new set of hook info, use nothing as a parameter if you do not want to register a certain hook.
     ''' </summary>
     ''' <param name="hook_set_name">The name of the hook set.</param>
@@ -190,8 +309,14 @@ Public Structure HookInfo
     ''' <param name="getrout">The Get ReadOutput Hook delegate.</param>
     ''' <param name="rk">The Read Key (In the operation log text box.) Hook Delegate.</param>
     ''' <param name="hcmdbx">The command textbox hook delegate.</param>
+    ''' <param name="hecmdadd">The Get Add External Command During Runtime hook Delegate.</param>
+    ''' <param name="hecmdlist">The Get List External Commands During Runtime hook Delegate.</param>
+    ''' <param name="hecmdremove">The Get Remove External Command During Runtime hook Delegate.</param>
+    ''' <param name="hesnxadd">The Get Add External Syntax During Runtime hook Delegate.</param>
+    ''' <param name="hesnxlist">The Get List External Syntaxes During Runtime hook Delegate.</param>
+    ''' <param name="hesnxremove">The Get Remove External Syntax During Runtime hook Delegate.</param>
     ''' <remarks></remarks>
-    Public Sub New(ByVal hook_set_name As String, Optional ByVal hprostr As ProgramEventHook = Nothing, Optional ByVal hprostp As ProgramEventHook = Nothing, Optional ByVal hcompreex As PreCommandExecuteHook = Nothing, Optional ByVal hcompstex As PostCommandExecuteHook = Nothing, Optional ByVal hform As FormHook = Nothing, Optional ByVal houtbx As OutputTextBoxHook = Nothing, Optional ByVal getrcom As GetRunCommandHook = Nothing, Optional ByVal getwout As GetWriteOutputHook = Nothing, Optional ByVal getrout As GetReadOutputHook = Nothing, Optional ByVal rk As ReadKeyHook = Nothing, Optional ByVal hcmdbx As CommandTextBoxHook = Nothing)
+    Public Sub New(ByVal hook_set_name As String, Optional ByVal hprostr As ProgramEventHook = Nothing, Optional ByVal hprostp As ProgramEventHook = Nothing, Optional ByVal hcompreex As PreCommandExecuteHook = Nothing, Optional ByVal hcompstex As PostCommandExecuteHook = Nothing, Optional ByVal hform As FormHook = Nothing, Optional ByVal houtbx As OutputTextBoxHook = Nothing, Optional ByVal getrcom As GetRunCommandHook = Nothing, Optional ByVal getwout As GetWriteOutputHook = Nothing, Optional ByVal getrout As GetReadOutputHook = Nothing, Optional ByVal rk As ReadKeyHook = Nothing, Optional ByVal hcmdbx As CommandTextBoxHook = Nothing, Optional ByVal hecmdadd As GetAddExternalCommandHook = Nothing, Optional ByVal hecmdlist As GetListExternalCommandsHook = Nothing, Optional ByVal hecmdremove As GetRemoveExternalCommandHook = Nothing, Optional ByVal hesnxadd As GetAddExternalSyntaxHook = Nothing, Optional ByVal hesnxlist As GetListExternalSyntaxesHook = Nothing, Optional ByVal hesnxremove As GetRemoveExternalSyntaxHook = Nothing)
         name = hook_set_name
         hook_programstart = hprostr
         hook_programstop = hprostp
@@ -204,6 +329,12 @@ Public Structure HookInfo
         hook_readoutput = getrout
         hook_rk = rk
         hook_cmd_txtbx = hcmdbx
+        hook_e_cmd_add = hecmdadd
+        hook_e_cmd_list = hecmdlist
+        hook_e_cmd_remove = hecmdremove
+        hook_e_snx_add = hesnxadd
+        hook_e_snx_list = hesnxlist
+        hook_e_snx_remove = hesnxremove
     End Sub
 End Structure
 ''' <summary>

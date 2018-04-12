@@ -244,9 +244,11 @@ Module commands_data
     Public Function helpext(args As String()) As String
         Dim lstcomb As New List(Of String)
         lstcomb.AddRange(commandhelplst)
+        lstcomb.AddRange(help_lst())
         lstcomb.AddRange(commandhelplstext)
+        lstcomb.AddRange(help_lst_ext())
         If args Is Nothing Then
-            Dim helpstr As OutputText = "Help:" & ControlChars.CrLf
+            Dim helpstr As OutputText = "Extended Help:" & ControlChars.CrLf
             For i As Integer = 0 To lstcomb.Count - 1 Step 1
                 helpstr = helpstr & lstcomb(i)
                 If i <> lstcomb.Count - 1 Then
@@ -257,7 +259,7 @@ Module commands_data
         Else
             Try
                 Dim commandhelplst_local As List(Of String) = lstcomb.FindAll(Function(x) x.Contains(args(0)))
-                Dim helpstr As String = "Help:" & ControlChars.CrLf & "Help Returned For '" & args(0) & "'" & ControlChars.CrLf
+                Dim helpstr As String = "Extended Help:" & ControlChars.CrLf & "Extended Help Returned For '" & args(0) & "'" & ControlChars.CrLf
                 For i As Integer = 0 To commandhelplst_local.Count - 1 Step 1
                     helpstr = helpstr & commandhelplst_local(i)
                     If i <> commandhelplst_local.Count - 1 Then
@@ -272,18 +274,21 @@ Module commands_data
     End Function
 
     Public Function help(args As String()) As String
+        Dim lstcomb As New List(Of String)
+        lstcomb.AddRange(commandhelplst)
+        lstcomb.AddRange(help_lst())
         If args Is Nothing Then
             Dim helpstr As OutputText = "Help:" & ControlChars.CrLf
-            For i As Integer = 0 To commandhelplst.Count - 1 Step 1
-                helpstr = helpstr & commandhelplst(i)
-                If i <> commandhelplst.Count - 1 Then
+            For i As Integer = 0 To lstcomb.Count - 1 Step 1
+                helpstr = helpstr & lstcomb(i)
+                If i <> lstcomb.Count - 1 Then
                     helpstr = helpstr & ControlChars.CrLf
                 End If
             Next
             Return helpstr
         Else
             Try
-                Dim commandhelplst_local As List(Of String) = commandhelplst.FindAll(Function(x) x.Contains(args(0)))
+                Dim commandhelplst_local As List(Of String) = lstcomb.FindAll(Function(x) x.Contains(args(0)))
                 Dim helpstr As String = "Help:" & ControlChars.CrLf & "Help Returned For '" & args(0) & "'" & ControlChars.CrLf
                 For i As Integer = 0 To commandhelplst_local.Count - 1 Step 1
                     helpstr = helpstr & commandhelplst_local(i)
