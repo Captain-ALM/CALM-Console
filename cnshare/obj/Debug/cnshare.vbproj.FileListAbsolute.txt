@@ -16,3 +16,12 @@ C:\Users\Alfred\Documents\GitHub\CALM-Console\cnshare\obj\Debug\cnshare.vbproj.G
 C:\Users\Alfred\Documents\GitHub\CALM-Console\cnshare\obj\Debug\cnsrapi.dll
 C:\Users\Alfred\Documents\GitHub\CALM-Console\cnshare\obj\Debug\cnsrapi.xml
 C:\Users\Alfred\Documents\GitHub\CALM-Console\cnshare\obj\Debug\cnsrapi.pdb
+F:\Users\alfred\Documents\git\CALM-Console\cnshare\bin\Debug\cnsrapi.dll
+F:\Users\alfred\Documents\git\CALM-Console\cnshare\bin\Debug\cnsrapi.pdb
+F:\Users\alfred\Documents\git\CALM-Console\cnshare\bin\Debug\cnsrapi.xml
+F:\Users\alfred\Documents\git\CALM-Console\cnshare\obj\Debug\cnshare.vbprojResolveAssemblyReference.cache
+F:\Users\alfred\Documents\git\CALM-Console\cnshare\obj\Debug\captainalm.calmcon.api.Resources.resources
+F:\Users\alfred\Documents\git\CALM-Console\cnshare\obj\Debug\cnshare.vbproj.GenerateResource.Cache
+F:\Users\alfred\Documents\git\CALM-Console\cnshare\obj\Debug\cnsrapi.dll
+F:\Users\alfred\Documents\git\CALM-Console\cnshare\obj\Debug\cnsrapi.xml
+F:\Users\alfred\Documents\git\CALM-Console\cnshare\obj\Debug\cnsrapi.pdb

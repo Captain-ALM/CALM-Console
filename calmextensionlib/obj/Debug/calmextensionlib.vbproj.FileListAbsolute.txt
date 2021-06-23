@@ -22,3 +22,15 @@ C:\Users\Alfred\Documents\GitHub\CALM-Console\calmextensionlib\obj\Debug\calmext
 C:\Users\Alfred\Documents\GitHub\CALM-Console\calmextensionlib\obj\Debug\calmextensionlib.dll
 C:\Users\Alfred\Documents\GitHub\CALM-Console\calmextensionlib\obj\Debug\calmextensionlib.xml
 C:\Users\Alfred\Documents\GitHub\CALM-Console\calmextensionlib\obj\Debug\calmextensionlib.pdb
+F:\Users\alfred\Documents\git\CALM-Console\calmextensionlib\bin\Debug\calmextensionlib.dll
+F:\Users\alfred\Documents\git\CALM-Console\calmextensionlib\bin\Debug\calmextensionlib.pdb
+F:\Users\alfred\Documents\git\CALM-Console\calmextensionlib\bin\Debug\calmextensionlib.xml
+F:\Users\alfred\Documents\git\CALM-Console\calmextensionlib\bin\Debug\cnsrapi.dll
+F:\Users\alfred\Documents\git\CALM-Console\calmextensionlib\bin\Debug\cnsrapi.pdb
+F:\Users\alfred\Documents\git\CALM-Console\calmextensionlib\bin\Debug\cnsrapi.xml
+F:\Users\alfred\Documents\git\CALM-Console\calmextensionlib\obj\Debug\calmextensionlib.vbprojResolveAssemblyReference.cache
+F:\Users\alfred\Documents\git\CALM-Console\calmextensionlib\obj\Debug\captainalm.calmextensionlib.Resources.resources
+F:\Users\alfred\Documents\git\CALM-Console\calmextensionlib\obj\Debug\calmextensionlib.vbproj.GenerateResource.Cache
+F:\Users\alfred\Documents\git\CALM-Console\calmextensionlib\obj\Debug\calmextensionlib.dll
+F:\Users\alfred\Documents\git\CALM-Console\calmextensionlib\obj\Debug\calmextensionlib.xml
+F:\Users\alfred\Documents\git\CALM-Console\calmextensionlib\obj\Debug\calmextensionlib.pdb

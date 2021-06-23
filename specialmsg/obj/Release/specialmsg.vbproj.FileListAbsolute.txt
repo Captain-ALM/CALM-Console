@@ -22,3 +22,15 @@ C:\Users\Alfred\Documents\GitHub\CALM-Console\specialmsg\obj\Release\specialmsg.
 C:\Users\Alfred\Documents\GitHub\CALM-Console\specialmsg\obj\Release\specialmsg.dll
 C:\Users\Alfred\Documents\GitHub\CALM-Console\specialmsg\obj\Release\specialmsg.xml
 C:\Users\Alfred\Documents\GitHub\CALM-Console\specialmsg\obj\Release\specialmsg.pdb
+F:\Users\alfred\Documents\git\CALM-Console\specialmsg\bin\Release\specialmsg.dll
+F:\Users\alfred\Documents\git\CALM-Console\specialmsg\bin\Release\specialmsg.pdb
+F:\Users\alfred\Documents\git\CALM-Console\specialmsg\bin\Release\specialmsg.xml
+F:\Users\alfred\Documents\git\CALM-Console\specialmsg\bin\Release\cnsrapi.dll
+F:\Users\alfred\Documents\git\CALM-Console\specialmsg\bin\Release\cnsrapi.pdb
+F:\Users\alfred\Documents\git\CALM-Console\specialmsg\bin\Release\cnsrapi.xml
+F:\Users\alfred\Documents\git\CALM-Console\specialmsg\obj\Release\specialmsg.vbprojResolveAssemblyReference.cache
+F:\Users\alfred\Documents\git\CALM-Console\specialmsg\obj\Release\specialmsg.Resources.resources
+F:\Users\alfred\Documents\git\CALM-Console\specialmsg\obj\Release\specialmsg.vbproj.GenerateResource.Cache
+F:\Users\alfred\Documents\git\CALM-Console\specialmsg\obj\Release\specialmsg.dll
+F:\Users\alfred\Documents\git\CALM-Console\specialmsg\obj\Release\specialmsg.xml
+F:\Users\alfred\Documents\git\CALM-Console\specialmsg\obj\Release\specialmsg.pdb

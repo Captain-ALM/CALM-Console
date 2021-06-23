@@ -208,7 +208,6 @@ Public Class int_command
                         End If
                         ReDim Preserve args(argumentsstr.Count - 2)
                         For i As Integer = 1 To argumentsstr.Count - 1 Step 1
-                            'ReDim Preserve args(i - 1)
                             If ((argumentsstr(i).StartsWith(ControlChars.Quote) And argumentsstr(i).EndsWith(ControlChars.Quote)) Or (argumentsstr(i).StartsWith("'") And argumentsstr(i).EndsWith("'"))) Then
                                 args(i - 1) = argumentsstr(i).Substring(1, argumentsstr(i).Length - 2)
                             Else
@@ -306,6 +305,8 @@ Public Class executable_command
     Public Sub execute(Optional args As String() = Nothing)
         If Not args Is Nothing Then
             _args = args
+        Else
+            _args = New String() {}
         End If
         If _isthread Then
             If Not _thread Is Nothing Then
@@ -321,20 +322,7 @@ Public Class executable_command
     End Sub
 
     Public Function execute_and_return(Optional args As String() = Nothing) As OutputText
-        If Not args Is Nothing Then
-            _args = args
-        End If
-        If _isthread Then
-            If Not _thread Is Nothing Then
-                If _thread.IsAlive = False Then
-                    _thread = New Thread(New ThreadStart(AddressOf execdel))
-                    _thread.IsBackground = True
-                    _thread.Start()
-                End If
-            End If
-        Else
-            execdel()
-        End If
+        Me.execute(args)
         If _isthread Then
             If Not _thread Is Nothing Then
                 If _thread.IsAlive Then
@@ -366,12 +354,8 @@ Public Class executable_command
     End Sub
 
     Public Sub flush()
-        If Not _args Is Nothing Then
-            _args = Nothing
-        End If
-        If Not _retur Is Nothing Then
-            _retur = Nothing
-        End If
+        Me.flush_arguments()
+        Me.flush_return()
     End Sub
 
     Private Sub execdel()

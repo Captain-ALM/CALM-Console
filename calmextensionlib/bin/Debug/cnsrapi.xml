@@ -6,52 +6,7 @@ cnsrapi
 </name>
 </assembly>
 <members>
-<member name="F:captainalm.calmcon.api.Switches.MultilineCheckboxEnablement">
-	<summary>
- Enable, Disable or Program Control the Multiline Entry Checkbox.
- </summary>
-	<remarks></remarks>
-</member><member name="F:captainalm.calmcon.api.Switches.OutputBoxReadKey">
-	<summary>
- Read keys from the output boxes.
- </summary>
-	<remarks></remarks>
-</member><member name="F:captainalm.calmcon.api.Switches.CommandExecution">
-	<summary>
- Enable Or Disable Command Execution.
- </summary>
-	<remarks></remarks>
-</member><member name="F:captainalm.calmcon.api.Switches.AllowMultiCommandEntry">
-	<summary>
- Allow multipule Lines to be Entered into the command box.
- </summary>
-	<remarks></remarks>
-</member><member name="T:captainalm.calmcon.api.Switches">
-	<summary>
- This provides API switching for the program.
- </summary>
-	<remarks></remarks>
-</member><member name="F:captainalm.calmcon.api.Manipulator.CommandStack">
-	<summary>
- This provides the command stack for access and modification.
- </summary>
-	<remarks></remarks>
-</member><member name="F:captainalm.calmcon.api.Manipulator.VariableDictionary">
-	<summary>
- This provides the variable dictionary for access and modification.
- </summary>
-	<remarks></remarks>
-</member><member name="F:captainalm.calmcon.api.Manipulator.SyntaxMode">
-	<summary>
- Provides the syntax mode for access and manipulation, be careful!
- </summary>
-	<remarks></remarks>
-</member><member name="T:captainalm.calmcon.api.Manipulator">
-	<summary>
- This provides API manipulation for the program.
- </summary>
-	<remarks></remarks>
-</member><member name="M:captainalm.calmcon.api.OutputText.#ctor(System.String,System.Drawing.Color,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+<member name="M:captainalm.calmcon.api.OutputText.#ctor(System.String,System.Drawing.Color,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
 	<summary>
  Creates a new output text instance
  </summary>
@@ -157,7 +112,7 @@ cnsrapi
 	<remarks></remarks>
 </member><member name="M:captainalm.calmcon.api.OutputText.op_Inequality(captainalm.calmcon.api.OutputText,captainalm.calmcon.api.OutputText)">
 	<summary>
- Checks if two output texts are not equal.
+ Checks if two output text strings are not equal.
  </summary>
 	<param name="optxt1">The first output text.</param>
 	<param name="optxt2">The second output text.</param>
@@ -165,7 +120,7 @@ cnsrapi
 	<remarks></remarks>
 </member><member name="M:captainalm.calmcon.api.OutputText.op_Equality(captainalm.calmcon.api.OutputText,captainalm.calmcon.api.OutputText)">
 	<summary>
- Checks if two output texts are equal.
+ Checks if two output text strings are equal.
  </summary>
 	<param name="optxt1">The first output text.</param>
 	<param name="optxt2">The second output text.</param>
@@ -231,6 +186,64 @@ cnsrapi
 </member><member name="T:captainalm.calmcon.api.SetupMethodAttribute">
 	<summary>
  This Attribute is used to Specify The Setup Method of The Library.
+ </summary>
+	<remarks></remarks>
+</member><member name="P:captainalm.calmcon.api.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:captainalm.calmcon.api.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="T:captainalm.calmcon.api.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member><member name="F:captainalm.calmcon.api.Switches.MultilineCheckboxEnablement">
+	<summary>
+ Enable, Disable or Program Control the Multiline Entry Checkbox.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.Switches.OutputBoxReadKey">
+	<summary>
+ Read keys from the output boxes.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.Switches.CommandExecution">
+	<summary>
+ Enable Or Disable Command Execution.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.Switches.AllowMultiCommandEntry">
+	<summary>
+ Allow multipule Lines to be Entered into the command box.
+ </summary>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Switches">
+	<summary>
+ This provides API switching for the program.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.Manipulator.CommandStack">
+	<summary>
+ This provides the command stack for access and modification.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.Manipulator.VariableDictionary">
+	<summary>
+ This provides the variable dictionary for access and modification.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:captainalm.calmcon.api.Manipulator.SyntaxMode">
+	<summary>
+ Provides the syntax mode for access and manipulation, be careful!
+ </summary>
+	<remarks></remarks>
+</member><member name="T:captainalm.calmcon.api.Manipulator">
+	<summary>
+ This provides API manipulation for the program.
  </summary>
 	<remarks></remarks>
 </member><member name="T:captainalm.calmcon.api.Types.Cmd">
@@ -616,19 +629,6 @@ cnsrapi
  Use this structure to register commands from a library.
  </summary>
 	<remarks></remarks>
-</member><member name="P:captainalm.calmcon.api.My.Resources.Resources.ResourceManager">
-	<summary>
-  Returns the cached ResourceManager instance used by this class.
-</summary>
-</member><member name="P:captainalm.calmcon.api.My.Resources.Resources.Culture">
-	<summary>
-  Overrides the current thread's CurrentUICulture property for all
-  resource lookups using this strongly typed resource class.
-</summary>
-</member><member name="T:captainalm.calmcon.api.My.Resources.Resources">
-	<summary>
-  A strongly-typed resource class, for looking up localized strings, etc.
-</summary>
 </member>
 </members>
 </doc>

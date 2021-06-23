@@ -15,9 +15,8 @@ Public Class OutputText
     ''' <param name="so">Is the intal text strikeout.</param>
     ''' <remarks></remarks>
     Public Sub New(Optional txt As String = "", Optional forecol As Drawing.Color = Nothing, Optional bld As Boolean = False, Optional itl As Boolean = False, Optional ul As Boolean = False, Optional so As Boolean = False)
-        If Not txt Is Nothing And txt <> "" Then
-            Dim cblock As New TextBlock(txt, forecol, bld, itl, ul, so)
-            _blocks.Add(cblock)
+        If Not txt Is Nothing AndAlso txt <> "" Then
+            _blocks.Add(New TextBlock(txt, forecol, bld, itl, ul, so))
         End If
     End Sub
     'Only accessible in the Shared & API Library.
@@ -67,12 +66,10 @@ Public Class OutputText
             If _blocks(_blocks.Count - 1).forecolor = forecol And _blocks(_blocks.Count - 1).bold = bld And _blocks(_blocks.Count - 1).italic = itl And _blocks(_blocks.Count - 1).underline = ul And _blocks(_blocks.Count - 1).strikeout = so Then
                 _blocks(_blocks.Count - 1).write(txt)
             Else
-                Dim cblock As New TextBlock(txt, forecol, bld, itl, ul, so)
-                _blocks.Add(cblock)
+                _blocks.Add(New TextBlock(txt, forecol, bld, itl, ul, so))
             End If
         Else
-            Dim cblock As New TextBlock(txt, forecol, bld, itl, ul, so)
-            _blocks.Add(cblock)
+            _blocks.Add(New TextBlock(txt, forecol, bld, itl, ul, so))
         End If
     End Sub
     ''' <summary>
@@ -89,13 +86,11 @@ Public Class OutputText
         If Not _blocks.Count = 0 Then
             If _blocks(_blocks.Count - 1).forecolor = forecol And _blocks(_blocks.Count - 1).bold = bld And _blocks(_blocks.Count - 1).italic = itl And _blocks(_blocks.Count - 1).underline = ul And _blocks(_blocks.Count - 1).strikeout = so Then
                 _blocks(_blocks.Count - 1).writeline(txt)
-            Else
-                Dim cblock As New TextBlock(txt & ControlChars.CrLf, forecol, bld, itl, ul, so)
-                _blocks.Add(cblock)
+            Else 
+                _blocks.Add(New TextBlock(txt & ControlChars.CrLf, forecol, bld, itl, ul, so))
             End If
         Else
-            Dim cblock As New TextBlock(txt & ControlChars.CrLf, forecol, bld, itl, ul, so)
-            _blocks.Add(cblock)
+            _blocks.Add(New TextBlock(txt & ControlChars.CrLf, forecol, bld, itl, ul, so))
         End If
     End Sub
     ''' <summary>
@@ -106,7 +101,7 @@ Public Class OutputText
     Public Function ToOutputTextBlocks() As OutputTextBlock()
         Dim lst As New List(Of OutputTextBlock)
         For Each tb As TextBlock In _blocks
-            lst.Add(tb.ToOutputTextBlock)
+            lst.Add(tb.ToOutputTextBlock())
         Next
         Return lst.ToArray
     End Function
@@ -189,29 +184,27 @@ Public Class OutputText
         For Each cb As TextBlock In optxt2._blocks
             noptxt.write(cb.text, cb.forecolor, cb.bold, cb.italic, cb.underline, cb.strikeout)
         Next
-        'noptxt._blocks.AddRange(optxt1._blocks)
-        'noptxt._blocks.AddRange(optxt2._blocks)
         Return noptxt
     End Operator
     ''' <summary>
-    ''' Checks if two output texts are not equal.
+    ''' Checks if two output text strings are not equal.
     ''' </summary>
     ''' <param name="optxt1">The first output text.</param>
     ''' <param name="optxt2">The second output text.</param>
     ''' <returns>The boolean of if they are not equal.</returns>
     ''' <remarks></remarks>
     Public Shared Operator <>(ByVal optxt1 As OutputText, ByVal optxt2 As OutputText) As Boolean
-        Return (Not optxt1._blocks.Equals(optxt2._blocks)) And (Not optxt2._blocks.Equals(optxt1._blocks))
+        Return Not optxt1 = optxt2
     End Operator
     ''' <summary>
-    ''' Checks if two output texts are equal.
+    ''' Checks if two output text strings are equal.
     ''' </summary>
     ''' <param name="optxt1">The first output text.</param>
     ''' <param name="optxt2">The second output text.</param>
     ''' <returns>The boolean of if they are equal.</returns>
     ''' <remarks></remarks>
     Public Shared Operator =(ByVal optxt1 As OutputText, ByVal optxt2 As OutputText) As Boolean
-        Return (optxt1._blocks.Equals(optxt2._blocks)) And (optxt2._blocks.Equals(optxt1._blocks))
+        Return optxt1.ToString() = optxt2.ToString()
     End Operator
     ''' <summary>
     ''' Returns the Value of this Object as a String.

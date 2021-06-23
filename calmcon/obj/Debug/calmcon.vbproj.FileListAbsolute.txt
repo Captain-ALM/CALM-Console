@@ -26,3 +26,17 @@ C:\Users\Alfred\Documents\GitHub\CALM-Console\calmcon\obj\Debug\captainalm.calmc
 C:\Users\Alfred\Documents\GitHub\CALM-Console\calmcon\obj\Debug\captainalm.calmcon.main.resources
 C:\Users\Alfred\Documents\GitHub\CALM-Console\calmcon\obj\Debug\captainalm.calmcon.Resources.resources
 C:\Users\Alfred\Documents\GitHub\CALM-Console\calmcon\obj\Debug\calmcon.vbproj.GenerateResource.Cache
+F:\Users\alfred\Documents\git\CALM-Console\calmcon\obj\Debug\calmcmd.exe
+F:\Users\alfred\Documents\git\CALM-Console\calmcon\obj\Debug\calmcmd.xml
+F:\Users\alfred\Documents\git\CALM-Console\calmcon\obj\Debug\calmcmd.pdb
+F:\Users\alfred\Documents\git\CALM-Console\calmcon\bin\Debug\calmcmd.exe
+F:\Users\alfred\Documents\git\CALM-Console\calmcon\bin\Debug\calmcmd.pdb
+F:\Users\alfred\Documents\git\CALM-Console\calmcon\bin\Debug\calmcmd.xml
+F:\Users\alfred\Documents\git\CALM-Console\calmcon\bin\Debug\cnsrapi.dll
+F:\Users\alfred\Documents\git\CALM-Console\calmcon\bin\Debug\cnsrapi.pdb
+F:\Users\alfred\Documents\git\CALM-Console\calmcon\bin\Debug\cnsrapi.xml
+F:\Users\alfred\Documents\git\CALM-Console\calmcon\obj\Debug\calmcon.vbprojResolveAssemblyReference.cache
+F:\Users\alfred\Documents\git\CALM-Console\calmcon\obj\Debug\captainalm.calmcon.AboutBx.resources
+F:\Users\alfred\Documents\git\CALM-Console\calmcon\obj\Debug\captainalm.calmcon.main.resources
+F:\Users\alfred\Documents\git\CALM-Console\calmcon\obj\Debug\captainalm.calmcon.Resources.resources
+F:\Users\alfred\Documents\git\CALM-Console\calmcon\obj\Debug\calmcon.vbproj.GenerateResource.Cache

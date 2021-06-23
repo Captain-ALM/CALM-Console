@@ -9,12 +9,13 @@ Public Class main
     <SetupMethod>
     Public Function library() As LibrarySetup
         Dim hi As New HookInfo("special_msgs:0", Nothing, Nothing, New PreCommandExecuteHook(AddressOf todays_message), Nothing, Nothing, New OutputTextBoxHook(AddressOf oh_old), Nothing, New GetWriteOutputHook(AddressOf oh))
-        Dim coms(4) As Command
-        coms(0) = New Command("get_message", New Cmd(AddressOf get_msg), "get_message%(string)[optional : day]% : gets the current message")
-        coms(1) = New Command("set_message", New Cmd(AddressOf set_msg), "set_message%(string)[message]%%(string)[optional : day]% : sets the current/given message")
-        coms(2) = New Command("reset_message", New Cmd(AddressOf reset_shown), "reset_message : resets the current message")
+        Dim coms(5) As Command
+        coms(0) = New Command("get_message", New Cmd(AddressOf get_msg), "get_message%(string)[optional : date]% : gets the current message")
+        coms(1) = New Command("set_message", New Cmd(AddressOf set_msg), "set_message%(string)[message]%%(string)[optional : date]% : sets the current/given message")
+        coms(2) = New Command("reset_message", New Cmd(AddressOf reset_shown), "reset_message : resets the current message showing")
         coms(3) = New Command("load_messages", New Cmd(AddressOf load_msg), "load_messages%(string)[path]% : loads the a set of messages")
         coms(4) = New Command("save_messages", New Cmd(AddressOf save_msg), "save_messages%(string)[path]% : saves the current set of messages")
+        coms(5) = New Command("current_date", New Cmd(AddressOf current_date), "current_date : gets the current date")
         Return New LibrarySetup("special_messages", 0, hi, coms)
     End Function
 
@@ -35,6 +36,7 @@ Public Class main
     Public Function load_msg(ByVal args As String()) As String
         If args.Length >= 1 Then
             messages = convertstringtoobject(File.ReadAllText(args(0)))
+            If messages Is Nothing Then messages = New Dictionary(Of String, String)
             Return "Loaded Messages from: " & args(0)
         Else
             Return "Need Parameters."
@@ -43,19 +45,11 @@ Public Class main
 
     Public Function get_msg(ByVal args As String()) As String
         Dim today As String = Date.Now.Date.ToShortDateString
-        If Not args Is Nothing Then
-            If args.Length >= 1 Then
-                If messages.ContainsKey(args(0)) Then
-                    Return messages(args(0))
-                Else
-                    Return "No Messages."
-                End If
+        If args.Length >= 1 Then
+            If messages.ContainsKey(args(0)) Then
+                Return messages(args(0))
             Else
-                If messages.ContainsKey(today) Then
-                    Return messages(today)
-                Else
-                    Return "No Messages."
-                End If
+                Return "No Messages."
             End If
         Else
             If messages.ContainsKey(today) Then
@@ -87,6 +81,10 @@ Public Class main
         End If
     End Function
 
+    Public Function current_date(ByVal args As String()) As String
+        Return Date.Now.Date.ToShortDateString
+    End Function
+
     Public Sub oh(ByRef hook As WriteOutputHook)
         wouthook = hook
     End Sub
@@ -110,31 +108,29 @@ Public Class main
     End Sub
 
     Public Function convertobjecttostring(obj As Object) As String
-        Try
-            Dim memorysteam As New MemoryStream
-            Dim formatter As New BinaryFormatter()
-            formatter.Serialize(memorysteam, obj)
-            Dim toreturn As String = Convert.ToBase64String(memorysteam.ToArray)
-            formatter = Nothing
-            memorysteam.Dispose()
-            memorysteam = Nothing
-            Return toreturn
-        Catch ex As Exception
-            Return ""
-        End Try
+        Using MemoryStream As New MemoryStream
+            Try
+                Dim formatter As New BinaryFormatter()
+                formatter.Serialize(MemoryStream, obj)
+                Dim toreturn As String = Convert.ToBase64String(MemoryStream.ToArray)
+                formatter = Nothing
+                Return toreturn
+            Catch ex As Exception
+                Return ""
+            End Try
+        End Using
     End Function
 
     Public Function convertstringtoobject(str As String) As Object
         Try
-            Dim memorysteam As MemoryStream = New MemoryStream(Convert.FromBase64String(str))
-            Dim formatter As BinaryFormatter = New BinaryFormatter()
-            Dim retobj As Object = formatter.Deserialize(memorysteam)
-            formatter = Nothing
-            memorysteam.Dispose()
-            memorysteam = Nothing
-            Return retobj
+            Using MemoryStream As MemoryStream = New MemoryStream(Convert.FromBase64String(str))
+                Dim formatter As BinaryFormatter = New BinaryFormatter()
+                Dim retobj As Object = formatter.Deserialize(MemoryStream)
+                formatter = Nothing
+                Return retobj
+            End Using
         Catch ex As Exception
-            Return New Object
+            Return Nothing
         End Try
     End Function
 End Class

@@ -71,31 +71,29 @@ Module utils
     End Function
 
     Public Function convertobjecttostring(obj As Object) As String
-        Try
-            Dim memorysteam As New MemoryStream
-            Dim formatter As New BinaryFormatter()
-            formatter.Serialize(memorysteam, obj)
-            Dim toreturn As String = Convert.ToBase64String(memorysteam.ToArray)
-            formatter = Nothing
-            memorysteam.Dispose()
-            memorysteam = Nothing
-            Return toreturn
-        Catch ex As Exception
-            Return ""
-        End Try
+        Using MemoryStream As New MemoryStream
+            Try
+                Dim formatter As New BinaryFormatter()
+                formatter.Serialize(MemoryStream, obj)
+                Dim toreturn As String = Convert.ToBase64String(MemoryStream.ToArray)
+                formatter = Nothing
+                Return toreturn
+            Catch ex As Exception
+                Return ""
+            End Try
+        End Using
     End Function
 
     Public Function convertstringtoobject(str As String) As Object
         Try
-            Dim memorysteam As MemoryStream = New MemoryStream(Convert.FromBase64String(str))
-            Dim formatter As BinaryFormatter = New BinaryFormatter()
-            Dim retobj As Object = formatter.Deserialize(memorysteam)
-            formatter = Nothing
-            memorysteam.Dispose()
-            memorysteam = Nothing
-            Return retobj
+            Using MemoryStream As MemoryStream = New MemoryStream(Convert.FromBase64String(str))
+                Dim formatter As BinaryFormatter = New BinaryFormatter()
+                Dim retobj As Object = formatter.Deserialize(MemoryStream)
+                formatter = Nothing
+                Return retobj
+            End Using
         Catch ex As Exception
-            Return New Object
+            Return Nothing
         End Try
     End Function
 

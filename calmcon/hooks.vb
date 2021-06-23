@@ -252,7 +252,6 @@ Module hooks
     Private Sub wtoutint(ByVal text As OutputText)
         SyncLock slockoutput
             If Not form_instance Is Nothing Then
-                'form_instance.callonform(Sub() form_instance.txtbxlog.AppendText(text))
                 form_instance.render_outtxt(form_instance.txtbxlog, text)
             Else
                 Throw New NullReferenceException("The form is not initialised.")

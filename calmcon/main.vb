@@ -87,7 +87,7 @@ Public Class main
         command_thread = New Thread(New ThreadStart(AddressOf command_sub))
         flags_threadabx = New Thread(New ThreadStart(AddressOf flagsabx_sub))
         flags_threaddel = New Thread(New ThreadStart(AddressOf flagdel_sub))
-        lib_load_t = New Thread(New ThreadStart(AddressOf lcjbrimm))
+        lib_load_t = New Thread(New ThreadStart(AddressOf lcjrosewood))
         s_shown = New Thread(New ThreadStart(AddressOf ceholmes))
         hook_start_t = New Thread(New ThreadStart(AddressOf starthookexecutor))
         hook_stop_t = New Thread(New ThreadStart(AddressOf stophookexecutor))
@@ -105,10 +105,10 @@ Public Class main
         flags_threaddel.Start()
     End Sub
     ''' <summary>
-    ''' This subroutine for the lib load t is dedicated to Lily Charlotte Jaine Brimm
+    ''' This subroutine for the lib load t is dedicated to a woman I once liked
     ''' </summary>
     ''' <remarks></remarks>
-    Private Sub lcjbrimm()
+    Private Sub lcjrosewood()
         Try
             callonform(Sub()
                            pgrsbarstatus.Style = ProgressBarStyle.Marquee
@@ -130,6 +130,7 @@ Public Class main
                 cancel_action_thread()
             Catch ex As Exception
                 cancel_action = False
+                cancel_action_force = False
             End Try
         Catch ex As Exception
         Finally
@@ -143,7 +144,7 @@ Public Class main
         End Try
     End Sub
     ''' <summary>
-    ''' This subroutine for s show is dedicated to Charlotte Erin Holmes
+    ''' This subroutine for s show is dedicated to a woman I once liked
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub ceholmes()
@@ -185,6 +186,7 @@ Public Class main
     Private Sub cancel_action_thread()
         If cancel_action Then
             cancel_action = False
+            cancel_action_force = False
             Thread.CurrentThread.Abort()
         End If
     End Sub
@@ -253,6 +255,7 @@ Public Class main
                 cancel_action_thread()
             Catch ex As ThreadAbortException
                 cancel_action = False
+                cancel_action_force = False
                 callonform(Sub()
                                butstop.Enabled = False
                                lblstatus.Text = ""
@@ -270,6 +273,7 @@ Public Class main
                    End Sub)
         hook_running = False
         cancel_action = False
+        cancel_action_force = False
     End Sub
 
     Private Sub stophookexecutor()
@@ -287,6 +291,7 @@ Public Class main
                 cancel_action_thread()
             Catch ex As ThreadAbortException
                 cancel_action = False
+                cancel_action_force = False
                 callonform(Sub()
                                butstop.Enabled = False
                                lblstatus.Text = ""
@@ -295,6 +300,7 @@ Public Class main
                 hook_running = False
                 shutdown_hook_ran = True
                 cancel_action = False
+                cancel_action_force = False
                 callonform(Sub() Me.Close())
                 Throw ex
             Catch ex As Exception
@@ -308,6 +314,7 @@ Public Class main
         hook_running = False
         shutdown_hook_ran = True
         cancel_action = False
+        cancel_action_force = False
         callonform(Sub() Me.Close())
     End Sub
 
@@ -593,7 +600,6 @@ threadstart2:
                                        tochangeenter = False
                                    End If
                                    If toappendtext Then
-                                       'txtbxlog.AppendText(appendtext)
                                        render_outtxt(txtbxlog, appendtext)
                                        If loged Then
                                            log = log & appendtext
@@ -679,6 +685,7 @@ threadstart5:
         disablechkbx = True
         contrvis(False)
         cancel_action = False
+        cancel_action_force = False
         If shutdown_hook_ran And Not hook_running Then
             prrun = False
             If checkchkbxthread.IsAlive Then
@@ -832,9 +839,9 @@ threadstart3:
                                     If loged Then
                                         log = log & retfromruncmd & ControlChars.CrLf
                                     End If
+                                    retfromruncmd.write(ControlChars.CrLf)
                                     callonform(Sub()
-                                                   'txtbxlog.AppendText(retfromruncmd & ControlChars.CrLf)
-                                                   render_outtxt(txtbxlog, retfromruncmd & ControlChars.CrLf)
+                                                   render_outtxt(txtbxlog, retfromruncmd)
                                                End Sub)
                                 End If
                             End If
@@ -843,12 +850,13 @@ threadstart3:
                                        End Sub)
                             If cancel_action Then
                                 cancel_action = False
+                                cancel_action_force = False
                                 CommandStack.Clear()
                             End If
                             Thread.Sleep(25)
                         End While
                     End If
-                    If log.Length > 999999 And loged Then
+                    If log.Length > 1048575 And loged Then
                         If savefile(logpath & "\calm_cmd-" & DateTime.Now.Hour & "-" & DateTime.Now.Minute & "-" & DateTime.Now.Second & "-" & DateTime.Now.Day & "-" & DateTime.Now.Month & "-" & DateTime.Now.Year & "-" & ".txt", log) Then
                             log = ""
                         Else
