@@ -481,14 +481,14 @@ Module commands_data
                 ElseIf args(0).ToString.ToLower = "false" Or args(0) = "0" Or args(0).ToString.ToLower = "off" Or args(0).ToString.ToLower = "disabled" Then
                     loged = False
                 ElseIf args(0).ToString.ToLower = "clear" Then
-                    log = ""
+                    logclear()
+                    Return "Log cleared."
                 ElseIf args(0).ToString.ToLower = "dump" Then
-                    If log <> "" Then
-                        savefile(logpath & "\msg_cmd_cs-" & DateTime.Now.Hour & "-" & DateTime.Now.Minute & "-" & DateTime.Now.Second & "-" & DateTime.Now.Day & "-" & DateTime.Now.Month & "-" & DateTime.Now.Year & "-" & ".txt", log)
-                        log = ""
-                    End If
+                    If Not logsave() Then Throw New Exception("Log dump failed.") Else Return "Log dumped."
                 ElseIf args(0).ToString.ToLower = "default" Then
                     System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly.FullName)
+                ElseIf args(0).ToString.ToLower = "state" Or args(0).ToString.ToLower = "status" Then
+                    Return loged
                 Else
                     If savefile(args(0) & "\test.txt", "test") Then
                         File.Delete(args(0) & "\test.txt")

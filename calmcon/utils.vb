@@ -3,6 +3,8 @@ Imports System.Runtime.Serialization.Formatters.Binary
 Imports System.Runtime.InteropServices
 
 Module utils
+    Private slocklog As New Object()
+
     Public Function convertstringtobool(str As String) As Boolean
         Dim ret As Boolean = False
         Try
@@ -22,6 +24,8 @@ Module utils
         Catch ex As InvalidCastException
             ret = 0
         Catch ex As FormatException
+            ret = 0
+        Catch ex As OverflowException
             ret = 0
         End Try
         Return ret
@@ -95,6 +99,43 @@ Module utils
         Catch ex As Exception
             Return Nothing
         End Try
+    End Function
+
+    Public Sub logclear()
+        SyncLock slocklog
+            log = ""
+        End SyncLock
+    End Sub
+
+    Public Sub logappend(txt As String)
+        SyncLock slocklog
+            log &= txt
+        End SyncLock
+    End Sub
+
+    Public Function logsave() As Boolean
+        SyncLock slocklog
+            If log <> "" Then
+                If savefile(logpath & "\calm_cmd-" & DateTime.Now.Hour & "-" & DateTime.Now.Minute & "-" & DateTime.Now.Second & "-" & DateTime.Now.Day & "-" & DateTime.Now.Month & "-" & DateTime.Now.Year & "-" & ".txt", log) Then
+                    log = ""
+                    Return True
+                End If
+            Else
+                Return True
+            End If
+        End SyncLock
+        Return False
+    End Function
+
+    Public Function normalizeLineEndings(txt As String) As String
+        If txt.Contains(ControlChars.Cr) And txt.Contains(ControlChars.Lf) Then
+            Return txt
+        ElseIf txt.Contains(ControlChars.Cr) Then
+            Return txt.Replace(ControlChars.Cr, ControlChars.CrLf)
+        ElseIf txt.Contains(ControlChars.Lf) Then
+            Return txt.Replace(ControlChars.Lf, ControlChars.CrLf)
+        End If
+        Return txt
     End Function
 
     Public Declare Function Beep Lib "kernel32.dll" (dwFreq As Int32, dwDuration As Int32) As <MarshalAs(UnmanagedType.Bool)> Boolean

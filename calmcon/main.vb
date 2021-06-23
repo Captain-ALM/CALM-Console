@@ -47,6 +47,7 @@ Public Class main
                     End If
                     rtfbx.SelectionFont = New Font("Consolas", 8.25, fstyle_flag)
                     rtfbx.AppendText(c_block.text)
+                    If loged Then logappend(c_block.text)
                 Next
                 rtfbx.Select(rtfbx.TextLength, 0)
                 rtfbx.SelectionColor = Color.Black
@@ -591,9 +592,6 @@ Public Class main
                                    End If
                                    If toappendtext Then
                                        render_outtxt(txtbxlog, appendtext)
-                                       If loged Then
-                                           log = log & appendtext
-                                       End If
                                        toappendtext = False
                                        appendtext = ""
                                    End If
@@ -707,10 +705,7 @@ Public Class main
                 Catch ex As ThreadStateException
                 End Try
             End If
-            If log <> "" Then
-                savefile(logpath & "\calm_cmd-" & DateTime.Now.Hour & "-" & DateTime.Now.Minute & "-" & DateTime.Now.Second & "-" & DateTime.Now.Day & "-" & DateTime.Now.Month & "-" & DateTime.Now.Year & "-" & ".txt", log)
-                log = ""
-            End If
+            logsave()
             e.Cancel = False
         ElseIf Not hook_running Then
             at_end = True
@@ -733,7 +728,7 @@ Public Class main
     End Sub
 
     Private Sub cmd_inter(icmd As String)
-        Dim ccmd As String = icmd.Replace(ControlChars.Lf, ControlChars.CrLf)
+        Dim ccmd As String = normalizeLineEndings(icmd)
 
         If command_buffer.Count <> 0 Then
             command_buffer.Insert(command_buffer_index, icmd)
@@ -820,9 +815,6 @@ Public Class main
                                 If curcom <> "" Then
                                     Dim retfromruncmd As OutputText = run_cmd(curcom)
                                     If Not retfromruncmd Is Nothing And Not retfromruncmd = "" And Not retfromruncmd.BlockCount = 0 Then
-                                        If loged Then
-                                            log = log & retfromruncmd & ControlChars.CrLf
-                                        End If
                                         retfromruncmd.write(ControlChars.CrLf)
                                         render_outtxt(txtbxlog, retfromruncmd)
                                     End If
@@ -842,9 +834,7 @@ Public Class main
                         End Try
                     End If
                     If log.Length > 1048575 And loged Then
-                        If savefile(logpath & "\calm_cmd-" & DateTime.Now.Hour & "-" & DateTime.Now.Minute & "-" & DateTime.Now.Second & "-" & DateTime.Now.Day & "-" & DateTime.Now.Month & "-" & DateTime.Now.Year & "-" & ".txt", log) Then
-                            log = ""
-                        Else
+                        If Not logsave() Then
                             callonform(Sub() MsgBox("Error Saving Log To: " & logpath & ".", MsgBoxStyle.OkOnly + MsgBoxStyle.Critical, "calm_cmd Error"))
                         End If
                     End If
@@ -935,11 +925,16 @@ Public Class main
                     CutToolStripMenuItem.Enabled = False
                     CopyToolStripMenuItem.Enabled = False
                 End If
-                If Clipboard.ContainsText() Then
-                    PasteToolStripMenuItem.Enabled = True
-                Else
-                    PasteToolStripMenuItem.Enabled = False
-                End If
+                Try
+                    If Clipboard.ContainsText() Then
+                        PasteToolStripMenuItem.Enabled = True
+                    Else
+                        PasteToolStripMenuItem.Enabled = False
+                    End If
+                Catch ex As ThreadAbortException
+                    Throw ex
+                Catch ex As Exception
+                End Try
                 If txtbxcmd.CanUndo Then
                     UndoToolStripMenuItem.Enabled = True
                 Else
@@ -963,7 +958,12 @@ Public Class main
         If Not casted Is Nothing Then
             Dim cms As ContextMenuStrip = casted.GetCurrentParent()
             If cms.SourceControl.Name = txtbxcmd.Name And txtbxcmd.SelectedText <> "" Then
-                Clipboard.SetText(txtbxcmd.SelectedText.Replace(ControlChars.Lf, ControlChars.CrLf), TextDataFormat.UnicodeText)
+                Try
+                    Clipboard.SetText(normalizeLineEndings(txtbxcmd.SelectedText), TextDataFormat.UnicodeText)
+                Catch ex As ThreadAbortException
+                    Throw ex
+                Catch ex As Exception
+                End Try
                 txtbxcmd.Text = txtbxcmd.Text.Remove(txtbxcmd.SelectionStart, txtbxcmd.SelectionLength)
             End If
         End If
@@ -973,11 +973,16 @@ Public Class main
         Dim casted As ToolStripMenuItem = cast(Of ToolStripMenuItem)(sender)
         If Not casted Is Nothing Then
             Dim cms As ContextMenuStrip = casted.GetCurrentParent()
-            If cms.SourceControl.Name = txtbxcmd.Name And txtbxcmd.SelectedText <> "" Then
-                Clipboard.SetText(txtbxcmd.SelectedText.Replace(ControlChars.Lf, ControlChars.CrLf), TextDataFormat.UnicodeText)
-            ElseIf cms.SourceControl.Name = txtbxlog.Name And txtbxlog.SelectedText <> "" Then
-                Clipboard.SetText(txtbxlog.SelectedText.Replace(ControlChars.Lf, ControlChars.CrLf), TextDataFormat.UnicodeText)
-            End If
+            Try
+                If cms.SourceControl.Name = txtbxcmd.Name And txtbxcmd.SelectedText <> "" Then
+                    Clipboard.SetText(normalizeLineEndings(txtbxcmd.SelectedText), TextDataFormat.UnicodeText)
+                ElseIf cms.SourceControl.Name = txtbxlog.Name And txtbxlog.SelectedText <> "" Then
+                    Clipboard.SetText(normalizeLineEndings(txtbxlog.SelectedText), TextDataFormat.UnicodeText)
+                End If
+            Catch ex As ThreadAbortException
+                Throw ex
+            Catch ex As Exception
+            End Try
         End If
     End Sub
 
@@ -986,15 +991,20 @@ Public Class main
         If Not casted Is Nothing Then
             Dim cms As ContextMenuStrip = casted.GetCurrentParent()
             If cms.SourceControl.Name = txtbxcmd.Name Then
-                If Clipboard.ContainsText() Then
-                    Dim sinx As Integer = txtbxcmd.SelectionStart
-                    If txtbxcmd.SelectedText <> "" Then
-                        txtbxcmd.Text = txtbxcmd.Text.Remove(sinx, txtbxcmd.SelectionLength)
+                Try
+                    If Clipboard.ContainsText() Then
+                        Dim sinx As Integer = txtbxcmd.SelectionStart
+                        If txtbxcmd.SelectedText <> "" Then
+                            txtbxcmd.Text = txtbxcmd.Text.Remove(sinx, txtbxcmd.SelectionLength)
+                        End If
+                        Dim clip As String = Clipboard.GetText(TextDataFormat.UnicodeText)
+                        txtbxcmd.Text = txtbxcmd.Text.Insert(sinx, clip)
+                        txtbxcmd.SelectionStart = sinx + clip.Length
                     End If
-                    Dim clip As String = Clipboard.GetText(TextDataFormat.UnicodeText)
-                    txtbxcmd.Text = txtbxcmd.Text.Insert(sinx, clip)
-                    txtbxcmd.SelectionStart = sinx + clip.Length
-                End If
+                Catch ex As ThreadAbortException
+                    Throw ex
+                Catch ex As Exception
+                End Try
             End If
         End If
     End Sub

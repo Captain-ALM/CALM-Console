@@ -267,7 +267,7 @@ Module hooks
         Dim toret As String = ""
         SyncLock slockoutput
             If Not form_instance Is Nothing Then
-                toret = form_instance.txtbxlog.Text.Replace(ControlChars.Lf, ControlChars.CrLf)
+                toret = normalizeLineEndings(form_instance.txtbxlog.Text)
             Else
                 Throw New NullReferenceException("The form is not initialised.")
             End If

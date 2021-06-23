@@ -120,7 +120,7 @@ Public Module cmdpr
         'log / logger
         commands.Add("log", New executable_command("log", New Cmd(AddressOf logger)))
         commands.Add("logger", New executable_command("logger", New Cmd(AddressOf logger)))
-        commandhelplst.Add("log/logger%true/on/enabled/false/off/disabled/default(default folder for log)/dump/clear/*(folder for log)% : performs command for the log.")
+        commandhelplst.Add("log/logger%true/on/enabled/false/off/disabled/default(default folder for log)/dump/clear/state/status/*(folder for log)% : performs command for the log.")
         'set / set_var / set_variable
         commands.Add("set", New executable_command("set", New Cmd(AddressOf var_set)))
         commands.Add("set_var", New executable_command("set_var", New Cmd(AddressOf var_set)))
