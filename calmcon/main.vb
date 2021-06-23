@@ -130,7 +130,6 @@ Public Class main
                 cancel_action_thread()
             Catch ex As Exception
                 cancel_action = False
-                cancel_action_force = False
             End Try
         Catch ex As Exception
         Finally
@@ -186,7 +185,6 @@ Public Class main
     Private Sub cancel_action_thread()
         If cancel_action Then
             cancel_action = False
-            cancel_action_force = False
             Thread.CurrentThread.Abort()
         End If
     End Sub
@@ -255,7 +253,6 @@ Public Class main
                 cancel_action_thread()
             Catch ex As ThreadAbortException
                 cancel_action = False
-                cancel_action_force = False
                 callonform(Sub()
                                butstop.Enabled = False
                                lblstatus.Text = ""
@@ -273,7 +270,6 @@ Public Class main
                    End Sub)
         hook_running = False
         cancel_action = False
-        cancel_action_force = False
     End Sub
 
     Private Sub stophookexecutor()
@@ -291,7 +287,6 @@ Public Class main
                 cancel_action_thread()
             Catch ex As ThreadAbortException
                 cancel_action = False
-                cancel_action_force = False
                 callonform(Sub()
                                butstop.Enabled = False
                                lblstatus.Text = ""
@@ -300,7 +295,6 @@ Public Class main
                 hook_running = False
                 shutdown_hook_ran = True
                 cancel_action = False
-                cancel_action_force = False
                 callonform(Sub() Me.Close())
                 Throw ex
             Catch ex As Exception
@@ -314,7 +308,6 @@ Public Class main
         hook_running = False
         shutdown_hook_ran = True
         cancel_action = False
-        cancel_action_force = False
         callonform(Sub() Me.Close())
     End Sub
 
@@ -499,7 +492,6 @@ Public Class main
 
     Private Sub chkchkbxtsub()
         While prrun
-threadstart1:
             Try
                 Try
                     callonform(Sub()
@@ -536,14 +528,12 @@ threadstart1:
             Catch ex As ThreadAbortException
                 Throw ex
             Catch ex As Exception
-                GoTo threadstart1
             End Try
         End While
     End Sub
 
     Private Sub flags_sub()
         While prrun
-threadstart2:
             Try
                 Try
                     callonform(Sub()
@@ -619,14 +609,12 @@ threadstart2:
             Catch ex As ThreadAbortException
                 Throw ex
             Catch ex As Exception
-                GoTo threadstart2
             End Try
         End While
     End Sub
 
     Private Sub flagsabx_sub()
         While prrun
-threadstart4:
             Try
                 Try
                     callonform(Sub()
@@ -647,14 +635,12 @@ threadstart4:
             Catch ex As ThreadAbortException
                 Throw ex
             Catch ex As Exception
-                GoTo threadstart4
             End Try
         End While
     End Sub
 
     Private Sub flagdel_sub()
         While prrun
-threadstart5:
             Try
                 Try
                     If rundelegate Then
@@ -676,7 +662,6 @@ threadstart5:
             Catch ex As ThreadAbortException
                 Throw ex
             Catch ex As Exception
-                GoTo threadstart5
             End Try
         End While
     End Sub
@@ -685,41 +670,40 @@ threadstart5:
         disablechkbx = True
         contrvis(False)
         cancel_action = False
-        cancel_action_force = False
         If shutdown_hook_ran And Not hook_running Then
             prrun = False
             If checkchkbxthread.IsAlive Then
                 checkchkbxthread.Abort()
                 Try
-                    checkchkbxthread.Join(10000)
+                    checkchkbxthread.Join(2500)
                 Catch ex As ThreadStateException
                 End Try
             End If
             If flags_thread.IsAlive Then
                 flags_thread.Abort()
                 Try
-                    flags_thread.Join(10000)
+                    flags_thread.Join(2500)
                 Catch ex As ThreadStateException
                 End Try
             End If
             If flags_threadabx.IsAlive Then
                 flags_threadabx.Abort()
                 Try
-                    flags_threadabx.Join(10000)
+                    flags_threadabx.Join(2500)
                 Catch ex As ThreadStateException
                 End Try
             End If
             If flags_threaddel.IsAlive Then
                 flags_threaddel.Abort()
                 Try
-                    flags_threaddel.Join(10000)
+                    flags_threaddel.Join(2500)
                 Catch ex As ThreadStateException
                 End Try
             End If
             If command_thread.IsAlive Then
                 command_thread.Abort()
                 Try
-                    command_thread.Join(10000)
+                    command_thread.Join(2500)
                 Catch ex As ThreadStateException
                 End Try
             End If
@@ -810,7 +794,6 @@ threadstart5:
 
     Private Sub command_sub()
         While prrun
-threadstart3:
             Try
                 Try
                     If CommandExecution Then
@@ -831,30 +814,32 @@ threadstart3:
                                            lblstatus.Text = ""
                                        End If
                                    End Sub)
-                        While CommandStack.Count > 0 And commands_init And CommandExecution
-                            Dim curcom As String = CommandStack.Pop()
-                            If curcom <> "" Then
-                                Dim retfromruncmd As OutputText = run_cmd(curcom)
-                                If Not retfromruncmd Is Nothing And Not retfromruncmd = "" And Not retfromruncmd.BlockCount = 0 Then
-                                    If loged Then
-                                        log = log & retfromruncmd & ControlChars.CrLf
+                        Try
+                            While CommandStack.Count > 0 And commands_init And CommandExecution
+                                Dim curcom As String = CommandStack.Pop()
+                                If curcom <> "" Then
+                                    Dim retfromruncmd As OutputText = run_cmd(curcom)
+                                    If Not retfromruncmd Is Nothing And Not retfromruncmd = "" And Not retfromruncmd.BlockCount = 0 Then
+                                        If loged Then
+                                            log = log & retfromruncmd & ControlChars.CrLf
+                                        End If
+                                        retfromruncmd.write(ControlChars.CrLf)
+                                        render_outtxt(txtbxlog, retfromruncmd)
                                     End If
-                                    retfromruncmd.write(ControlChars.CrLf)
-                                    callonform(Sub()
-                                                   render_outtxt(txtbxlog, retfromruncmd)
-                                               End Sub)
                                 End If
-                            End If
-                            callonform(Sub()
-                                           lblstatus.Text = "Executing Commands: " & CommandStack.Count & " Commands Left..."
-                                       End Sub)
-                            If cancel_action Then
-                                cancel_action = False
-                                cancel_action_force = False
-                                CommandStack.Clear()
-                            End If
-                            Thread.Sleep(25)
-                        End While
+                                callonform(Sub()
+                                               lblstatus.Text = "Executing Commands: " & CommandStack.Count & " Commands Left..."
+                                           End Sub)
+                                If cancel_action Then
+                                    cancel_action = False
+                                    CommandStack.Clear()
+                                End If
+                                Thread.Sleep(25)
+                            End While
+                        Catch ex As ThreadInterruptedException
+                            cancel_action = False
+                            CommandStack.Clear()
+                        End Try
                     End If
                     If log.Length > 1048575 And loged Then
                         If savefile(logpath & "\calm_cmd-" & DateTime.Now.Hour & "-" & DateTime.Now.Minute & "-" & DateTime.Now.Second & "-" & DateTime.Now.Day & "-" & DateTime.Now.Month & "-" & DateTime.Now.Year & "-" & ".txt", log) Then
@@ -871,16 +856,12 @@ threadstart3:
             Catch ex As ThreadAbortException
                 Throw ex
             Catch ex As Exception
-                GoTo threadstart3
             End Try
         End While
     End Sub
 
     Private Sub main_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
         s_shown.Start()
-    End Sub
-
-    Private Sub main_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
     End Sub
 
     Private Sub butstop_Click(sender As Object, e As EventArgs) Handles butstop.Click
@@ -890,7 +871,7 @@ threadstart3:
                 If lib_load_t.IsAlive Then
                     lib_load_t.Abort()
                     Try
-                        lib_load_t.Join(10000)
+                        lib_load_t.Join(2500)
                     Catch ex As ThreadStateException
                     End Try
                 End If
@@ -902,7 +883,7 @@ threadstart3:
                         cancel_action = True
                         hook_stop_t.Abort()
                         Try
-                            hook_stop_t.Join(10000)
+                            hook_stop_t.Join(2500)
                         Catch ex As ThreadStateException
                         End Try
                         hook_running = False
@@ -916,7 +897,7 @@ threadstart3:
                         cancel_action = True
                         hook_start_t.Abort()
                         Try
-                            hook_start_t.Join(10000)
+                            hook_start_t.Join(2500)
                         Catch ex As ThreadStateException
                         End Try
                         hook_running = False
@@ -925,6 +906,9 @@ threadstart3:
             End If
         Else
             cancel_action = True
+            If Not command_thread Is Nothing Then
+                If command_thread.IsAlive Then command_thread.Interrupt()
+            End If
         End If
     End Sub
 
@@ -980,7 +964,6 @@ threadstart3:
             Dim cms As ContextMenuStrip = casted.GetCurrentParent()
             If cms.SourceControl.Name = txtbxcmd.Name And txtbxcmd.SelectedText <> "" Then
                 Clipboard.SetText(txtbxcmd.SelectedText.Replace(ControlChars.Lf, ControlChars.CrLf), TextDataFormat.UnicodeText)
-                'Clipboard.SetText(txtbxcmd.SelectedText.Replace(ControlChars.Lf, ControlChars.CrLf))
                 txtbxcmd.Text = txtbxcmd.Text.Remove(txtbxcmd.SelectionStart, txtbxcmd.SelectionLength)
             End If
         End If
@@ -992,7 +975,6 @@ threadstart3:
             Dim cms As ContextMenuStrip = casted.GetCurrentParent()
             If cms.SourceControl.Name = txtbxcmd.Name And txtbxcmd.SelectedText <> "" Then
                 Clipboard.SetText(txtbxcmd.SelectedText.Replace(ControlChars.Lf, ControlChars.CrLf), TextDataFormat.UnicodeText)
-                'Clipboard.SetText(txtbxcmd.SelectedText.Replace(ControlChars.Lf, ControlChars.CrLf))
             ElseIf cms.SourceControl.Name = txtbxlog.Name And txtbxlog.SelectedText <> "" Then
                 Clipboard.SetText(txtbxlog.SelectedText.Replace(ControlChars.Lf, ControlChars.CrLf), TextDataFormat.UnicodeText)
             End If

@@ -13,7 +13,6 @@ Public Module form_flags
     Public logpath As String = ""
     Public aboutbx_showing As Boolean = False
     Public cancel_action As Boolean = False
-    Public cancel_action_force As Boolean = False
     Public command_buffer As New List(Of String)
     '1 based
     Public command_buffer_index As Integer = 1

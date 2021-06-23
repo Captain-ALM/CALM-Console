@@ -4,7 +4,6 @@ Public NotInheritable Class AboutBx
     Private description As String = ""
     Private license As String = ""
 
-
     Public Sub setupdata(des As String, lic As String)
         description = des
         license = lic
